@@ -15,9 +15,9 @@
       <button id="sidebar-rating" class="sidebar-rating" type="button" hidden aria-label="Рейтинг ученика">
         <span id="sidebar-rating-score" class="sidebar-rating__score">0</span>
         <span class="sidebar-rating__panel">
-          <span class="sidebar-rating__title">Рейтинг</span>
+          <span class="sidebar-rating__title">Очки и звание</span>
           <span id="sidebar-rating-delta" class="sidebar-rating__delta">0</span>
-          <span id="sidebar-rating-reason" class="sidebar-rating__reason">Текущий рейтинг</span>
+          <span id="sidebar-rating-reason" class="sidebar-rating__reason">Текущее звание</span>
         </span>
       </button>
 
@@ -64,21 +64,41 @@
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
           </svg>
         </a>
-        <a href="#" class="sidebar__item">
-          <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="5"/>
-            <g stroke-linecap="round" stroke-width="2">
-              <line x1="12" y1="1" x2="12" y2="3"/>
-              <line x1="12" y1="21" x2="12" y2="23"/>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-              <line x1="1" y1="12" x2="3" y2="12"/>
-              <line x1="21" y1="12" x2="23" y2="12"/>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-            </g>
-          </svg>
-        </a>
+        <div class="sidebar-load">
+          <button id="sidebar-load-trigger" class="sidebar__item sidebar-load__trigger" type="button" aria-label="Показать загруженность дня">
+            <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="5"/>
+              <g stroke-linecap="round" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="3"/>
+                <line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/>
+                <line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              </g>
+            </svg>
+          </button>
+          <div id="sidebar-load-panel" class="sidebar-load__panel" hidden>
+            <div class="sidebar-load__header">
+              <h3>Загруженность</h3>
+              <span id="sidebar-load-summary" class="sidebar-load__summary">0 дел</span>
+            </div>
+            <div id="sidebar-load-date" class="sidebar-load__date">Сегодня</div>
+            <div id="sidebar-load-notes" class="sidebar-load__notes"></div>
+            <div class="sidebar-load__timeline">
+              <div class="sidebar-load__axis">
+                <span>0:00</span>
+                <span>6:00</span>
+                <span>12:00</span>
+                <span>18:00</span>
+              </div>
+              <div id="sidebar-load-grid" class="sidebar-load__grid"></div>
+            </div>
+            <div id="sidebar-load-footer" class="sidebar-load__footer">Расписание и задачи на день</div>
+          </div>
+        </div>
       </div>
     </aside>
 
@@ -91,8 +111,9 @@
         </div>
         <div class="topbar__actions">
           <div class="topbar__avatar"></div>
-          <button class="topbar__bell">
+          <button class="topbar__bell" type="button" aria-label="Открыть уведомления">
             <i data-lucide="bell" style="width:22px;height:22px;"></i>
+            <span class="topbar__bell-badge" hidden>0</span>
           </button>
         </div>
       </header>
@@ -184,7 +205,7 @@
               <div id="reminders-list"></div>
 
               <div id="search-results" class="results-panel" hidden>
-                <div class="results-panel__label">Тема для поиска/изучения</div>
+                <div id="results-panel-label" class="results-panel__label">Тема для поиска/изучения</div>
                 <div id="search-topic" class="results-panel__topic"></div>
               </div>
             </div>
@@ -669,6 +690,19 @@
     </main>
   </div>
 
+  <div id="notifications-panel" class="notifications-panel" hidden>
+    <div class="notifications-panel__header">
+      <div>
+        <h3>AI-уведомления</h3>
+        <p>Что лучше не откладывать сейчас</p>
+      </div>
+      <button id="notifications-close" class="notifications-panel__close" type="button" aria-label="Закрыть уведомления">
+        <i data-lucide="x" style="width:16px;height:16px;"></i>
+      </button>
+    </div>
+    <div id="notifications-list" class="notifications-panel__list"></div>
+  </div>
+
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     const sidebarItems = document.querySelectorAll('.sidebar__item');
@@ -679,6 +713,7 @@
     const homeworkList = document.getElementById('homework-list');
     const searchResults = document.getElementById('search-results');
     const searchTopic = document.getElementById('search-topic');
+    const resultsPanelLabel = document.getElementById('results-panel-label');
     const appViews = document.querySelectorAll('.app-view');
     const gradesContent = document.getElementById('grades-content');
     const performanceContent = document.getElementById('performance-content');
@@ -713,6 +748,18 @@
     const sidebarRatingScore = document.getElementById('sidebar-rating-score');
     const sidebarRatingDelta = document.getElementById('sidebar-rating-delta');
     const sidebarRatingReason = document.getElementById('sidebar-rating-reason');
+    const sidebarLoadTrigger = document.getElementById('sidebar-load-trigger');
+    const sidebarLoadPanel = document.getElementById('sidebar-load-panel');
+    const sidebarLoadDate = document.getElementById('sidebar-load-date');
+    const sidebarLoadSummary = document.getElementById('sidebar-load-summary');
+    const sidebarLoadNotes = document.getElementById('sidebar-load-notes');
+    const sidebarLoadGrid = document.getElementById('sidebar-load-grid');
+    const sidebarLoadFooter = document.getElementById('sidebar-load-footer');
+    const notificationsPanel = document.getElementById('notifications-panel');
+    const notificationsList = document.getElementById('notifications-list');
+    const notificationsClose = document.getElementById('notifications-close');
+    const topbarBellButtons = document.querySelectorAll('.topbar__bell');
+    let sidebarLoadHideTimer = null;
     let scrollHideTimer = null;
     let calendarHideTimer = null;
     let activeChatId = null;
@@ -728,6 +775,8 @@
     let homeworkData = [];
     let allNotes = [];
     let archiveData = { completed: [], missed: [], trash: [] };
+    let teacherArchiveFilters = { subject: '', date: '', class_name: '' };
+    let notificationsData = [];
     let gradesData = {};
     let activeGradesQuarterIndex = 0;
     let performanceData = { days: [] };
@@ -821,6 +870,25 @@
       monthTrigger.setAttribute('aria-expanded', 'false');
     }
 
+    function openSidebarLoadPanel() {
+      if (!sidebarLoadPanel) {
+        return;
+      }
+      window.clearTimeout(sidebarLoadHideTimer);
+      renderSidebarLoadPanel();
+      sidebarLoadPanel.hidden = false;
+    }
+
+    function scheduleSidebarLoadClose() {
+      if (!sidebarLoadPanel) {
+        return;
+      }
+      window.clearTimeout(sidebarLoadHideTimer);
+      sidebarLoadHideTimer = window.setTimeout(() => {
+        sidebarLoadPanel.hidden = true;
+      }, 180);
+    }
+
     function renderWeek() {
       const weekStart = startOfWeek(selectedDate);
       weekDays.innerHTML = '';
@@ -908,6 +976,7 @@
       renderWeek();
       renderMonthGrid();
       applyDateFilter();
+      renderSidebarLoadPanel();
     }
 
     function renderIcons() {
@@ -1042,6 +1111,132 @@
       return `${capitalizeFirst(dayMonth)}, ${weekday}`;
     }
 
+    function formatTimeLabel(totalMinutes) {
+      const safeMinutes = Math.max(0, Math.min(Number(totalMinutes) || 0, 24 * 60));
+      const hours = Math.floor(safeMinutes / 60);
+      const minutes = safeMinutes % 60;
+      return `${hours}:${String(minutes).padStart(2, '0')}`;
+    }
+
+    function parseTimeRange(rawValue) {
+      const text = String(rawValue || '').trim();
+      const match = text.match(/(\d{1,2}):(\d{2})\s*[-–]\s*(\d{1,2}):(\d{2})/);
+      if (!match) {
+        return null;
+      }
+      const start = Number(match[1]) * 60 + Number(match[2]);
+      const end = Number(match[3]) * 60 + Number(match[4]);
+      if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) {
+        return null;
+      }
+      return { start, end };
+    }
+
+    function buildDayLoadSnapshot() {
+      const dateKey = formatDateKey(selectedDate);
+      const dayPerformance = (Array.isArray(performanceData.days) ? performanceData.days : []).find((day) => String(day.date || '').trim() === dateKey) || null;
+      const lessons = Array.isArray(dayPerformance?.lessons) ? dayPerformance.lessons : [];
+      const notes = allNotes.filter((note) => String(note?.result?.date || '').trim() === dateKey);
+      const homework = homeworkData.filter((item) => String(item.date || '').trim() === dateKey);
+      return { dateKey, dayPerformance, lessons, notes, homework };
+    }
+
+    function renderSidebarLoadPanel() {
+      if (!sidebarLoadPanel || !sidebarLoadDate || !sidebarLoadSummary || !sidebarLoadNotes || !sidebarLoadGrid || !sidebarLoadFooter) {
+        return;
+      }
+
+      const snapshot = buildDayLoadSnapshot();
+      const lessons = snapshot.lessons;
+      const notes = snapshot.notes;
+      const homework = snapshot.homework;
+      const totalItems = lessons.length + notes.length + homework.length;
+
+      if (sidebarLoadTrigger) {
+        sidebarLoadTrigger.hidden = currentViewerRole === 'admin';
+      }
+      if (currentViewerRole === 'admin') {
+        sidebarLoadPanel.hidden = true;
+        return;
+      }
+
+      sidebarLoadDate.textContent = capitalizeFirst(formatHeadingDate(selectedDate));
+      sidebarLoadSummary.textContent = `${totalItems} ${totalItems === 1 ? 'дело' : totalItems >= 2 && totalItems <= 4 ? 'дела' : 'дел'}`;
+
+      if (notes.length) {
+        sidebarLoadNotes.innerHTML = notes.slice(0, 2).map((note) => {
+          const label = String(note?.result?.task || note?.source_text || 'Напоминание').trim();
+          return `<div class="sidebar-load__note-chip">${escapeHtml(label)}</div>`;
+        }).join('');
+      } else {
+        sidebarLoadNotes.innerHTML = '<div class="sidebar-load__note-chip sidebar-load__note-chip--muted">На этот день заметок нет</div>';
+      }
+
+      const timelineStart = 0;
+      const timelineEnd = 24 * 60;
+      const timelineSpan = timelineEnd - timelineStart;
+      const blocks = [];
+
+      notes.slice(0, 2).forEach((note, index) => {
+        const start = 40 + index * 90;
+        const end = start + 70;
+        blocks.push({
+          top: ((start - timelineStart) / timelineSpan) * 100,
+          height: ((end - start) / timelineSpan) * 100,
+          title: String(note?.result?.task || note?.source_text || 'Напоминание').trim(),
+          meta: 'заметка',
+          tone: 'note',
+        });
+      });
+
+      lessons.forEach((lesson) => {
+        const parsed = parseTimeRange(lesson.time);
+        const start = parsed ? parsed.start : 8 * 60;
+        const end = parsed ? parsed.end : start + 40;
+        const lessonLabel = `${lesson.number || ''}. ${String(lesson.subject || '').trim()}`.trim();
+        const metaParts = [String(lesson.time || '').trim(), String(lesson.task || '').trim()].filter(Boolean);
+        blocks.push({
+          top: ((start - timelineStart) / timelineSpan) * 100,
+          height: Math.max(((end - start) / timelineSpan) * 100, 5.2),
+          title: lessonLabel,
+          meta: metaParts.join(' • '),
+          tone: lesson.status === 'done' ? 'done' : lesson.status === 'pending' || lesson.status === 'progress' ? 'focus' : 'lesson',
+        });
+      });
+
+      homework.slice(0, 3).forEach((item, index) => {
+        const baseStart = 18 * 60 + index * 55;
+        const taskText = `${String(item.subject || '').trim()}: ${String(item.task || item.description || 'Домашнее задание').trim()}`;
+        blocks.push({
+          top: ((baseStart - timelineStart) / timelineSpan) * 100,
+          height: 5.5,
+          title: taskText,
+          meta: item.done ? 'дз выполнено' : `дз • +${Math.max(1, Number(item.points_value) || 1)} б.`,
+          tone: item.done ? 'done' : 'homework',
+        });
+      });
+
+      if (!blocks.length) {
+        sidebarLoadGrid.innerHTML = '<div class="sidebar-load__empty">На выбранную дату пока нет уроков, заметок или домашних заданий.</div>';
+      } else {
+        sidebarLoadGrid.innerHTML = `
+          <div class="sidebar-load__grid-lines"></div>
+          ${blocks.map((block) => `
+            <div class="sidebar-load__block sidebar-load__block--${block.tone}" style="top:${block.top}%;height:${block.height}%;">
+              <strong>${escapeHtml(block.title)}</strong>
+              ${block.meta ? `<span>${escapeHtml(block.meta)}</span>` : ''}
+            </div>
+          `).join('')}
+        `;
+      }
+
+      const firstLesson = lessons.find((lesson) => parseTimeRange(lesson.time));
+      const startHint = firstLesson ? parseTimeRange(firstLesson.time)?.start : null;
+      sidebarLoadFooter.textContent = startHint
+        ? `Первое занятие в ${formatTimeLabel(startHint)} • заметок: ${notes.length} • дз: ${homework.length}`
+        : `Заметок: ${notes.length} • уроков: ${lessons.length} • дз: ${homework.length}`;
+    }
+
     function formatDateKey(date) {
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -1061,6 +1256,11 @@
         });
         const payload = await response.json();
         return { response, payload };
+      } catch (error) {
+        if (error && error.name === 'AbortError') {
+          throw new Error(`Превышено время ожидания запроса (${Math.ceil(timeoutMs / 1000)} сек)`); 
+        }
+        throw error;
       } finally {
         window.clearTimeout(timeoutId);
       }
@@ -1082,29 +1282,97 @@
       }
     }
 
-    function renderSidebarRating(rating = null) {
+    function renderSidebarRating(profile = null) {
       if (!sidebarRating || !sidebarRatingScore || !sidebarRatingDelta || !sidebarRatingReason) {
         return;
       }
+      const score = Number(profile?.score || 0);
+      const title = String(profile?.title || 'Новичок класса');
+      const pointsToNext = Number(profile?.points_to_next || 0);
+      const nextTitle = String(profile?.next_title || '');
 
+      sidebarRating.hidden = currentViewerRole !== 'student';
       if (currentViewerRole !== 'student') {
-        sidebarRating.hidden = true;
         return;
       }
 
-      const score = Math.max(0, Number(rating?.score || 0));
-      const delta = Number(rating?.last_delta || 0);
-      const reason = String(rating?.last_reason || '');
-
-      sidebarRating.hidden = false;
       sidebarRatingScore.textContent = String(score);
-      sidebarRatingDelta.textContent = delta > 0 ? `+${delta}` : String(delta);
-      sidebarRatingDelta.className = `sidebar-rating__delta${delta === 0 ? ' sidebar-rating__delta--muted' : delta > 0 ? ' sidebar-rating__delta--up' : ' sidebar-rating__delta--down'}`;
-      sidebarRatingReason.textContent =
-        reason === 'homework_completed' ? 'За выполненное ДЗ'
-        : reason === 'overdue_homework' ? 'Штраф за просрочку'
-        : reason === 'homework_reopened' ? 'ДЗ снова не выполнено'
-        : 'Текущий рейтинг';
+      if (nextTitle && pointsToNext > 0) {
+        sidebarRatingDelta.textContent = `+${pointsToNext} до "${nextTitle}"`;
+        sidebarRatingDelta.className = 'sidebar-rating__delta sidebar-rating__delta--up';
+      } else {
+        sidebarRatingDelta.textContent = 'Максимальное звание';
+        sidebarRatingDelta.className = 'sidebar-rating__delta sidebar-rating__delta--muted';
+      }
+      sidebarRatingReason.textContent = title;
+    }
+
+    function closeNotificationsPanel() {
+      if (notificationsPanel) {
+        notificationsPanel.hidden = true;
+      }
+    }
+
+    function renderNotifications() {
+      if (!notificationsList) {
+        return;
+      }
+      if (currentViewerRole !== 'student') {
+        topbarBellButtons.forEach((button) => {
+          const badge = button.querySelector('.topbar__bell-badge');
+          if (badge) {
+            badge.hidden = true;
+          }
+        });
+        closeNotificationsPanel();
+        return;
+      }
+
+      topbarBellButtons.forEach((button) => {
+        const badge = button.querySelector('.topbar__bell-badge');
+        if (!badge) {
+          return;
+        }
+        const count = notificationsData.length;
+        badge.hidden = count === 0;
+        badge.textContent = count > 9 ? '9+' : String(count);
+      });
+
+      if (!notificationsData.length) {
+        notificationsList.innerHTML = '<div class="notifications-panel__empty">Сейчас нет срочных напоминаний. Можно работать спокойно.</div>';
+        renderIcons();
+        return;
+      }
+
+      notificationsList.innerHTML = notificationsData.map((item) => `
+        <div class="notifications-panel__item notifications-panel__item--${escapeHtml(item.severity || 'low')}">
+          <div class="notifications-panel__item-head">
+            <span class="notifications-panel__pill">${escapeHtml(item.type === 'homework' ? 'ДЗ' : 'Заметка')}</span>
+            <span class="notifications-panel__due">${escapeHtml(item.due_text || '')}</span>
+          </div>
+          <div class="notifications-panel__title">${escapeHtml(item.title || '')}</div>
+          <div class="notifications-panel__text">${escapeHtml(item.message || '')}</div>
+        </div>
+      `).join('');
+      renderIcons();
+    }
+
+    async function loadNotifications() {
+      if (currentViewerRole !== 'student') {
+        notificationsData = [];
+        renderNotifications();
+        return;
+      }
+      try {
+        const { response, payload } = await fetchJson('/api/notifications', { timeoutMs: 30000 });
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Не удалось загрузить уведомления');
+        }
+        notificationsData = Array.isArray(payload.notifications) ? payload.notifications : [];
+      } catch (error) {
+        notificationsData = [];
+      }
+      renderNotifications();
     }
 
     async function toggleHomework(itemId) {
@@ -1119,11 +1387,16 @@
         if (!response.ok || !payload.ok) {
           throw new Error(payload.error || 'Не удалось обновить домашнее задание');
         }
-        if (payload.rating) {
-          gradesData = { ...gradesData, rating: payload.rating };
-          renderSidebarRating(payload.rating);
+        if (payload.points || payload.streak || payload.points_profile) {
+          gradesData = {
+            ...gradesData,
+            points: payload.points || gradesData.points,
+            points_profile: payload.points_profile || gradesData.points_profile,
+            streak: payload.streak || gradesData.streak,
+          };
         }
         await loadHomework();
+        renderGrades();
         renderCalendar();
       } catch (error) {
         setStatus(error.message || 'Не удалось обновить домашнее задание', 'error');
@@ -1159,6 +1432,7 @@
       const classLabel = String(item.class_name || '').trim();
       const subjectLabel = String(item.subject || '').trim();
       const taskLabel = item.task || item.description || 'Без описания';
+      const pointsValue = Math.max(1, Number(item.points_value) || 1);
       const prefixLabel = [classLabel, subjectLabel].filter(Boolean).join(', ');
       const progressMarkup = isReviewed ? '' : renderProgressRing(progressPercent);
 
@@ -1168,9 +1442,10 @@
       row.dataset.priority = item.priority || 'medium';
 
       row.innerHTML = `
-        <div class="card ${toneClass} homework-card homework-card--teacher">
+          <div class="card ${toneClass} homework-card homework-card--teacher">
           <div class="card__content">
             <div class="card__date">${formatHomeworkDate(itemDate)}</div>
+            <div class="card__subtitle">ценность задания: ${pointsValue}</div>
             <div class="card__tasks">
               <div class="card__task">
                 <span class="card__task-text card__task-text--teacher">
@@ -1179,7 +1454,12 @@
               </div>
             </div>
             <div class="teacher-homework__footer">
-              <button class="teacher-homework__action" type="button">${actionLabel}<span class="teacher-homework__action-icon" aria-hidden="true">→</span></button>
+              <div class="teacher-homework__actions">
+                <button class="teacher-homework__action" type="button">${actionLabel}<span class="teacher-homework__action-icon" aria-hidden="true">→</span></button>
+                <button class="teacher-homework__delete" type="button" aria-label="Удалить домашнее задание">
+                  <i data-lucide="trash-2" style="width:15px;height:15px;"></i>
+                </button>
+              </div>
               <span class="teacher-homework__meta">${checkedCount} из ${totalCount} сделали</span>
             </div>
           </div>
@@ -1187,6 +1467,28 @@
         </div>
         ${isReviewed ? `<div class="card__status card__status--done" aria-hidden="true"><i data-lucide="check" style="width:20px;height:20px;"></i></div>` : ''}
       `;
+
+      const deleteButton = row.querySelector('.teacher-homework__delete');
+      if (deleteButton) {
+        deleteButton.addEventListener('click', async () => {
+          try {
+            const { response, payload } = await fetchJson('/api/homework/delete', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ id: item.id }),
+            });
+            if (!response.ok || !payload.ok) {
+              throw new Error(payload.error || 'Не удалось удалить домашнее задание');
+            }
+            await loadHomework();
+            setStatus('Домашнее задание удалено у учителя и учеников.', 'success');
+          } catch (error) {
+            setStatus(error.message || 'Не удалось удалить домашнее задание', 'error');
+          }
+        });
+      }
 
       return row;
     }
@@ -1201,6 +1503,11 @@
       const isDone = Boolean(item.done);
       const isOverdue = !isDone && itemDate && itemDate < formatDateKey(today);
       const toneClass = isOverdue ? 'card--pink' : 'card--lightblue';
+      const pointsValue = Math.max(1, Number(item.points_value) || 1);
+      const isTeacherAssignment = String(item.source || '').trim() === 'teacher';
+      const submittedAt = String(item.submitted_at || '').trim();
+      const submittedFileName = String(item.submitted_file_name || '').trim();
+      const submitLabel = submittedAt ? 'Загрузить новый файл' : 'Отправить файл учителю';
       row.className = 'card-row card-row--homework homework-item';
       row.dataset.date = itemDate;
       row.dataset.volume = item.volume || 'medium';
@@ -1210,11 +1517,19 @@
         <div class="card ${toneClass} homework-card homework-card--single">
           <div class="card__content">
             <div class="card__date">${formatHomeworkDate(itemDate)}</div>
+            <div class="card__subtitle">+${pointsValue} очко${pointsValue >= 2 && pointsValue <= 4 ? 'а' : pointsValue >= 5 ? 'ов' : ''}</div>
             <div class="card__tasks">
               <div class="card__task">
                 <span class="card__task-text">${item.subject ? `${item.subject}: ` : ''}${item.task || item.description || 'Без описания'}</span>
               </div>
             </div>
+            ${isTeacherAssignment ? `
+              <div class="student-homework__footer">
+                <button class="card__btn student-homework__submit" type="button">${submitLabel}</button>
+                <input class="student-homework__file-input" type="file" hidden>
+                <span class="student-homework__meta">${submittedAt ? `Отправлен файл: ${escapeHtml(submittedFileName || 'решение')}` : 'После отправки учитель увидит файл в архиве'}</span>
+              </div>
+            ` : ''}
           </div>
         </div>
         <button class="card__status ${isDone ? 'card__status--done' : 'card__status--empty'}" type="button" aria-label="${isDone ? 'Домашнее задание выполнено' : 'Отметить домашнее задание выполненным'}">
@@ -1225,6 +1540,67 @@
       row.querySelector('.card__status').addEventListener('click', () => {
         toggleHomework(item.id);
       });
+
+      const submitButton = row.querySelector('.student-homework__submit');
+      const fileInput = row.querySelector('.student-homework__file-input');
+      if (submitButton) {
+        submitButton.addEventListener('click', () => {
+          if (fileInput) {
+            fileInput.click();
+          }
+        });
+      }
+
+      if (fileInput) {
+        fileInput.addEventListener('change', async (event) => {
+          const [selectedFile] = Array.from(event.target.files || []);
+          if (!selectedFile) {
+            return;
+          }
+          try {
+            const fileContent = await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => {
+                const raw = String(reader.result || '');
+                const parts = raw.split(',');
+                resolve(parts.length > 1 ? parts[1] : '');
+              };
+              reader.onerror = () => reject(new Error('Не удалось прочитать файл'));
+              reader.readAsDataURL(selectedFile);
+            });
+            const { response, payload } = await fetchJson('/api/homework/submit', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                id: item.id,
+                submission_text: selectedFile.name,
+                file_name: selectedFile.name,
+                content: fileContent,
+              }),
+            });
+            if (!response.ok || !payload.ok) {
+              throw new Error(payload.error || 'Не удалось отправить домашнее задание учителю');
+            }
+            if (payload.points || payload.streak || payload.points_profile) {
+              gradesData = {
+                ...gradesData,
+                points: payload.points || gradesData.points,
+                points_profile: payload.points_profile || gradesData.points_profile,
+                streak: payload.streak || gradesData.streak,
+              };
+            }
+            await loadHomework();
+            await loadGrades();
+            setStatus('Файл с решением отправлен учителю.', 'success');
+          } catch (error) {
+            setStatus(error.message || 'Не удалось отправить домашнее задание учителю', 'error');
+          } finally {
+            event.target.value = '';
+          }
+        });
+      }
 
       return row;
     }
@@ -1265,6 +1641,7 @@
         homeworkData = [];
       }
       renderHomework();
+      renderSidebarLoadPanel();
     }
 
     function applyDateFilter() {
@@ -1391,12 +1768,15 @@
 
       const rowsMarkup = rows.map((row) => {
         const gradeToneClass = row.tone === 'good' ? ' teacher-archive-grade--good' : row.tone === 'warn' ? ' teacher-archive-grade--warn' : '';
+        const downloadUrl = row.student_username && row.student_homework_id
+          ? `/api/homework/submission?student=${encodeURIComponent(row.student_username)}&homework_id=${encodeURIComponent(row.student_homework_id)}`
+          : '';
         return `
           <div class="teacher-archive-table__row">
             <div class="teacher-archive-table__cell teacher-archive-table__cell--name">${escapeHtml(row.name || '')}</div>
             <div class="teacher-archive-table__cell teacher-archive-table__cell--status">${escapeHtml(row.status_text || 'не сделано')}</div>
             <div class="teacher-archive-table__cell teacher-archive-table__cell--file">
-              ${row.submitted ? `<button class="teacher-archive-download" type="button" aria-label="${escapeHtml(row.file_name || 'Скачать решение')}"><i data-lucide="download" style="width:14px;height:14px;"></i></button>` : '<span class="teacher-archive-file-missing"></span>'}
+              ${row.submitted && downloadUrl ? `<button class="teacher-archive-download" type="button" data-download-url="${escapeHtml(downloadUrl)}" aria-label="${escapeHtml(row.file_name || 'Скачать решение')}"><i data-lucide="download" style="width:14px;height:14px;"></i></button>` : '<span class="teacher-archive-file-missing"></span>'}
             </div>
             <div class="teacher-archive-table__cell teacher-archive-table__cell--grade"><span class="teacher-archive-grade' + gradeToneClass + '">${escapeHtml(row.grade || '')}</span></div>
           </div>
@@ -1407,11 +1787,11 @@
         <div class="teacher-archive-panel">
           <div class="teacher-archive-headline">
             <h1 class="archive-title archive-title--teacher">Домашнее задание по</h1>
-            <select class="teacher-archive-select teacher-archive-select--subject" disabled>${buildOptions(filters.subjects, selected.subject)}</select>
+            <select class="teacher-archive-select teacher-archive-select--subject">${buildOptions(filters.subjects, selected.subject)}</select>
             <span class="teacher-archive-headline__label">на</span>
-            <select class="teacher-archive-select teacher-archive-select--date" disabled>${buildOptions(filters.dates, selected.date, formatTeacherArchiveDate)}</select>
+            <select class="teacher-archive-select teacher-archive-select--date">${buildOptions(filters.dates, selected.date, formatTeacherArchiveDate)}</select>
             <span class="teacher-archive-headline__label">класса</span>
-            <select class="teacher-archive-select teacher-archive-select--class" disabled>${buildOptions(filters.classes, selected.class_name)}</select>
+            <select class="teacher-archive-select teacher-archive-select--class">${buildOptions(filters.classes, selected.class_name)}</select>
           </div>
 
           <div class="teacher-archive-table">
@@ -1439,17 +1819,62 @@
           </div>
         </div>
       `;
+      archiveContent.querySelectorAll('.teacher-archive-download').forEach((button) => {
+        button.addEventListener('click', () => {
+          const downloadUrl = String(button.dataset.downloadUrl || '').trim();
+          if (!downloadUrl) {
+            setStatus('Файл решения не найден.', 'error');
+            return;
+          }
+          window.location.href = downloadUrl;
+        });
+      });
+      const subjectSelect = archiveContent.querySelector('.teacher-archive-select--subject');
+      const dateSelect = archiveContent.querySelector('.teacher-archive-select--date');
+      const classSelect = archiveContent.querySelector('.teacher-archive-select--class');
+      const reloadArchive = async () => {
+        teacherArchiveFilters = {
+          subject: String(subjectSelect?.value || '').trim(),
+          date: String(dateSelect?.value || '').trim(),
+          class_name: String(classSelect?.value || '').trim(),
+        };
+        await loadArchive();
+      };
+      [subjectSelect, dateSelect, classSelect].forEach((select) => {
+        if (!select) {
+          return;
+        }
+        select.addEventListener('change', reloadArchive);
+      });
       renderIcons();
     }
 
     async function loadArchive() {
       try {
-        const { response, payload } = await fetchJson('/api/archive');
+        const params = new URLSearchParams();
+        if (teacherArchiveFilters.subject) {
+          params.set('subject', teacherArchiveFilters.subject);
+        }
+        if (teacherArchiveFilters.date) {
+          params.set('date', teacherArchiveFilters.date);
+        }
+        if (teacherArchiveFilters.class_name) {
+          params.set('class_name', teacherArchiveFilters.class_name);
+        }
+        const url = params.toString() ? `/api/archive?${params.toString()}` : '/api/archive';
+        const { response, payload } = await fetchJson(url);
         if (!response.ok || !payload.ok) {
           throw new Error(payload.error || 'Не удалось загрузить архив');
         }
         archiveData = payload.archive || { completed: [], missed: [], trash: [] };
         archiveData.mode = payload.mode || 'student';
+        if (archiveData.mode === 'teacher') {
+          teacherArchiveFilters = {
+            subject: String((archiveData.selected || {}).subject || '').trim(),
+            date: String((archiveData.selected || {}).date || '').trim(),
+            class_name: String((archiveData.selected || {}).class_name || '').trim(),
+          };
+        }
       } catch (error) {
         archiveData = { completed: [], missed: [], trash: [] };
       }
@@ -1485,6 +1910,8 @@
             ...student,
             name: !rawName || rawName.includes('?') ? 'Имя фамилия' : rawName,
             grades: Array.isArray(student.grades) ? student.grades.slice(0, columns.length) : Array(columns.length).fill(''),
+            points_score: Number(student.points_score || 0),
+            points_title: String(student.points_title || '').trim(),
           };
         });
         const riskStudents = (Array.isArray(section.risk_students) ? section.risk_students : []).map((student) => {
@@ -1526,7 +1953,12 @@
               const avgTone = student.average === '5' ? ' grades-grade--good' : student.average === '2' ? ' grades-grade--bad' : student.average === '3' ? ' grades-grade--warn' : '';
               return `
                 <div class="grades-table__row${index >= visibleRows ? ' grades-table__row--extra' : ''}" style="--grades-columns:${columns.length};"${index >= visibleRows ? ' hidden' : ''}>
-                  <div class="grades-table__cell grades-table__cell--subject">${escapeHtml(student.name || '')}</div>
+                  <div class="grades-table__cell grades-table__cell--subject">
+                    <div class="teacher-student-meta">
+                      <span class="teacher-student-meta__name">${escapeHtml(student.name || '')}</span>
+                      <span class="teacher-student-meta__points">${escapeHtml(student.points_title || 'Новичок класса')} · ${Number(student.points_score || 0)} б.</span>
+                    </div>
+                  </div>
                   ${gradeCells}
                   <div class="grades-table__cell grades-table__cell--avg"><span class="grades-grade${avgTone}">${escapeHtml(student.average || '')}</span></div>
                 </div>
@@ -1612,6 +2044,7 @@
       `;
 
       renderIcons();
+      renderSidebarRating(gradesData.points_profile || gradesData.points);
 
       const quarterButtons = gradesContent.querySelectorAll('[data-quarter-shift]');
       quarterButtons.forEach((button) => {
@@ -1767,10 +2200,17 @@
             </section>
 
             <section class="grades-stat grades-stat--assistant">
-              <button class="grades-assistant-btn" type="button">
-                <span>${gradesData.assistant_prompt || ''}</span>
-                <span class="grades-assistant-btn__icon"><i data-lucide="send" style="width:15px;height:15px;"></i></span>
-              </button>
+              <div class="grades-assistant-btn">
+                <div class="grades-assistant-btn__content">
+                  <div class="grades-assistant-btn__line"><strong>Очки:</strong> ${Number(gradesData.points?.score || 0)}</div>
+                  <div class="grades-assistant-btn__line"><strong>Звание:</strong> ${gradesData.points_profile?.title || 'Новичок класса'}</div>
+                  <div class="grades-assistant-btn__line"><strong>Streak:</strong> ${Number(gradesData.streak?.current || 0)} дн. подряд</div>
+                  <div class="grades-assistant-btn__line">${gradesData.weekly_goal?.task || 'Недельная цель скоро появится в заметках.'}</div>
+                  <div class="grades-assistant-btn__line"><strong>Награда:</strong> +${Number(gradesData.weekly_goal?.points_reward || 0)} очков</div>
+                  <div class="grades-assistant-btn__line">${gradesData.points_profile?.next_title ? `До звания "${gradesData.points_profile.next_title}" осталось ${Number(gradesData.points_profile.points_to_next || 0)} б.` : 'У тебя уже максимальное звание.'}</div>
+                </div>
+                <span class="grades-assistant-btn__icon"><i data-lucide="target" style="width:15px;height:15px;"></i></span>
+              </div>
             </section>
           </div>
         </div>
@@ -1807,12 +2247,9 @@
       const assistantButton = gradesContent.querySelector('.grades-assistant-btn');
       if (assistantButton) {
         assistantButton.addEventListener('click', () => {
-          const prompt = String(gradesData.assistant_prompt || '').trim();
-          setActiveView('chat');
-          if (prompt) {
-            chatInput.value = prompt;
-          }
-          chatInput.focus();
+          showAllPlannerItems = true;
+          setActiveView('planner');
+          renderCalendar();
         });
       }
     }
@@ -1831,7 +2268,7 @@
           document.body.dataset.role = currentViewerRole;
         }
         gradesData = payload.grades || {};
-        renderSidebarRating(gradesData.rating);
+        renderSidebarRating(gradesData.points_profile || gradesData.points);
         const quarters = Array.isArray(gradesData.quarters) ? gradesData.quarters : [];
         if (quarters.length) {
           const desiredQuarterId = String(gradesData.current_quarter || '').trim();
@@ -1959,6 +2396,7 @@
         performanceData = currentViewerRole === 'teacher' ? teacherPerformanceFallback : { days: [] };
       }
       renderPerformance();
+      renderSidebarLoadPanel();
     }
 
     function clearReminderCards() {
@@ -1968,6 +2406,22 @@
     function buildReminderCard(note) {
       const result = note.result || {};
       const task = result.task || note.source_text || 'Новая задача';
+      const isWeeklyGoal = result.goal_type === 'weekly_goal';
+      const rewardLabel = Number(result.points_reward || 0);
+      const subtasks = Array.isArray(result.subtasks)
+        ? result.subtasks.map((item) => {
+            if (item && typeof item === 'object') {
+              return {
+                text: String(item.text || '').trim(),
+                done: Boolean(item.done),
+              };
+            }
+            return {
+              text: String(item || '').trim(),
+              done: false,
+            };
+          }).filter((item) => item.text)
+        : [];
       const isTeacherReminder = currentViewerRole === 'teacher';
       const row = document.createElement('div');
       row.className = `card-row ${isTeacherReminder ? 'card-row--teacher-reminder' : 'card-row--note'} reminder-item`;
@@ -1997,12 +2451,18 @@
           <div class="card card--green reminder-card reminder-card--note">
             <div class="card__content">
               <div class="card__date">${formatDate(result.date)}</div>
-              <div class="card__subtitle">(добавлено через планировщик)</div>
+              <div class="card__subtitle">${isWeeklyGoal ? `(недельная цель, +${rewardLabel} очков)` : '(добавлено через планировщик)'}</div>
               <div class="card__tasks">
                 <div class="card__task">
                   <span class="card__task-text"></span>
+                  ${!isWeeklyGoal ? `<button class="note-subtasks__icon" type="button" aria-label="${subtasks.length ? 'Обновить этапы заметки' : 'Разбить заметку на этапы'}"><i data-lucide="list-todo" style="width:15px;height:15px;"></i></button>` : ''}
                 </div>
               </div>
+              ${!isWeeklyGoal ? `
+                <div class="note-subtasks">
+                  ${subtasks.length ? `<div class="note-subtasks__list">${subtasks.map((item, index) => `<button class="note-subtasks__item${item.done ? ' note-subtasks__item--done' : ''}" type="button" data-subtask-index="${index}" aria-label="Отметить подзадачу ${index + 1}"><span class="note-subtasks__circle" aria-hidden="true"></span><span class="note-subtasks__index">${index + 1}.</span><span>${escapeHtml(item.text)}</span></button>`).join('')}</div>` : ''}
+                </div>
+              ` : ''}
             </div>
             <button class="card__delete" type="button" aria-label="Удалить карточку">
               <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
@@ -2011,6 +2471,63 @@
           <div class="card__status card__status--empty" role="button" tabindex="0" aria-label="Перенести в архив выполненных"></div>
         `;
       row.querySelector('.card__task-text').textContent = task;
+      const subtasksButton = row.querySelector('.note-subtasks__icon');
+      if (subtasksButton && note.id) {
+        subtasksButton.addEventListener('click', async () => {
+          subtasksButton.disabled = true;
+          subtasksButton.classList.add('note-subtasks__icon--loading');
+          try {
+            const { response, payload } = await fetchJson('/api/notes/subtasks', {
+              method: 'POST',
+              timeoutMs: 30000,
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ id: note.id }),
+            });
+            if (!response.ok || !payload.ok) {
+              throw new Error(payload.error || 'Не удалось разбить заметку на этапы');
+            }
+            const updatedNote = payload.note || note;
+            allNotes = allNotes.map((item) => item.id === updatedNote.id ? updatedNote : item);
+            renderReminders();
+            setStatus('Этапы для заметки созданы.', 'success');
+          } catch (error) {
+            setStatus(error.message || 'Не удалось разбить заметку на этапы', 'error');
+          } finally {
+            subtasksButton.classList.remove('note-subtasks__icon--loading');
+            subtasksButton.disabled = false;
+          }
+        });
+      }
+      row.querySelectorAll('.note-subtasks__item').forEach((subtaskButton) => {
+        subtaskButton.addEventListener('click', async () => {
+          const subtaskIndex = Number(subtaskButton.dataset.subtaskIndex || -1);
+          if (subtaskIndex < 0 || !note.id) {
+            return;
+          }
+          subtaskButton.disabled = true;
+          try {
+            const { response, payload } = await fetchJson('/api/notes/subtasks/toggle', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ id: note.id, subtask_index: subtaskIndex }),
+            });
+            if (!response.ok || !payload.ok) {
+              throw new Error(payload.error || 'Не удалось обновить подзадачу');
+            }
+            const updatedNote = payload.note || note;
+            allNotes = allNotes.map((item) => item.id === updatedNote.id ? updatedNote : item);
+            renderReminders();
+          } catch (error) {
+            setStatus(error.message || 'Не удалось обновить подзадачу', 'error');
+          } finally {
+            subtaskButton.disabled = false;
+          }
+        });
+      });
       row.querySelector('.card__delete').addEventListener('click', async () => {
         if (!note.id) {
           row.remove();
@@ -2088,6 +2605,7 @@
         allNotes = [];
       }
       renderReminders();
+      renderSidebarLoadPanel();
     }
 
     function hideSearchResult() {
@@ -2264,8 +2782,34 @@
     }
 
     function showSearchResult(result) {
+      if (resultsPanelLabel) {
+        resultsPanelLabel.textContent = 'Тема для поиска/изучения';
+      }
       searchTopic.textContent = result.topic || 'Тема не распознана';
       searchResults.hidden = false;
+    }
+
+    async function openAnalysisInChat(text) {
+      const response = await fetch('/api/chat/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: text,
+          chat_id: null,
+        }),
+      });
+      const payload = await response.json();
+      if (!response.ok || !payload.ok) {
+        throw new Error(payload.error || 'Не удалось открыть анализ в чате');
+      }
+
+      activeChatId = (payload.chat_id && payload.chat_id !== 'None') ? payload.chat_id : null;
+      const msgs = normalizeChatMessages(payload.messages, text);
+      renderChatMessages(msgs);
+      await loadChatHistory();
+      setActiveView('chat');
     }
 
     async function submitPlannerInput() {
@@ -2295,13 +2839,28 @@
 
         if (payload.result.category === 1) {
           hideSearchResult();
+          if (payload.result.date) {
+            selectedDate = new Date(`${payload.result.date}T00:00:00`);
+            showAllPlannerItems = false;
+          } else {
+            showAllPlannerItems = true;
+          }
           await loadArchive();
           await loadNotes();
+          if (payload.reminder_entry && !allNotes.some((item) => item.id === payload.reminder_entry.id)) {
+            allNotes.unshift(payload.reminder_entry);
+            renderReminders();
+          }
+          renderCalendar();
           setStatus('Напоминание успешно добавлено.', 'success');
         } else if (payload.result.category === 3) {
           hideSearchResult();
           await loadHomework();
           setStatus('Домашнее задание успешно создано.', 'success');
+        } else if (payload.result.category === 4) {
+          hideSearchResult();
+          await openAnalysisInChat(text);
+          setStatus('Анализ открыт в чате.', 'success');
         } else {
           showSearchResult(payload.result);
           setStatus('Тема для поиска определена.', 'success');
@@ -2383,6 +2942,30 @@
       }
     });
 
+    topbarBellButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        if (!notificationsPanel || currentViewerRole !== 'student') {
+          return;
+        }
+        notificationsPanel.hidden = !notificationsPanel.hidden;
+      });
+    });
+
+    if (notificationsClose) {
+      notificationsClose.addEventListener('click', closeNotificationsPanel);
+    }
+
+    document.addEventListener('click', (event) => {
+      if (!notificationsPanel || notificationsPanel.hidden) {
+        return;
+      }
+      const clickedBell = Array.from(topbarBellButtons).some((button) => button.contains(event.target));
+      if (clickedBell || notificationsPanel.contains(event.target)) {
+        return;
+      }
+      closeNotificationsPanel();
+    });
+
     filterMenus.forEach((menu) => {
       const groupName = menu.dataset.filterGroup;
       const trigger = menu.querySelector('.filter-menu__trigger');
@@ -2446,6 +3029,19 @@
         scheduleCalendarClose();
       }
     });
+
+    if (sidebarLoadTrigger && sidebarLoadPanel) {
+      sidebarLoadTrigger.addEventListener('mouseenter', openSidebarLoadPanel);
+      sidebarLoadTrigger.addEventListener('mouseleave', scheduleSidebarLoadClose);
+      sidebarLoadTrigger.addEventListener('focus', openSidebarLoadPanel);
+      sidebarLoadPanel.addEventListener('mouseenter', openSidebarLoadPanel);
+      sidebarLoadPanel.addEventListener('mouseleave', scheduleSidebarLoadClose);
+      sidebarLoadPanel.addEventListener('focusout', (event) => {
+        if (!sidebarLoadPanel.contains(event.relatedTarget) && !sidebarLoadTrigger.contains(event.relatedTarget)) {
+          scheduleSidebarLoadClose();
+        }
+      });
+    }
 
     function updateCustomScrollbar() {
       const { scrollTop, scrollHeight, clientHeight } = contentArea;
