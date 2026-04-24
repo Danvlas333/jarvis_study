@@ -3,6 +3,8 @@ import os
 import base64
 import csv
 import io
+import mimetypes
+from urllib.parse import quote
 from datetime import date
 from functools import partial
 from http import cookies
@@ -23,13 +25,16 @@ from auth import (
     list_school_users,
     list_students_for_classes,
 )
-from planner import chat_reply, extract_teacher_homework, smart_processor
+from planner import chat_reply, extract_teacher_homework, generate_analysis_reply, generate_note_subtasks, smart_processor
 from user_store import (
     archive_overdue_notes,
+    build_points_profile,
     clear_archive_trash,
     complete_note,
     create_teacher_homework_assignment,
+    delete_teacher_homework_assignment,
     ensure_user_storage,
+    get_student_homework_submission,
     get_chat_session,
     list_chat_sessions,
     load_completed_tasks,
@@ -37,7 +42,12 @@ from user_store import (
     load_student_grades,
     load_student_performance,
     move_archive_item_to_trash,
+    save_note_subtasks,
+    save_state,
     save_chat_exchange,
+    toggle_note_subtask,
+    build_student_ai_notifications,
+    submit_student_homework,
     save_planner_result,
     sync_student_homework_rating,
     toggle_student_homework_completion,
@@ -73,6 +83,105 @@ def _coerce_numeric_grade(value: str | int | float | None) -> float | None:
     except (TypeError, ValueError):
         return None
     return numeric if numeric > 0 else None
+
+
+def _build_analysis_context(data_root: str, storage_key: str, parsed: dict[str, object]) -> dict[str, object]:
+    scope = [
+        str(item).strip().lower()
+        for item in (parsed.get("scope") or [])
+        if str(item).strip().lower() in {"notes", "homework", "grades", "performance"}
+    ]
+    if not scope:
+        scope = ["notes", "homework", "grades", "performance"]
+
+    state = load_state(data_root, storage_key)
+    context: dict[str, object] = {
+        "scope": scope,
+        "plan_date": parsed.get("plan_date"),
+        "focus": parsed.get("focus"),
+    }
+
+    if "notes" in scope:
+        notes: list[dict[str, object]] = []
+        for item in state.get("notes", [])[:12]:
+            result = item.get("result") if isinstance(item.get("result"), dict) else {}
+            notes.append(
+                {
+                    "task": result.get("task") or item.get("source_text"),
+                    "date": result.get("date"),
+                    "saved_at": item.get("saved_at"),
+                }
+            )
+        context["notes"] = notes
+
+    if "homework" in scope:
+        homework_items: list[dict[str, object]] = []
+        for item in state.get("homework", [])[:20]:
+            homework_items.append(
+                {
+                    "subject": item.get("subject"),
+                    "task": item.get("task"),
+                    "date": item.get("date"),
+                    "done": bool(item.get("done", False)),
+                    "class_name": item.get("class_name"),
+                    "priority": item.get("priority"),
+                    "volume": item.get("volume"),
+                    "points_value": item.get("points_value"),
+                    "homework_grade": item.get("homework_grade"),
+                }
+            )
+        context["homework"] = homework_items
+
+    if "grades" in scope:
+        grades_payload = load_student_grades(data_root, storage_key)
+        current_quarter_id = str(grades_payload.get("current_quarter") or "").strip()
+        quarters = grades_payload.get("quarters") or []
+        quarter = next((item for item in quarters if item.get("id") == current_quarter_id), quarters[0] if quarters else None)
+        subjects_summary: list[dict[str, object]] = []
+        if isinstance(quarter, dict):
+            for subject in quarter.get("subjects", [])[:12]:
+                subjects_summary.append(
+                    {
+                        "name": subject.get("name"),
+                        "average": subject.get("average"),
+                        "grades": list((subject.get("grades") or [])[:8]),
+                    }
+                )
+        context["grades"] = {
+            "quarter": (quarter or {}).get("label") if isinstance(quarter, dict) else None,
+            "points": grades_payload.get("points"),
+            "points_profile": grades_payload.get("points_profile"),
+            "streak": grades_payload.get("streak"),
+            "weekly_goal": grades_payload.get("weekly_goal"),
+            "assistant_subject": grades_payload.get("assistant_subject"),
+            "subjects": subjects_summary,
+        }
+
+    if "performance" in scope:
+        performance_payload = load_student_performance(data_root, storage_key)
+        days_summary: list[dict[str, object]] = []
+        for day in (performance_payload.get("days") or [])[:3]:
+            lessons_summary: list[dict[str, object]] = []
+            for lesson in (day.get("lessons") or [])[:8]:
+                lessons_summary.append(
+                    {
+                        "number": lesson.get("number"),
+                        "subject": lesson.get("subject"),
+                        "time": lesson.get("time"),
+                        "task": lesson.get("task"),
+                        "status": lesson.get("status"),
+                    }
+                )
+            days_summary.append(
+                {
+                    "date": day.get("date"),
+                    "title": day.get("title"),
+                    "lessons": lessons_summary,
+                }
+            )
+        context["performance"] = {"days": days_summary}
+
+    return context
 
 
 def _build_teacher_grades_payload(db_path: str, data_root: str, teacher_user: dict[str, object], requested_quarter_id: str | None = None) -> dict[str, object]:
@@ -157,6 +266,8 @@ def _build_teacher_grades_payload(db_path: str, data_root: str, teacher_user: di
                     "grades": list((target_subject.get("grades") or [])[:len(columns)]),
                     "average": average_label,
                     "tone": tone,
+                    "points_score": int((grades_payload.get("points") or {}).get("score") or 0),
+                    "points_title": str((grades_payload.get("points_profile") or {}).get("title") or ""),
                 }
             )
             if average_numeric is not None:
@@ -187,7 +298,14 @@ def _build_teacher_grades_payload(db_path: str, data_root: str, teacher_user: di
     }
 
 
-def _build_teacher_archive_payload(db_path: str, data_root: str, teacher_user: dict[str, object]) -> dict[str, object]:
+def _build_teacher_archive_payload(
+    db_path: str,
+    data_root: str,
+    teacher_user: dict[str, object],
+    selected_subject: str | None = None,
+    selected_date: str | None = None,
+    selected_class: str | None = None,
+) -> dict[str, object]:
     teacher_storage_key = str(teacher_user.get("storage_key") or "").strip()
     if not teacher_storage_key:
         return {"filters": {"subjects": [], "dates": [], "classes": []}, "selected": {}, "rows": [], "completion_percent": 0}
@@ -204,7 +322,15 @@ def _build_teacher_archive_payload(db_path: str, data_root: str, teacher_user: d
     dates = sorted({str(item.get("date") or "").strip() for item in homework_items})
     classes = sorted({str(item.get("class_name") or "").strip() for item in homework_items})
 
-    selected_item = homework_items[0]
+    selected_item = next(
+        (
+            item for item in homework_items
+            if (not str(selected_subject or "").strip() or str(item.get("subject") or "").strip() == str(selected_subject or "").strip())
+            and (not str(selected_date or "").strip() or str(item.get("date") or "").strip() == str(selected_date or "").strip())
+            and (not str(selected_class or "").strip() or str(item.get("class_name") or "").strip() == str(selected_class or "").strip())
+        ),
+        homework_items[0],
+    )
     selected_subject = str(selected_item.get("subject") or "")
     selected_date = str(selected_item.get("date") or "")
     selected_class = str(selected_item.get("class_name") or "")
@@ -237,10 +363,12 @@ def _build_teacher_archive_payload(db_path: str, data_root: str, teacher_user: d
         done_label = f"сделано {submitted_at}" if is_done else "не сделано"
         rows.append(
             {
-                "name": str(student.get("display_name") or student.get("username") or "Ученик"),
+                "name": str(student.get("display_name") or student.get("username") or "??????"),
                 "status_text": done_label,
                 "submitted": is_done,
                 "file_name": str((homework_entry or {}).get("submitted_file_name") or "").strip(),
+                "student_username": str(student.get("username") or "").strip(),
+                "student_homework_id": str((homework_entry or {}).get("id") or "").strip(),
                 "grade": grade_value,
                 "tone": "good" if grade_value in {"4", "5"} else "warn" if grade_value == "3" else "bad" if grade_value == "2" else "none",
             }
@@ -354,6 +482,25 @@ class AppHandler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _send_file(self, file_path: str, download_name: str) -> None:
+        try:
+            with open(file_path, "rb") as source:
+                body = source.read()
+        except FileNotFoundError:
+            self.send_error(404, "File not found")
+            return
+
+        content_type = mimetypes.guess_type(download_name or file_path)[0] or "application/octet-stream"
+        safe_name = os.path.basename(download_name or "solution.bin")
+        ascii_name = safe_name.encode("ascii", "ignore").decode("ascii").strip() or "solution.bin"
+        quoted_name = quote(safe_name, safe="")
+        self.send_response(200)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Content-Disposition", f"attachment; filename=\"{ascii_name}\"; filename*=UTF-8''{quoted_name}")
+        self.end_headers()
+        self.wfile.write(body)
+
     def _redirect(self, location: str, extra_headers: list[tuple[str, str]] | None = None) -> None:
         self.send_response(302)
         self.send_header("Location", location)
@@ -446,7 +593,20 @@ class AppHandler(SimpleHTTPRequestHandler):
             if user.get("role") != "admin":
                 self._send_json(403, {"ok": False, "error": "?????? ?????? ??? ??????????????"})
                 return
-            self._send_json(200, {"ok": True, "data": list_school_users(self.db_path)})
+            payload = list_school_users(self.db_path)
+            students_payload: list[dict[str, object]] = []
+            for item in payload.get("students", []):
+                enriched = dict(item)
+                storage_key = str(enriched.get("storage_key") or "").strip()
+                if storage_key:
+                    ensure_user_storage(self.data_root, storage_key)
+                    grades_payload = load_student_grades(self.data_root, storage_key)
+                    profile = grades_payload.get("points_profile") or build_points_profile(grades_payload.get("points"))
+                    enriched["points_score"] = int((grades_payload.get("points") or {}).get("score") or 0)
+                    enriched["points_title"] = str(profile.get("title") or "")
+                students_payload.append(enriched)
+            payload["students"] = students_payload
+            self._send_json(200, {"ok": True, "data": payload})
             return
 
         if path == "/api/homework":
@@ -467,6 +627,8 @@ class AppHandler(SimpleHTTPRequestHandler):
                 self._send_json(401, {"ok": False, "error": "Требуется вход"})
                 return
             ensure_user_storage(self.data_root, user["storage_key"])
+            if user.get("role") == "student":
+                load_student_grades(self.data_root, user["storage_key"])
             state = __import__("user_store").load_state(self.data_root, user["storage_key"])
             self._send_json(200, {"ok": True, "notes": state.get("notes", [])})
             return
@@ -520,12 +682,66 @@ class AppHandler(SimpleHTTPRequestHandler):
             self._send_json(200, {"ok": True, "session": session})
             return
 
+        if path == "/api/homework/submission":
+            if not user:
+                self._send_json(401, {"ok": False, "error": "Требуется вход"})
+                return
+            if user.get("role") != "teacher":
+                self._send_json(403, {"ok": False, "error": "Недостаточно прав"})
+                return
+
+            query = parse_qs(parsed_url.query)
+            student_username = str(query.get("student", [""])[0] or "").strip()
+            homework_id = str(query.get("homework_id", [""])[0] or "").strip()
+            if not student_username or not homework_id:
+                self._send_json(400, {"ok": False, "error": "Не указаны параметры загрузки"})
+                return
+
+            managed_classes = get_teacher_managed_classes(self.db_path, str(user.get("username") or ""))
+            students = list_students_for_classes(self.db_path, managed_classes)
+            student = next((item for item in students if str(item.get("username") or "").strip() == student_username), None)
+            if student is None:
+                self._send_json(404, {"ok": False, "error": "Ученик не найден"})
+                return
+
+            storage_key = str(student.get("storage_key") or "").strip()
+            submission = get_student_homework_submission(self.data_root, storage_key, homework_id)
+            if submission is None:
+                self._send_json(404, {"ok": False, "error": "Файл решения не найден"})
+                return
+
+            self._send_file(str(submission["file_path"]), str(submission["file_name"]))
+            return
+
+        if path == "/api/notifications":
+            if not user:
+                self._send_json(401, {"ok": False, "error": "????????? ????"})
+                return
+            if user.get("role") != "student":
+                self._send_json(200, {"ok": True, "notifications": []})
+                return
+            notifications = build_student_ai_notifications(
+                self.data_root,
+                user["storage_key"],
+                date.today().isoformat(),
+            )
+            self._send_json(200, {"ok": True, "notifications": notifications})
+            return
+
         if path == "/api/archive":
             if not user:
-                self._send_json(401, {"ok": False, "error": "РЎРЅР°С‡Р°Р»Р° РІРѕР№РґРёС‚Рµ РІ Р°РєРєР°СѓРЅС‚"})
+                self._send_json(401, {"ok": False, "error": "??????? ??????? ? ???????"})
                 return
             if user.get("role") == "teacher":
-                archive = _build_teacher_archive_payload(self.db_path, self.data_root, user)
+                query = parse_qs(parsed_url.query)
+                archive = _build_teacher_archive_payload(
+                    self.db_path,
+                    self.data_root,
+                    user,
+                    selected_subject=str(query.get("subject", [""])[0] or "").strip() or None,
+                    selected_date=str(query.get("date", [""])[0] or "").strip() or None,
+                    selected_class=str(query.get("class_name", [""])[0] or "").strip() or None,
+                )
                 self._send_json(200, {"ok": True, "archive": archive, "mode": "teacher"})
                 return
             archive = archive_overdue_notes(self.data_root, user["storage_key"], date.today().isoformat())
@@ -589,9 +805,8 @@ class AppHandler(SimpleHTTPRequestHandler):
                 if not toggled:
                     self._send_json(404, {"ok": False, "error": "Не найдено домашнее задание"})
                     return
-                self._send_json(200, {"ok": True, "done": info.get("done"), "rating": info.get("rating")})
+                self._send_json(200, {"ok": True, "done": info.get("done"), "points": info.get("points"), "points_profile": info.get("points_profile"), "streak": info.get("streak")})
                 return
-            from user_store import load_state, save_state
             state = load_state(self.data_root, user["storage_key"])
             for hw in state.get("homework", []):
                 if hw.get("id") == hw_id:
@@ -599,6 +814,93 @@ class AppHandler(SimpleHTTPRequestHandler):
                     break
             save_state(self.data_root, user["storage_key"], state)
             self._send_json(200, {"ok": True})
+            return
+
+        if path == "/api/homework/delete":
+            user = self._get_current_user()
+            if not user:
+                self._send_json(401, {"ok": False, "error": "Требуется вход"})
+                return
+            if user.get("role") != "teacher":
+                self._send_json(403, {"ok": False, "error": "Недостаточно прав"})
+                return
+            try:
+                payload = self._read_json_body()
+            except ValueError as error:
+                self._send_json(400, {"ok": False, "error": str(error)})
+                return
+
+            hw_id = str(payload.get("id", "")).strip()
+            if not hw_id:
+                self._send_json(400, {"ok": False, "error": "Не указан id"})
+                return
+
+            teacher_state = load_state(self.data_root, user["storage_key"])
+            target_homework = next(
+                (
+                    item for item in teacher_state.get("homework", [])
+                    if str(item.get("id") or "").strip() == hw_id and str(item.get("source") or "").strip() == "teacher"
+                ),
+                None,
+            )
+            if target_homework is None:
+                self._send_json(404, {"ok": False, "error": "Домашнее задание не найдено"})
+                return
+
+            class_name = str(target_homework.get("class_name") or "").strip()
+            students = list_students_for_classes(self.db_path, [class_name] if class_name else [])
+            deleted = delete_teacher_homework_assignment(self.data_root, user["storage_key"], hw_id, students)
+            if deleted is None:
+                self._send_json(404, {"ok": False, "error": "Домашнее задание не найдено"})
+                return
+
+            self._send_json(200, {"ok": True, "deleted": deleted})
+            return
+
+        if path == "/api/homework/submit":
+            user = self._get_current_user()
+            if not user:
+                self._send_json(401, {"ok": False, "error": "????????? ????"})
+                return
+            if user.get("role") != "student":
+                self._send_json(403, {"ok": False, "error": "???????????? ????"})
+                return
+            try:
+                payload = self._read_json_body()
+            except ValueError as error:
+                self._send_json(400, {"ok": False, "error": str(error)})
+                return
+
+            hw_id = str(payload.get("id", "")).strip()
+            submission_text = str(payload.get("submission_text", "")).strip()
+            file_name = str(payload.get("file_name", "")).strip()
+            raw_content = str(payload.get("content", "")).strip()
+            if not hw_id:
+                self._send_json(400, {"ok": False, "error": "?? ?????? id"})
+                return
+            if not file_name or not raw_content:
+                self._send_json(400, {"ok": False, "error": "?? ?????? ???? ???????"})
+                return
+
+            try:
+                file_bytes = base64.b64decode(raw_content, validate=True)
+            except (ValueError, TypeError):
+                self._send_json(400, {"ok": False, "error": "?? ??????? ?????????? ????"})
+                return
+
+            submitted, info = submit_student_homework(
+                self.data_root,
+                user["storage_key"],
+                hw_id,
+                submission_text=submission_text,
+                file_name=file_name,
+                file_bytes=file_bytes,
+            )
+            if not submitted:
+                self._send_json(404, {"ok": False, "error": "???????? ??????? ?? ???????"})
+                return
+
+            self._send_json(200, {"ok": True, **(info or {})})
             return
 
         if path == "/api/notes/delete":
@@ -615,7 +917,6 @@ class AppHandler(SimpleHTTPRequestHandler):
             if not note_id:
                 self._send_json(400, {"ok": False, "error": "Не указан id"})
                 return
-            from user_store import load_state, save_state
             state = load_state(self.data_root, user["storage_key"])
             state["notes"] = [n for n in state.get("notes", []) if n.get("id") != note_id]
             save_state(self.data_root, user["storage_key"], state)
@@ -641,6 +942,78 @@ class AppHandler(SimpleHTTPRequestHandler):
                 self._send_json(404, {"ok": False, "error": "РќР°РїРѕРјРёРЅР°РЅРёРµ РЅРµ РЅР°Р№РґРµРЅРѕ"})
                 return
             self._send_json(200, {"ok": True, "item": archived_note})
+            return
+
+        if path == "/api/notes/subtasks":
+            user = self._get_current_user()
+            if not user:
+                self._send_json(401, {"ok": False, "error": "????????? ????"})
+                return
+            try:
+                payload = self._read_json_body()
+            except ValueError as error:
+                self._send_json(400, {"ok": False, "error": str(error)})
+                return
+
+            note_id = str(payload.get("id", "")).strip()
+            if not note_id:
+                self._send_json(400, {"ok": False, "error": "?? ?????? id"})
+                return
+
+            state = load_state(self.data_root, user["storage_key"])
+            note = next((item for item in state.get("notes", []) if str(item.get("id") or "").strip() == note_id), None)
+            if note is None:
+                self._send_json(404, {"ok": False, "error": "??????? ?? ???????"})
+                return
+
+            result = note.get("result") if isinstance(note.get("result"), dict) else {}
+            note_text = str(result.get("task") or note.get("source_text") or "").strip()
+            if not note_text:
+                self._send_json(400, {"ok": False, "error": "? ??????? ??? ?????? ??? ?????????"})
+                return
+
+            try:
+                subtasks = generate_note_subtasks(note_text)
+            except Exception:
+                self._send_json(500, {"ok": False, "error": "?? ??????? ??????? ??????? ?? ?????"})
+                return
+
+            updated_note = save_note_subtasks(self.data_root, user["storage_key"], note_id, subtasks)
+            if updated_note is None:
+                self._send_json(404, {"ok": False, "error": "??????? ?? ???????"})
+                return
+
+            self._send_json(200, {"ok": True, "note": updated_note, "subtasks": subtasks})
+            return
+
+        if path == "/api/notes/subtasks/toggle":
+            user = self._get_current_user()
+            if not user:
+                self._send_json(401, {"ok": False, "error": "????????? ????"})
+                return
+            try:
+                payload = self._read_json_body()
+            except ValueError as error:
+                self._send_json(400, {"ok": False, "error": str(error)})
+                return
+
+            note_id = str(payload.get("id", "")).strip()
+            try:
+                subtask_index = int(payload.get("subtask_index"))
+            except (TypeError, ValueError):
+                self._send_json(400, {"ok": False, "error": "???????????? ?????? ?????????"})
+                return
+
+            if not note_id:
+                self._send_json(400, {"ok": False, "error": "?? ?????? id"})
+                return
+
+            updated_note = toggle_note_subtask(self.data_root, user["storage_key"], note_id, subtask_index)
+            if updated_note is None:
+                self._send_json(404, {"ok": False, "error": "????????? ?? ???????"})
+                return
+
+            self._send_json(200, {"ok": True, "note": updated_note})
             return
 
         if path == "/api/archive/item":
@@ -849,7 +1222,7 @@ class AppHandler(SimpleHTTPRequestHandler):
 
             try:
                 result = smart_processor(text)
-                save_planner_result(self.data_root, user["storage_key"], text, result)
+                saved_entry = save_planner_result(self.data_root, user["storage_key"], text, result)
 
                 # Если это ДЗ (категория 3) — создаём задание для учеников
                 if result.get("category") == 3:
@@ -876,6 +1249,7 @@ class AppHandler(SimpleHTTPRequestHandler):
                         subject=subject,
                         task=task,
                         date=date,
+                        points_value=int(result.get("points_value") or 1),
                         teacher_name=user.get("display_name"),
                     )
                     self._send_json(200, {
@@ -890,6 +1264,22 @@ class AppHandler(SimpleHTTPRequestHandler):
                             "created_students": assignment["created_students"],
                         },
                     })
+                    return
+
+                if result.get("category") == 1:
+                    self._send_json(
+                        200,
+                        {
+                            "ok": True,
+                            "result": result,
+                            "reminder_saved": True,
+                            "reminder_entry": saved_entry,
+                        },
+                    )
+                    return
+
+                if result.get("category") == 4:
+                    self._send_json(200, {"ok": True, "result": result})
                     return
 
                 self._send_json(200, {"ok": True, "result": result})
@@ -952,6 +1342,7 @@ class AppHandler(SimpleHTTPRequestHandler):
                     subject=subject,
                     task=task,
                     date=date,
+                    points_value=int(parsed.get("points_value") or 1),
                     teacher_name=user.get("display_name"),
                 )
                 assistant_message = (
@@ -979,6 +1370,37 @@ class AppHandler(SimpleHTTPRequestHandler):
                             "task": task,
                             "date": date,
                             "created_students": assignment["created_students"],
+                        },
+                    },
+                )
+                return
+
+            if parsed.get("category") == 4:
+                try:
+                    analysis_context = _build_analysis_context(self.data_root, user["storage_key"], parsed)
+                    assistant_message = generate_analysis_reply(message, analysis_context)
+                except Exception:
+                    self._send_json(500, {"ok": False, "error": "Не удалось выполнить анализ данных"})
+                    return
+
+                session = save_chat_exchange(
+                    self.data_root,
+                    user["storage_key"],
+                    user_message=message,
+                    assistant_message=assistant_message,
+                    chat_id=chat_id,
+                )
+                self._send_json(
+                    200,
+                    {
+                        "ok": True,
+                        "chat_id": session["chat_id"],
+                        "messages": session["messages"],
+                        "history": list_chat_sessions(self.data_root, user["storage_key"]),
+                        "analysis": {
+                            "scope": parsed.get("scope", []),
+                            "plan_date": parsed.get("plan_date"),
+                            "focus": parsed.get("focus"),
                         },
                     },
                 )
