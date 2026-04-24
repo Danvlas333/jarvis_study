@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -257,6 +257,16 @@
     .admin-table__class-chip--blue {
       background: #d7ecea;
     }
+    .admin-table__student-main {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .admin-table__student-points {
+      font-size: 10px;
+      color: #5f6670;
+      line-height: 1.3;
+    }
     .admin-table__add-row td {
       background: #ececec;
       color: #7a7e85;
@@ -489,7 +499,12 @@
             <td class="admin-table__login-cell">${showTeacher && teacher ? escapeHtml(teacher.username) : ''}</td>
             <td class="admin-table__password-cell">${showTeacher && teacher ? `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;"><span>••••••••</span><button class="delete-btn" type="button" data-teacher-id="${teacher.id}" title="Удалить учителя"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button></div>` : ''}</td>
             <td class="admin-table__class-cell admin-table__divider-left">${student ? `<span class="admin-table__class-chip admin-table__class-chip--${classTone}">${escapeHtml(student.class_name)}</span>` : ''}</td>
-            <td class="admin-table__student-cell">${student ? escapeHtml(student.display_name) : ''}</td>
+            <td class="admin-table__student-cell">${student ? `
+              <div class="admin-table__student-main">
+                <span>${escapeHtml(student.display_name)}</span>
+                <span class="admin-table__student-points">${escapeHtml(student.points_title || 'Новичок класса')} · ${Number(student.points_score || 0)} б.</span>
+              </div>
+            ` : ''}</td>
             <td class="admin-table__login-cell">${student ? escapeHtml(student.username) : ''}</td>
             <td class="admin-table__password-cell">${student ? `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;"><span>••••••••</span><button class="delete-btn" type="button" data-student-id="${student.id}" title="Удалить ученика"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button></div>` : ''}</td>
           </tr>
