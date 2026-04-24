@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -174,7 +174,7 @@
               </div>
 
               <div id="search-results" class="results-panel" hidden>
-                <div class="results-panel__label">Тема для поиска/изучения</div>
+                <div id="results-panel-label" class="results-panel__label">Тема для поиска/изучения</div>
                 <div id="search-topic" class="results-panel__topic"></div>
               </div>
             </div>
@@ -211,6 +211,7 @@
     const remEmpty           = document.getElementById('rem-empty');
     const searchResults      = document.getElementById('search-results');
     const searchTopic        = document.getElementById('search-topic');
+    const resultsPanelLabel  = document.getElementById('results-panel-label');
     const contentArea        = document.querySelector('.content');
     const contentScrollbar   = document.querySelector('.content-scrollbar');
     const contentScrollbarThumb = document.querySelector('.content-scrollbar__thumb');
@@ -517,10 +518,41 @@
     }
 
     // ── Planner submit ────────────────────────────────────────
-    function hideSearchResult() { searchResults.hidden = true; searchTopic.textContent = ''; }
+    function hideSearchResult() {
+      searchResults.hidden = true;
+      searchTopic.textContent = '';
+      if (resultsPanelLabel) {
+        resultsPanelLabel.textContent = 'Тема для поиска/изучения';
+      }
+    }
     function showSearchResult(result) {
+      if (resultsPanelLabel) {
+        resultsPanelLabel.textContent = 'Тема для поиска/изучения';
+      }
       searchTopic.textContent = result.topic || 'Тема не распознана';
       searchResults.hidden = false;
+    }
+    async function openAnalysisInChat(text) {
+      const response = await fetch('/api/chat/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: text,
+          chat_id: null,
+        }),
+      });
+      const payload = await response.json();
+      if (!response.ok || !payload.ok) {
+        throw new Error(payload.error || 'Не удалось открыть анализ в чате');
+      }
+
+      activeChatId = (payload.chat_id && payload.chat_id !== 'None') ? payload.chat_id : null;
+      const msgs = normalizeChatMessages(payload.messages, text);
+      renderChatMessages(msgs);
+      await loadChatHistory();
+      setActiveView('chat');
     }
 
     async function submitPlannerInput() {
@@ -539,9 +571,21 @@
 
         if (data.result.category === 1) {
           hideSearchResult();
+          if (data.result.date) {
+            selectedDate = new Date(`${data.result.date}T00:00:00`);
+            visibleMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+          }
           // перезагружаем все заметки с сервера и перерисовываем
           await loadNotes();
+          if (data.reminder_entry && !allNotes.some((item) => item.id === data.reminder_entry.id)) {
+            allNotes.unshift(data.reminder_entry);
+          }
+          renderCalendar();
           setStatus('Напоминание успешно добавлено.', 'success');
+        } else if (data.result.category === 4) {
+          hideSearchResult();
+          await openAnalysisInChat(text);
+          setStatus('Анализ открыт в чате.', 'success');
         } else {
           showSearchResult(data.result);
           setStatus('Тема для поиска определена.', 'success');
