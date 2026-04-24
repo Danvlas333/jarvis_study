@@ -1,0 +1,2641 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="style.css?v=13">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar__logo">
+        <img src="brand-logo.png" alt="Jarvis Study">
+      </div>
+      <button id="sidebar-rating" class="sidebar-rating" type="button" hidden aria-label="Рейтинг ученика">
+        <span id="sidebar-rating-score" class="sidebar-rating__score">0</span>
+        <span class="sidebar-rating__panel">
+          <span class="sidebar-rating__title">Рейтинг</span>
+          <span id="sidebar-rating-delta" class="sidebar-rating__delta">0</span>
+          <span id="sidebar-rating-reason" class="sidebar-rating__reason">Текущий рейтинг</span>
+        </span>
+      </button>
+
+      <nav class="sidebar__nav">
+        <a href="#" class="sidebar__item sidebar__item--active" data-view="planner">
+          <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.707 2.293a1 1 0 0 1 1.414 0l8 8A1 1 0 0 1 19 12h-1v8a1 1 0 0 1-1 1h-4v-5h-2v5H7a1 1 0 0 1-1-1v-8H5a1 1 0 0 1-.707-1.707l8-8z"/>
+          </svg>
+        </a>
+        <a href="#" class="sidebar__item" data-view="performance">
+          <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="5" cy="6" r="1.2"/>
+            <circle cx="5" cy="12" r="1.2"/>
+            <circle cx="5" cy="18" r="1.2"/>
+            <rect x="8" y="5" width="12" height="2.2" rx="1.1"/>
+            <rect x="8" y="11" width="12" height="2.2" rx="1.1"/>
+            <rect x="8" y="17" width="12" height="2.2" rx="1.1"/>
+          </svg>
+        </a>
+        <a href="#" class="sidebar__item" data-view="grades">
+          <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M1 21v-1a7 7 0 0 1 14 0v1H1z"/>
+            <path d="M17 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/>
+            <path d="M23 21v-1a5 5 0 0 0-6-4.9"/>
+          </svg>
+        </a>
+        <a href="#" class="sidebar__item" data-view="archive">
+          <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 6a2 2 0 0 1 2-2h4.586a1 1 0 0 1 .707.293L11 6h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6z"/>
+          </svg>
+        </a>
+        <a href="#" class="sidebar__item" data-view="chat">
+          <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7l-4 4V4z"/>
+          </svg>
+        </a>
+      </nav>
+
+      <div class="sidebar__bottom">
+        <a href="#" class="sidebar__item" data-view="settings">
+          <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="5"/>
+            <g stroke-linecap="round" stroke-width="2">
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </g>
+          </svg>
+        </a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="planner-shell app-view" data-view-panel="planner">
+      <header class="topbar">
+        <div class="topbar__search">
+          <i data-lucide="search" style="width:20px;height:20px;color:#999;"></i>
+          <input type="text" placeholder="Поиск заданий">
+        </div>
+        <div class="topbar__actions">
+          <div class="topbar__avatar"></div>
+          <button class="topbar__bell">
+            <i data-lucide="bell" style="width:22px;height:22px;"></i>
+          </button>
+        </div>
+      </header>
+
+      <div class="calendar-strip">
+        <div class="calendar-strip__month-wrap">
+          <button id="calendar-month-trigger" class="calendar-strip__month" type="button" aria-haspopup="dialog" aria-expanded="false">
+            <i class="calendar-strip__month-icon" data-lucide="chevron-down" style="width:16px;height:16px;"></i>
+            <span id="calendar-month-label">Апрель, 2026</span>
+          </button>
+          <div id="calendar-dropdown" class="calendar-dropdown" hidden>
+            <div class="calendar-dropdown__header">
+              <button id="calendar-prev-month" class="calendar-dropdown__nav" type="button" aria-label="Предыдущий месяц">
+                <i data-lucide="chevron-left" style="width:16px;height:16px;"></i>
+              </button>
+              <div id="calendar-dropdown-label" class="calendar-dropdown__title">Апрель, 2026</div>
+              <button id="calendar-next-month" class="calendar-dropdown__nav" type="button" aria-label="Следующий месяц">
+                <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>
+              </button>
+            </div>
+            <div class="calendar-dropdown__weekdays">
+              <span>пн</span>
+              <span>вт</span>
+              <span>ср</span>
+              <span>чт</span>
+              <span>пт</span>
+              <span>сб</span>
+              <span>вс</span>
+            </div>
+            <div id="calendar-dropdown-days" class="calendar-dropdown__days"></div>
+          </div>
+        </div>
+        <div class="calendar-strip__nav">
+          <button id="calendar-prev-week" class="calendar-strip__arrow" type="button" aria-label="Предыдущая неделя">
+            <i data-lucide="chevron-left" style="width:16px;height:16px;"></i>
+          </button>
+          <div id="calendar-week-days" class="calendar-strip__days"></div>
+          <button id="calendar-next-week" class="calendar-strip__arrow" type="button" aria-label="Следующая неделя">
+            <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>
+          </button>
+        </div>
+      </div>
+
+      <section class="board">
+        <div class="content">
+          <div class="content__header">
+            <h1 id="selected-date-title">Сегодня 19 апреля, воскресенье</h1>
+            <button class="content__menu">
+              <span class="content__menu-icon">
+                <i data-lucide="list" style="width:20px;height:20px;"></i>
+                <i data-lucide="chevron-down" style="width:16px;height:16px;"></i>
+              </span>
+            </button>
+          </div>
+
+          <div class="content__columns">
+            <div class="column">
+              <div class="column__header">
+                <h2>Домашние задания</h2>
+                <div class="filter-menu" data-filter-group="homework">
+                  <button class="column__sort filter-menu__trigger" type="button" aria-expanded="false" aria-label="Фильтры домашних заданий">
+                    <i data-lucide="arrow-up-down" style="width:18px;height:18px;"></i>
+                  </button>
+                  <div class="filter-menu__dropdown" hidden>
+                    <button type="button" class="filter-menu__option" data-filter-value="date">По дате</button>
+                    <button type="button" class="filter-menu__option" data-filter-value="volume">По объёму</button>
+                    <button type="button" class="filter-menu__option" data-filter-value="priority">По важности</button>
+                  </div>
+                </div>
+              </div>
+              <div id="homework-list"></div>
+            </div>
+
+            <div class="column">
+              <div class="column__header">
+                <h2>Мои напоминания и задания</h2>
+                <div class="filter-menu" data-filter-group="reminders">
+                  <button class="column__sort filter-menu__trigger" type="button" aria-expanded="false" aria-label="Фильтры напоминаний">
+                    <i data-lucide="arrow-up-down" style="width:18px;height:18px;"></i>
+                  </button>
+                  <div class="filter-menu__dropdown" hidden>
+                    <button type="button" class="filter-menu__option" data-filter-value="date">По дате</button>
+                    <button type="button" class="filter-menu__option" data-filter-value="volume">По объёму</button>
+                    <button type="button" class="filter-menu__option" data-filter-value="priority">По важности</button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="reminders-list"></div>
+
+              <div id="search-results" class="results-panel" hidden>
+                <div class="results-panel__label">Тема для поиска/изучения</div>
+                <div id="search-topic" class="results-panel__topic"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content-scrollbar" aria-hidden="true">
+          <div class="content-scrollbar__thumb"></div>
+        </div>
+
+        <div class="bottom-input">
+          <div class="bottom-input__icon">
+            <i data-lucide="alarm-clock" style="width:22px;height:22px;"></i>
+          </div>
+          <input id="planner-input" type="text" placeholder="Чтобы добавить напоминание или что-то узнать, воспользуйтесь кнопкой микрофона или напечатайте...">
+          <button id="planner-submit" class="bottom-input__mic" type="button" aria-label="Отправить запрос">
+            <i data-lucide="mic" style="width:20px;height:20px;"></i>
+          </button>
+        </div>
+        <div id="planner-status" class="planner-status" aria-live="polite"></div>
+      </section>
+      </section>
+
+      <section class="performance-shell app-view" data-view-panel="performance" hidden>
+        <header class="topbar">
+          <div class="topbar__search">
+            <i data-lucide="search" style="width:20px;height:20px;color:#999;"></i>
+            <input type="text" placeholder="Поиск заданий">
+          </div>
+          <div class="topbar__actions">
+            <div class="topbar__avatar"></div>
+            <button class="topbar__bell">
+              <i data-lucide="bell" style="width:22px;height:22px;"></i>
+            </button>
+          </div>
+        </header>
+
+        <div class="calendar-strip performance-calendar-strip">
+          <div class="calendar-strip__month">
+            <i data-lucide="chevron-down" style="width:16px;height:16px;"></i>
+            <span>Апрель, 2026</span>
+          </div>
+          <div class="calendar-strip__nav">
+            <button class="calendar-strip__arrow" type="button" aria-label="Предыдущая неделя">
+              <i data-lucide="chevron-left" style="width:16px;height:16px;"></i>
+            </button>
+            <div class="calendar-strip__days">
+              <button class="calendar-strip__day" type="button"><span class="calendar-strip__label">пн</span><span class="calendar-strip__num">13</span></button>
+              <button class="calendar-strip__day" type="button"><span class="calendar-strip__label">вт</span><span class="calendar-strip__num">14</span></button>
+              <button class="calendar-strip__day calendar-strip__day--selected" type="button"><span class="calendar-strip__label">ср</span><span class="calendar-strip__num">15</span></button>
+              <button class="calendar-strip__day" type="button"><span class="calendar-strip__label">чт</span><span class="calendar-strip__num">16</span></button>
+              <button class="calendar-strip__day" type="button"><span class="calendar-strip__label">пт</span><span class="calendar-strip__num">17</span></button>
+              <button class="calendar-strip__day" type="button"><span class="calendar-strip__label">сб</span><span class="calendar-strip__num">18</span></button>
+              <button class="calendar-strip__day calendar-strip__day--today" type="button"><span class="calendar-strip__label">вс</span><span class="calendar-strip__num">19</span></button>
+            </div>
+            <button class="calendar-strip__arrow" type="button" aria-label="Следующая неделя">
+              <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="performance-board">
+          <div id="performance-content" class="performance-content"></div>
+
+          <div class="bottom-input performance-bottom-input">
+            <div class="bottom-input__icon">
+              <i data-lucide="alarm-clock" style="width:22px;height:22px;"></i>
+            </div>
+            <input type="text" placeholder="Чтобы добавить напоминание или что-то узнать, воспользуйтесь кнопкой микрофона или напечатайте...">
+            <button class="bottom-input__mic" type="button" aria-label="Отправить запрос">
+              <i data-lucide="mic" style="width:20px;height:20px;"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="grades-shell app-view" data-view-panel="grades" hidden>
+        <header class="topbar">
+          <div class="topbar__search">
+            <i data-lucide="search" style="width:20px;height:20px;color:#999;"></i>
+            <input type="text" placeholder="Поиск заданий">
+          </div>
+          <div class="topbar__actions">
+            <div class="topbar__avatar"></div>
+            <button class="topbar__bell">
+              <i data-lucide="bell" style="width:22px;height:22px;"></i>
+            </button>
+          </div>
+        </header>
+
+        <div class="calendar-strip grades-calendar-strip">
+          <div class="calendar-strip__month">
+            <i data-lucide="chevron-down" style="width:16px;height:16px;"></i>
+            <span>Апрель, 2026</span>
+          </div>
+          <div class="calendar-strip__nav">
+            <button class="calendar-strip__arrow" type="button" aria-label="Предыдущая неделя">
+              <i data-lucide="chevron-left" style="width:16px;height:16px;"></i>
+            </button>
+            <div class="calendar-strip__days">
+              <button class="calendar-strip__day" type="button"><span class="calendar-strip__label">пн</span><span class="calendar-strip__num">13</span></button>
+              <button class="calendar-strip__day" type="button"><span class="calendar-strip__label">вт</span><span class="calendar-strip__num">14</span></button>
+              <button class="calendar-strip__day calendar-strip__day--selected" type="button"><span class="calendar-strip__label">ср</span><span class="calendar-strip__num">15</span></button>
+              <button class="calendar-strip__day" type="button"><span class="calendar-strip__label">чт</span><span class="calendar-strip__num">16</span></button>
+              <button class="calendar-strip__day" type="button"><span class="calendar-strip__label">пт</span><span class="calendar-strip__num">17</span></button>
+              <button class="calendar-strip__day" type="button"><span class="calendar-strip__label">сб</span><span class="calendar-strip__num">18</span></button>
+              <button class="calendar-strip__day calendar-strip__day--today" type="button"><span class="calendar-strip__label">вс</span><span class="calendar-strip__num">19</span></button>
+            </div>
+            <button class="calendar-strip__arrow" type="button" aria-label="Следующая неделя">
+              <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="grades-board">
+          <div id="grades-content" class="grades-content"></div>
+          <div class="bottom-input grades-bottom-input">
+            <div class="bottom-input__icon">
+              <i data-lucide="alarm-clock" style="width:22px;height:22px;"></i>
+            </div>
+            <input type="text" placeholder="Чтобы добавить напоминание или что-то узнать, воспользуйтесь кнопкой микрофона или напечатайте...">
+            <button class="bottom-input__mic" type="button" aria-label="Отправить запрос">
+              <i data-lucide="mic" style="width:20px;height:20px;"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="archive-shell app-view" data-view-panel="archive" hidden>
+        <header class="topbar">
+          <div class="topbar__search">
+            <i data-lucide="search" style="width:20px;height:20px;color:#999;"></i>
+            <input type="text" placeholder="Поиск заданий">
+          </div>
+          <div class="topbar__actions">
+            <div class="topbar__avatar"></div>
+            <button class="topbar__bell">
+              <i data-lucide="bell" style="width:22px;height:22px;"></i>
+            </button>
+          </div>
+        </header>
+
+        <div class="calendar-strip archive-calendar-strip">
+          <div class="calendar-strip__month">
+            <i data-lucide="chevron-down" style="width:16px;height:16px;"></i>
+            <span>Апрель, 2026</span>
+          </div>
+          <div class="calendar-strip__nav">
+            <button class="calendar-strip__arrow" type="button" aria-label="Предыдущая неделя">
+              <i data-lucide="chevron-left" style="width:16px;height:16px;"></i>
+            </button>
+            <div class="calendar-strip__days">
+              <button class="calendar-strip__day" type="button"><span class="calendar-strip__label">пн</span><span class="calendar-strip__num">13</span></button>
+              <button class="calendar-strip__day" type="button"><span class="calendar-strip__label">вт</span><span class="calendar-strip__num">14</span></button>
+              <button class="calendar-strip__day calendar-strip__day--selected" type="button"><span class="calendar-strip__label">ср</span><span class="calendar-strip__num">15</span></button>
+              <button class="calendar-strip__day" type="button"><span class="calendar-strip__label">чт</span><span class="calendar-strip__num">16</span></button>
+              <button class="calendar-strip__day" type="button"><span class="calendar-strip__label">пт</span><span class="calendar-strip__num">17</span></button>
+              <button class="calendar-strip__day" type="button"><span class="calendar-strip__label">сб</span><span class="calendar-strip__num">18</span></button>
+              <button class="calendar-strip__day calendar-strip__day--today" type="button"><span class="calendar-strip__label">вс</span><span class="calendar-strip__num">19</span></button>
+            </div>
+            <button class="calendar-strip__arrow" type="button" aria-label="Следующая неделя">
+              <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="archive-board">
+          <div class="archive-content">
+            <h1 class="archive-title">Архив заданий</h1>
+
+            <div class="archive-columns">
+              <section class="archive-panel">
+                <div class="archive-panel__header">
+                  <h2>Выполненные домашние и личные задания</h2>
+                  <button class="archive-panel__icon" type="button" aria-label="Сортировка">
+                    <i data-lucide="arrow-up-down" style="width:18px;height:18px;"></i>
+                  </button>
+                </div>
+                <div id="archive-completed-list" class="archive-panel__list"></div>
+                <div class="archive-panel__footer">
+                  <i data-lucide="chevron-down" style="width:22px;height:22px;"></i>
+                </div>
+              </section>
+
+              <section class="archive-panel">
+                <div class="archive-panel__header">
+                  <h2>Невыполненные домашние и личные задания</h2>
+                  <button class="archive-panel__icon" type="button" aria-label="Сортировка">
+                    <i data-lucide="arrow-up-down" style="width:18px;height:18px;"></i>
+                  </button>
+                </div>
+                <div id="archive-missed-list" class="archive-panel__list"></div>
+                <div class="archive-panel__footer">
+                  <i data-lucide="chevron-down" style="width:22px;height:22px;"></i>
+                </div>
+              </section>
+
+              <section class="archive-panel archive-panel--trash">
+                <div class="archive-panel__header">
+                  <h2>Корзина</h2>
+                  <button id="archive-clear-trash" class="archive-clear-btn" type="button">
+                    <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+                    Удалить всё
+                  </button>
+                </div>
+                <div id="archive-trash-list" class="archive-panel__list"></div>
+                <div class="archive-panel__footer">
+                  <i data-lucide="chevron-down" style="width:22px;height:22px;"></i>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="bottom-input archive-bottom-input">
+            <div class="bottom-input__icon">
+              <i data-lucide="alarm-clock" style="width:22px;height:22px;"></i>
+            </div>
+            <input type="text" placeholder="Чтобы добавить напоминание или что-то узнать, воспользуйтесь кнопкой микрофона или напечатайте...">
+            <button class="bottom-input__mic" type="button" aria-label="Отправить запрос">
+              <i data-lucide="mic" style="width:20px;height:20px;"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="chat-shell app-view" data-view-panel="chat" hidden>
+        <header class="topbar topbar--chat">
+          <div class="topbar__search">
+            <i data-lucide="search" style="width:20px;height:20px;color:#999;"></i>
+            <input type="text" placeholder="Поиск заданий">
+          </div>
+          <div class="topbar__actions">
+            <div class="topbar__avatar"></div>
+            <button class="topbar__bell">
+              <i data-lucide="bell" style="width:22px;height:22px;"></i>
+            </button>
+          </div>
+        </header>
+
+        <div class="calendar-strip calendar-strip--chat">
+          <div class="calendar-strip__month">
+            <i data-lucide="chevron-down" style="width:16px;height:16px;"></i>
+            <span>Апрель, 2026</span>
+          </div>
+          <div class="calendar-strip__nav">
+            <button class="calendar-strip__arrow" type="button" aria-label="Предыдущая неделя">
+              <i data-lucide="chevron-left" style="width:16px;height:16px;"></i>
+            </button>
+            <div class="calendar-strip__days">
+              <button class="calendar-strip__day" type="button">
+                <span class="calendar-strip__label">пн</span>
+                <span class="calendar-strip__num">13</span>
+              </button>
+              <button class="calendar-strip__day" type="button">
+                <span class="calendar-strip__label">вт</span>
+                <span class="calendar-strip__num">14</span>
+              </button>
+              <button class="calendar-strip__day calendar-strip__day--selected" type="button">
+                <span class="calendar-strip__label">ср</span>
+                <span class="calendar-strip__num">15</span>
+              </button>
+              <button class="calendar-strip__day" type="button">
+                <span class="calendar-strip__label">чт</span>
+                <span class="calendar-strip__num">16</span>
+              </button>
+              <button class="calendar-strip__day" type="button">
+                <span class="calendar-strip__label">пт</span>
+                <span class="calendar-strip__num">17</span>
+              </button>
+              <button class="calendar-strip__day" type="button">
+                <span class="calendar-strip__label">сб</span>
+                <span class="calendar-strip__num">18</span>
+              </button>
+              <button class="calendar-strip__day calendar-strip__day--today" type="button">
+                <span class="calendar-strip__label">вс</span>
+                <span class="calendar-strip__num">19</span>
+              </button>
+            </div>
+            <button class="calendar-strip__arrow" type="button" aria-label="Следующая неделя">
+              <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="chat-shell__board">
+          <div class="chat-shell__workspace">
+            <button id="chat-new-button" class="chat-shell__add" type="button" aria-label="Новый чат">
+              <i data-lucide="plus" style="width:24px;height:24px;"></i>
+            </button>
+
+            <div id="chat-empty-state" class="chat-empty-state">
+              <h2>Jarvis study</h2>
+              <p>Новая эра твоего обучения</p>
+              <div class="chat-empty-state__suggestions">
+                <button class="chat-empty-state__suggestion" onclick="document.getElementById('chat-input').value=this.textContent;document.getElementById('chat-input').focus()">Объясни теорему Пифагора простыми словами</button>
+                <button class="chat-empty-state__suggestion" onclick="document.getElementById('chat-input').value=this.textContent;document.getElementById('chat-input').focus()">Помоги разобраться с домашним заданием по физике</button>
+                <button class="chat-empty-state__suggestion" onclick="document.getElementById('chat-input').value=this.textContent;document.getElementById('chat-input').focus()">Составь план подготовки к экзамену</button>
+              </div>
+            </div>
+
+            <div id="chat-thread" class="chat-thread" hidden></div>
+
+            <div class="chat-composer">
+              <button class="chat-composer__icon" type="button" aria-label="Голосовой ввод">
+                <i data-lucide="alarm-clock" style="width:22px;height:22px;"></i>
+              </button>
+              <input id="chat-input" type="text" placeholder="Чтобы добавить напоминание или что-то узнать, воспользуйтесь кнопкой микрофона или напечатайте...">
+              <button id="chat-mic-button" class="chat-composer__icon" type="button" aria-label="Микрофон">
+                <i data-lucide="mic" style="width:20px;height:20px;"></i>
+              </button>
+              <button id="chat-send-button" class="chat-composer__send" type="button" aria-label="Отправить">
+                <i data-lucide="arrow-up" style="width:22px;height:22px;"></i>
+              </button>
+            </div>
+          </div>
+
+          <aside class="chat-history">
+            <div class="chat-history__title">Предыдущие чаты</div>
+            <div id="chat-history-list" class="chat-history__list"></div>
+          </aside>
+        </div>
+      </section>
+      <section class="settings-shell app-view" data-view-panel="settings" hidden>
+        <header class="topbar">
+          <div class="topbar__search">
+            <i data-lucide="search" style="width:20px;height:20px;color:#999;"></i>
+            <input type="text" placeholder="Поиск заданий">
+          </div>
+          <div class="topbar__actions">
+            <div class="topbar__avatar"></div>
+            <button class="topbar__bell">
+              <i data-lucide="bell" style="width:22px;height:22px;"></i>
+            </button>
+          </div>
+        </header>
+
+        <div class="settings-board">
+          <div class="settings-content">
+            <div class="settings-header">
+              <h1>Настройки</h1>
+              <p class="settings-header__sub">Персонализация Jarvis Study</p>
+            </div>
+
+            <!-- TTS Section -->
+            <div class="settings-section">
+              <div class="settings-section__label">
+                <i data-lucide="volume-2" style="width:18px;height:18px;"></i>
+                Голосовое озвучивание
+              </div>
+
+              <div class="settings-card">
+                <div class="settings-row">
+                  <div class="settings-row__info">
+                    <span class="settings-row__title">Озвучивать ответы ИИ</span>
+                    <span class="settings-row__desc">Автоматически читать ответы голосом после получения</span>
+                  </div>
+                  <button id="tts-toggle" class="settings-toggle" role="switch" aria-checked="false" type="button">
+                    <span class="settings-toggle__thumb"></span>
+                  </button>
+                </div>
+
+                <div class="settings-divider"></div>
+
+                <div class="settings-row" id="tts-voice-row">
+                  <div class="settings-row__info">
+                    <span class="settings-row__title">Голос</span>
+                    <span class="settings-row__desc">Выберите голос для озвучивания</span>
+                  </div>
+                  <div class="settings-voice-picker">
+                    <button class="settings-voice-btn settings-voice-btn--active" data-voice="male" type="button">
+                      <i data-lucide="user" style="width:16px;height:16px;"></i>
+                      Мужской
+                    </button>
+                    <button class="settings-voice-btn" data-voice="female" type="button">
+                      <i data-lucide="user" style="width:16px;height:16px;"></i>
+                      Женский
+                    </button>
+                  </div>
+                </div>
+
+                <div class="settings-divider"></div>
+
+                <div class="settings-row">
+                  <div class="settings-row__info">
+                    <span class="settings-row__title">Тест голоса</span>
+                    <span class="settings-row__desc">Проверить выбранный голос</span>
+                  </div>
+                  <button id="tts-test-btn" class="settings-btn" type="button">
+                    <i data-lucide="play" style="width:15px;height:15px;"></i>
+                    Воспроизвести
+                  </button>
+                </div>
+
+                <div id="tts-test-status" class="settings-status" hidden></div>
+              </div>
+            </div>
+
+            <!-- Profile Section -->
+            <!-- AI Model Section -->
+            <div class="settings-section">
+              <div class="settings-section__label">
+                <i data-lucide="cpu" style="width:18px;height:18px;"></i>
+                Нейросеть
+              </div>
+              <div class="settings-card">
+                <div class="settings-row">
+                  <div class="settings-row__info">
+                    <span class="settings-row__title">Выбор модели</span>
+                    <span class="settings-row__desc">Влияет на скорость и качество ответов</span>
+                  </div>
+                </div>
+                <div class="settings-model-picker">
+                  <button class="settings-model-card" data-model="qwen2.5:3b" id="model-fast" type="button">
+                    <div class="settings-model-card__header">
+                      <span class="settings-model-card__badge settings-model-card__badge--fast">Быстрая</span>
+                      <span class="settings-model-card__check"><i data-lucide="check" style="width:14px;height:14px;"></i></span>
+                    </div>
+                    <div class="settings-model-card__name">Qwen 2.5 · 3B</div>
+                    <div class="settings-model-card__desc">Полностью на GPU, мгновенные ответы. Отлично для классификации и коротких задач.</div>
+                    <div class="settings-model-card__stats">
+                      <span class="settings-model-card__stat">
+                        <i data-lucide="zap" style="width:12px;height:12px;"></i> ~2 сек
+                      </span>
+                      <span class="settings-model-card__stat">
+                        <i data-lucide="hard-drive" style="width:12px;height:12px;"></i> ~2 GB VRAM
+                      </span>
+                    </div>
+                  </button>
+                  <button class="settings-model-card" data-model="mistral:7b-instruct-v0.3-q4_0" id="model-smart" type="button">
+                    <div class="settings-model-card__header">
+                      <span class="settings-model-card__badge settings-model-card__badge--smart">Умная</span>
+                      <span class="settings-model-card__check"><i data-lucide="check" style="width:14px;height:14px;"></i></span>
+                    </div>
+                    <div class="settings-model-card__name">Mistral · 7B</div>
+                    <div class="settings-model-card__desc">Более глубокое понимание текста. Лучше для сложных вопросов и развёрнутых объяснений.</div>
+                    <div class="settings-model-card__stats">
+                      <span class="settings-model-card__stat">
+                        <i data-lucide="zap" style="width:12px;height:12px;"></i> ~8 сек
+                      </span>
+                      <span class="settings-model-card__stat">
+                        <i data-lucide="hard-drive" style="width:12px;height:12px;"></i> ~4 GB VRAM
+                      </span>
+                    </div>
+                  </button>
+                </div>
+                <div id="model-status" class="settings-status" hidden></div>
+              </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="settings-section">
+              <div class="settings-section__label">
+                <i data-lucide="user-circle" style="width:18px;height:18px;"></i>
+                Профиль
+              </div>
+              <div class="settings-card">
+                <div class="settings-row">
+                  <div class="settings-row__info">
+                    <span class="settings-row__title">Уведомления</span>
+                    <span class="settings-row__desc">Напоминания о дедлайнах и заданиях</span>
+                  </div>
+                  <button class="settings-toggle settings-toggle--on" role="switch" aria-checked="true" type="button">
+                    <span class="settings-toggle__thumb"></span>
+                  </button>
+                </div>
+                <div class="settings-divider"></div>
+                <div class="settings-row">
+                  <div class="settings-row__info">
+                    <span class="settings-row__title">Выйти из аккаунта</span>
+                    <span class="settings-row__desc">Завершить текущую сессию</span>
+                  </div>
+                  <a href="/logout" class="settings-btn settings-btn--danger">
+                    <i data-lucide="log-out" style="width:15px;height:15px;"></i>
+                    Выйти
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    const sidebarItems = document.querySelectorAll('.sidebar__item');
+    const plannerInput = document.getElementById('planner-input');
+    const plannerSubmit = document.getElementById('planner-submit');
+    const plannerStatus = document.getElementById('planner-status');
+    const remindersList = document.getElementById('reminders-list');
+    const homeworkList = document.getElementById('homework-list');
+    const searchResults = document.getElementById('search-results');
+    const searchTopic = document.getElementById('search-topic');
+    const appViews = document.querySelectorAll('.app-view');
+    const gradesContent = document.getElementById('grades-content');
+    const performanceContent = document.getElementById('performance-content');
+    const archiveCompletedList = document.getElementById('archive-completed-list');
+    const archiveMissedList = document.getElementById('archive-missed-list');
+    const archiveTrashList = document.getElementById('archive-trash-list');
+    const archiveClearTrashButton = document.getElementById('archive-clear-trash');
+    const archiveContent = document.querySelector('.archive-content');
+    const chatEmptyState = document.getElementById('chat-empty-state');
+    const chatThread = document.getElementById('chat-thread');
+    const chatInput = document.getElementById('chat-input');
+    const chatSendButton = document.getElementById('chat-send-button');
+    const chatHistoryList = document.getElementById('chat-history-list');
+    const chatNewButton = document.getElementById('chat-new-button');
+    const contentArea = document.querySelector('.content');
+    const contentScrollbar = document.querySelector('.content-scrollbar');
+    const contentScrollbarThumb = document.querySelector('.content-scrollbar__thumb');
+    const filterMenus = document.querySelectorAll('.filter-menu');
+    const selectedDateTitle = document.getElementById('selected-date-title');
+    const monthTrigger = document.getElementById('calendar-month-trigger');
+    const monthLabel = document.getElementById('calendar-month-label');
+    const weekDays = document.getElementById('calendar-week-days');
+    const prevWeekButton = document.getElementById('calendar-prev-week');
+    const nextWeekButton = document.getElementById('calendar-next-week');
+    const calendarDropdown = document.getElementById('calendar-dropdown');
+    const calendarDropdownLabel = document.getElementById('calendar-dropdown-label');
+    const calendarDropdownDays = document.getElementById('calendar-dropdown-days');
+    const prevMonthButton = document.getElementById('calendar-prev-month');
+    const nextMonthButton = document.getElementById('calendar-next-month');
+    const monthWrap = document.querySelector('.calendar-strip__month-wrap');
+    const sidebarRating = document.getElementById('sidebar-rating');
+    const sidebarRatingScore = document.getElementById('sidebar-rating-score');
+    const sidebarRatingDelta = document.getElementById('sidebar-rating-delta');
+    const sidebarRatingReason = document.getElementById('sidebar-rating-reason');
+    let scrollHideTimer = null;
+    let calendarHideTimer = null;
+    let activeChatId = null;
+    const filterState = {
+      homework: 'date',
+      reminders: 'date',
+    };
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    let selectedDate = new Date(today);
+    let visibleMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    let showAllPlannerItems = false;
+    let homeworkData = [];
+    let allNotes = [];
+    let archiveData = { completed: [], missed: [], trash: [] };
+    let gradesData = {};
+    let activeGradesQuarterIndex = 0;
+    let performanceData = { days: [] };
+    let currentViewerRole = 'student';
+    let currentUser = null;
+    const teacherPerformanceFallback = {
+      days: [
+        {
+          date: '2026-04-20',
+          title: 'Понедельник, 20 апреля',
+          lessons: [
+            { number: 1, subject: 'алгебра', class_name: '10 А', time: '8:00 - 8:40', task: 'Учебник стр. 227-232 учить определения, №168-170', status: 'done', tone: 'sky' },
+            { number: 2, subject: 'алгебра', class_name: '10 А', time: '8:50 - 9:30', task: '', status: 'none', tone: 'sky' },
+            { number: 3, subject: 'геометрия', class_name: '10 Б', time: '9:45 - 10:25', task: '', status: 'none', tone: 'sky' },
+            { number: 4, subject: 'геометрия', class_name: '10 Б', time: '10:45 - 11:25', task: '', status: 'none', tone: 'sky' },
+            { number: 5, subject: 'вероятность и статистика', class_name: '11 А', time: '11:45 - 12:25', task: '', status: 'none', tone: 'sky' },
+          ],
+        },
+        {
+          date: '2026-04-21',
+          title: 'Вторник, 21 апреля',
+          lessons: [
+            { number: 1, subject: 'геометрия', class_name: '10 Б', time: '8:00 - 8:40', task: '', status: 'none', tone: 'indigo' },
+            { number: 2, subject: 'геометрия', class_name: '10 Б', time: '8:50 - 9:30', task: 'Учебник стр 227 №278-290', status: 'progress', tone: 'indigo', completion_percent: 75, completed_count: 21, total_count: 28 },
+          ],
+        },
+      ],
+    };
+
+    const weekdayShort = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+
+    function startOfDay(date) {
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+
+    function sameDay(first, second) {
+      return first.getFullYear() === second.getFullYear()
+        && first.getMonth() === second.getMonth()
+        && first.getDate() === second.getDate();
+    }
+
+    function addDays(date, amount) {
+      const next = new Date(date);
+      next.setDate(next.getDate() + amount);
+      return startOfDay(next);
+    }
+
+    function addMonths(date, amount) {
+      return new Date(date.getFullYear(), date.getMonth() + amount, 1);
+    }
+
+    function startOfWeek(date) {
+      const normalized = startOfDay(date);
+      const day = normalized.getDay();
+      const diff = day === 0 ? -6 : 1 - day;
+      return addDays(normalized, diff);
+    }
+
+    function formatMonthYear(date) {
+      return new Intl.DateTimeFormat('ru-RU', {
+        month: 'long',
+        year: 'numeric',
+      }).format(date).replace(/^./, (char) => char.toUpperCase());
+    }
+
+    function formatHeadingDate(date) {
+      const prefix = sameDay(date, today) ? 'Сегодня ' : '';
+      return `${prefix}${new Intl.DateTimeFormat('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        weekday: 'long',
+      }).format(date)}`;
+    }
+
+    function openCalendarDropdown() {
+      window.clearTimeout(calendarHideTimer);
+      calendarDropdown.hidden = false;
+      monthTrigger.setAttribute('aria-expanded', 'true');
+    }
+
+    function scheduleCalendarClose() {
+      window.clearTimeout(calendarHideTimer);
+      calendarHideTimer = window.setTimeout(() => {
+        closeCalendarDropdown();
+      }, 220);
+    }
+
+    function closeCalendarDropdown() {
+      window.clearTimeout(calendarHideTimer);
+      calendarDropdown.hidden = true;
+      monthTrigger.setAttribute('aria-expanded', 'false');
+    }
+
+    function renderWeek() {
+      const weekStart = startOfWeek(selectedDate);
+      weekDays.innerHTML = '';
+
+      for (let index = 0; index < 7; index += 1) {
+        const date = addDays(weekStart, index);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'calendar-strip__day';
+        const dateKey = formatDateKey(date);
+        const hasOverdueHomework = homeworkData.some((item) => {
+          const itemDate = String(item.date || '').trim();
+          return itemDate && itemDate === dateKey && !item.done && itemDate < formatDateKey(today);
+        });
+
+        if (sameDay(date, selectedDate)) {
+          button.classList.add('calendar-strip__day--selected');
+        } else if (hasOverdueHomework) {
+          button.classList.add('calendar-strip__day--overdue');
+        } else if (sameDay(date, today)) {
+          button.classList.add('calendar-strip__day--today');
+        }
+
+        button.innerHTML = `
+          <span class="calendar-strip__label">${weekdayShort[index]}</span>
+          <span class="calendar-strip__num">${date.getDate()}</span>
+        `;
+        button.addEventListener('click', () => {
+          selectedDate = date;
+          showAllPlannerItems = false;
+          visibleMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+          renderCalendar();
+        });
+        weekDays.appendChild(button);
+      }
+    }
+
+    function renderMonthGrid() {
+      calendarDropdownLabel.textContent = formatMonthYear(visibleMonth);
+      calendarDropdownDays.innerHTML = '';
+
+      const monthStart = new Date(visibleMonth.getFullYear(), visibleMonth.getMonth(), 1);
+      const gridStart = startOfWeek(monthStart);
+
+      for (let index = 0; index < 42; index += 1) {
+        const date = addDays(gridStart, index);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'calendar-dropdown__day';
+        button.textContent = date.getDate();
+        const dateKey = formatDateKey(date);
+        const hasOverdueHomework = homeworkData.some((item) => {
+          const itemDate = String(item.date || '').trim();
+          return itemDate && itemDate === dateKey && !item.done && itemDate < formatDateKey(today);
+        });
+
+        if (date.getMonth() !== visibleMonth.getMonth()) {
+          button.classList.add('calendar-dropdown__day--muted');
+        }
+        if (sameDay(date, selectedDate)) {
+          button.classList.add('calendar-dropdown__day--selected');
+        } else if (hasOverdueHomework) {
+          button.classList.add('calendar-dropdown__day--overdue');
+        } else if (sameDay(date, today)) {
+          button.classList.add('calendar-dropdown__day--today');
+        }
+
+        button.addEventListener('click', () => {
+          selectedDate = date;
+          showAllPlannerItems = false;
+          visibleMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+          renderCalendar();
+          closeCalendarDropdown();
+        });
+
+        calendarDropdownDays.appendChild(button);
+      }
+    }
+
+    function renderCalendar() {
+      monthLabel.textContent = formatMonthYear(selectedDate);
+      selectedDateTitle.textContent = showAllPlannerItems
+        ? 'Все задания и напоминания'
+        : formatHeadingDate(selectedDate);
+      renderWeek();
+      renderMonthGrid();
+      applyDateFilter();
+    }
+
+    function renderIcons() {
+      lucide.createIcons();
+    }
+
+    function setStatus(message, tone = '') {
+      plannerStatus.textContent = message;
+      plannerStatus.className = `planner-status${tone ? ` planner-status--${tone}` : ''}`;
+    }
+
+    function setActiveView(viewName, syncHash = true) {
+      appViews.forEach((view) => {
+        const isActive = view.dataset.viewPanel === viewName;
+        view.hidden = !isActive;
+        view.classList.toggle('is-active', isActive);
+      });
+
+      sidebarItems.forEach((item) => {
+        item.classList.toggle('sidebar__item--active', item.dataset.view === viewName);
+      });
+
+      if (viewName === 'planner') {
+        updateCustomScrollbar();
+      } else {
+        if (!chatThread.hidden) {
+          chatThread.scrollTop = chatThread.scrollHeight;
+        }
+      }
+
+      if (syncHash) {
+        const hashMap = { chat: '#chat', settings: '#settings', archive: '#archive', performance: '#performance', grades: '#grades', planner: '#planner' };
+        const nextHash = hashMap[viewName] || '#planner';
+        if (window.location.hash !== nextHash) {
+          history.replaceState(null, '', nextHash);
+        }
+      }
+    }
+
+    function compareByField(first, second, filterValue) {
+      if (filterValue === 'date') {
+        return String(first.dataset.date || '').localeCompare(String(second.dataset.date || ''));
+      }
+
+      if (filterValue === 'volume') {
+        const rank = { high: 0, medium: 1, low: 2 };
+        return (rank[first.dataset.volume || 'medium'] ?? 1) - (rank[second.dataset.volume || 'medium'] ?? 1);
+      }
+
+      const rank = { high: 0, medium: 1, low: 2 };
+      return (rank[first.dataset.priority || 'medium'] ?? 1) - (rank[second.dataset.priority || 'medium'] ?? 1);
+    }
+
+    function sortItems(groupName, filterValue) {
+      const selector = groupName === 'homework' ? '.homework-item' : '.reminder-item';
+      const parent = groupName === 'homework'
+        ? homeworkList
+        : remindersList;
+      const items = Array.from(document.querySelectorAll(selector));
+      const sortedItems = items.sort((first, second) => compareByField(first, second, filterValue));
+
+      if (groupName === 'homework') {
+        sortedItems.forEach((item) => {
+          parent.appendChild(item);
+        });
+      } else {
+        sortedItems.forEach((item) => {
+          parent.appendChild(item);
+        });
+      }
+
+      updateCustomScrollbar();
+    }
+
+    function closeFilterMenus() {
+      filterMenus.forEach((menu) => {
+        const trigger = menu.querySelector('.filter-menu__trigger');
+        const dropdown = menu.querySelector('.filter-menu__dropdown');
+        trigger.setAttribute('aria-expanded', 'false');
+        dropdown.hidden = true;
+      });
+    }
+
+    function formatDate(dateValue) {
+      if (!dateValue) {
+        return 'Без даты';
+      }
+
+      const date = new Date(`${dateValue}T00:00:00`);
+      if (Number.isNaN(date.getTime())) {
+        return dateValue;
+      }
+
+      return new Intl.DateTimeFormat('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        weekday: 'long',
+      }).format(date);
+    }
+
+    function capitalizeFirst(value) {
+      if (!value) {
+        return '';
+      }
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function formatHomeworkDate(dateValue) {
+      if (!dateValue) {
+        return '';
+      }
+      const date = new Date(`${dateValue}T00:00:00`);
+      if (Number.isNaN(date.getTime())) {
+        return capitalizeFirst(formatDate(dateValue));
+      }
+      const dayMonth = new Intl.DateTimeFormat('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+      }).format(date);
+      const weekday = new Intl.DateTimeFormat('ru-RU', {
+        weekday: 'long',
+      }).format(date);
+      return `${capitalizeFirst(dayMonth)}, ${weekday}`;
+    }
+
+    function formatDateKey(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    async function fetchJson(url, options = {}) {
+      const { timeoutMs = 7000, ...fetchOptions } = options;
+      const controller = new AbortController();
+      const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
+
+      try {
+        const response = await fetch(url, {
+          ...fetchOptions,
+          signal: controller.signal,
+        });
+        const payload = await response.json();
+        return { response, payload };
+      } finally {
+        window.clearTimeout(timeoutId);
+      }
+    }
+
+    async function loadCurrentUser() {
+      try {
+        const { response, payload } = await fetchJson('/api/me', { timeoutMs: 5000 });
+        if (!response.ok || !payload.ok || !payload.user) {
+          throw new Error(payload.error || 'Не удалось загрузить пользователя');
+        }
+        currentUser = payload.user;
+        currentViewerRole = payload.user.role === 'teacher' ? 'teacher' : payload.user.role === 'admin' ? 'admin' : 'student';
+        document.body.dataset.role = currentViewerRole;
+      } catch (error) {
+        currentUser = null;
+        currentViewerRole = 'student';
+        document.body.dataset.role = currentViewerRole;
+      }
+    }
+
+    function renderSidebarRating(rating = null) {
+      if (!sidebarRating || !sidebarRatingScore || !sidebarRatingDelta || !sidebarRatingReason) {
+        return;
+      }
+
+      if (currentViewerRole !== 'student') {
+        sidebarRating.hidden = true;
+        return;
+      }
+
+      const score = Math.max(0, Number(rating?.score || 0));
+      const delta = Number(rating?.last_delta || 0);
+      const reason = String(rating?.last_reason || '');
+
+      sidebarRating.hidden = false;
+      sidebarRatingScore.textContent = String(score);
+      sidebarRatingDelta.textContent = delta > 0 ? `+${delta}` : String(delta);
+      sidebarRatingDelta.className = `sidebar-rating__delta${delta === 0 ? ' sidebar-rating__delta--muted' : delta > 0 ? ' sidebar-rating__delta--up' : ' sidebar-rating__delta--down'}`;
+      sidebarRatingReason.textContent =
+        reason === 'homework_completed' ? 'За выполненное ДЗ'
+        : reason === 'overdue_homework' ? 'Штраф за просрочку'
+        : reason === 'homework_reopened' ? 'ДЗ снова не выполнено'
+        : 'Текущий рейтинг';
+    }
+
+    async function toggleHomework(itemId) {
+      try {
+        const { response, payload } = await fetchJson('/api/homework/toggle', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id: itemId }),
+        });
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Не удалось обновить домашнее задание');
+        }
+        if (payload.rating) {
+          gradesData = { ...gradesData, rating: payload.rating };
+          renderSidebarRating(payload.rating);
+        }
+        await loadHomework();
+        renderCalendar();
+      } catch (error) {
+        setStatus(error.message || 'Не удалось обновить домашнее задание', 'error');
+      }
+    }
+
+    function renderProgressRing(percentValue) {
+      const normalizedPercent = Math.max(0, Math.min(Number(percentValue) || 0, 100));
+      const radius = 24;
+      const circumference = 2 * Math.PI * radius;
+      const offset = circumference - (normalizedPercent / 100) * circumference;
+
+      return `
+        <div class="card__progress">
+          <svg class="progress-ring" width="56" height="56" viewBox="0 0 56 56" aria-hidden="true">
+            <circle class="progress-ring__bg" cx="28" cy="28" r="${radius}"></circle>
+            <circle class="progress-ring__fill" cx="28" cy="28" r="${radius}" style="stroke-dasharray:${circumference};stroke-dashoffset:${offset};"></circle>
+          </svg>
+          <span class="progress-ring__text">${normalizedPercent}%</span>
+        </div>
+      `;
+    }
+
+    function buildTeacherHomeworkCard(item) {
+      const row = document.createElement('div');
+      const itemDate = String(item.date || '').trim();
+      const progressPercent = Math.max(0, Math.min(Number(item.teacher_progress_percent) || 0, 100));
+      const checkedCount = Number(item.teacher_checked_count) || 0;
+      const totalCount = Number(item.teacher_total_count) || 0;
+      const isReviewed = Boolean(item.teacher_reviewed);
+      const toneClass = isReviewed ? 'card--blue' : 'card--lightblue';
+      const actionLabel = item.teacher_action_label || 'Проверить загруженные решения';
+      const classLabel = String(item.class_name || '').trim();
+      const subjectLabel = String(item.subject || '').trim();
+      const taskLabel = item.task || item.description || 'Без описания';
+      const prefixLabel = [classLabel, subjectLabel].filter(Boolean).join(', ');
+      const progressMarkup = isReviewed ? '' : renderProgressRing(progressPercent);
+
+      row.className = 'card-row card-row--homework card-row--teacher-homework homework-item';
+      row.dataset.date = itemDate;
+      row.dataset.volume = item.volume || 'medium';
+      row.dataset.priority = item.priority || 'medium';
+
+      row.innerHTML = `
+        <div class="card ${toneClass} homework-card homework-card--teacher">
+          <div class="card__content">
+            <div class="card__date">${formatHomeworkDate(itemDate)}</div>
+            <div class="card__tasks">
+              <div class="card__task">
+                <span class="card__task-text card__task-text--teacher">
+                  ${prefixLabel ? `<strong class="card__task-prefix">${prefixLabel}:</strong> ` : ''}${taskLabel}
+                </span>
+              </div>
+            </div>
+            <div class="teacher-homework__footer">
+              <button class="teacher-homework__action" type="button">${actionLabel}<span class="teacher-homework__action-icon" aria-hidden="true">→</span></button>
+              <span class="teacher-homework__meta">${checkedCount} из ${totalCount} сделали</span>
+            </div>
+          </div>
+          ${progressMarkup}
+        </div>
+        ${isReviewed ? `<div class="card__status card__status--done" aria-hidden="true"><i data-lucide="check" style="width:20px;height:20px;"></i></div>` : ''}
+      `;
+
+      return row;
+    }
+
+    function buildHomeworkCard(item) {
+      if (currentViewerRole === 'teacher') {
+        return buildTeacherHomeworkCard(item);
+      }
+
+      const row = document.createElement('div');
+      const itemDate = String(item.date || '').trim();
+      const isDone = Boolean(item.done);
+      const isOverdue = !isDone && itemDate && itemDate < formatDateKey(today);
+      const toneClass = isOverdue ? 'card--pink' : 'card--lightblue';
+      row.className = 'card-row card-row--homework homework-item';
+      row.dataset.date = itemDate;
+      row.dataset.volume = item.volume || 'medium';
+      row.dataset.priority = item.priority || 'medium';
+
+      row.innerHTML = `
+        <div class="card ${toneClass} homework-card homework-card--single">
+          <div class="card__content">
+            <div class="card__date">${formatHomeworkDate(itemDate)}</div>
+            <div class="card__tasks">
+              <div class="card__task">
+                <span class="card__task-text">${item.subject ? `${item.subject}: ` : ''}${item.task || item.description || 'Без описания'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="card__status ${isDone ? 'card__status--done' : 'card__status--empty'}" type="button" aria-label="${isDone ? 'Домашнее задание выполнено' : 'Отметить домашнее задание выполненным'}">
+          ${isDone ? '<i data-lucide="check" style="width:20px;height:20px;"></i>' : ''}
+        </button>
+      `;
+
+      row.querySelector('.card__status').addEventListener('click', () => {
+        toggleHomework(item.id);
+      });
+
+      return row;
+    }
+
+    function renderHomework() {
+      if (!homeworkList) {
+        return;
+      }
+
+      homeworkList.innerHTML = '';
+      if (!homeworkData.length) {
+        const empty = document.createElement('div');
+        empty.className = 'archive-empty';
+        empty.textContent = 'Пока домашних заданий нет';
+        homeworkList.appendChild(empty);
+        return;
+      }
+
+      homeworkData.forEach((item) => {
+        homeworkList.appendChild(buildHomeworkCard(item));
+      });
+
+      sortItems('homework', filterState.homework);
+      renderIcons();
+    }
+
+    async function loadHomework() {
+      try {
+        const { response, payload } = await fetchJson('/api/homework');
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Не удалось загрузить домашние задания');
+        }
+        currentViewerRole = payload.role === 'teacher' ? 'teacher' : 'student';
+        document.body.dataset.role = currentViewerRole;
+        homeworkData = Array.isArray(payload.homework) ? payload.homework : [];
+      } catch (error) {
+        currentViewerRole = 'student';
+        homeworkData = [];
+      }
+      renderHomework();
+    }
+
+    function applyDateFilter() {
+      document.querySelectorAll('.homework-item, .reminder-item').forEach((item) => {
+        if (showAllPlannerItems) {
+          item.hidden = false;
+          return;
+        }
+
+        const itemDate = String(item.dataset.date || '').trim();
+        item.hidden = itemDate !== formatDateKey(selectedDate);
+      });
+      updateCustomScrollbar();
+    }
+
+    function formatArchiveDate(dateValue) {
+      if (!dateValue) {
+        return 'Без даты';
+      }
+
+      const date = new Date(`${dateValue}T00:00:00`);
+      if (Number.isNaN(date.getTime())) {
+        return dateValue;
+      }
+
+      return new Intl.DateTimeFormat('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        weekday: 'long',
+      }).format(date);
+    }
+
+    function buildArchiveCard(item, tone, section) {
+      const card = document.createElement('article');
+      card.className = `archive-item archive-item--${tone}`;
+      card.innerHTML = `
+        <button class="archive-item__delete" type="button" aria-label="Переместить в корзину">
+          <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+        </button>
+        <div class="archive-item__date"></div>
+        <div class="archive-item__text"></div>
+      `;
+      card.querySelector('.archive-item__date').textContent = formatArchiveDate(item.date);
+      card.querySelector('.archive-item__text').textContent = item.description || 'Без описания';
+      card.querySelector('.archive-item__delete').addEventListener('click', async () => {
+        try {
+          const response = await fetch('/api/archive/item', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: item.id, section }),
+          });
+          const payload = await response.json();
+          if (!response.ok || !payload.ok) {
+            throw new Error(payload.error || 'Не удалось обновить архив');
+          }
+          archiveData = payload.archive || archiveData;
+          renderArchive();
+        } catch (error) {
+          setStatus(error.message || 'Не удалось обновить архив', 'error');
+        }
+      });
+      return card;
+    }
+
+    function renderArchiveColumn(target, items, tone, section) {
+      if (!target) {
+        return;
+      }
+
+      target.innerHTML = '';
+      if (!items.length) {
+        const empty = document.createElement('div');
+        empty.className = 'archive-empty';
+        empty.textContent = 'Пока пусто';
+        target.appendChild(empty);
+        return;
+      }
+
+      items.forEach((item) => {
+        target.appendChild(buildArchiveCard(item, tone, section));
+      });
+    }
+
+    function renderArchive() {
+      if (currentViewerRole === 'teacher' && archiveData.mode === 'teacher' && archiveContent) {
+        renderTeacherArchive();
+        return;
+      }
+      renderArchiveColumn(archiveCompletedList, archiveData.completed || [], 'completed', 'completed');
+      renderArchiveColumn(archiveMissedList, archiveData.missed || [], 'missed', 'missed');
+      renderArchiveColumn(archiveTrashList, archiveData.trash || [], 'trash', 'trash');
+      renderIcons();
+    }
+
+    function renderTeacherArchive() {
+      const filters = archiveData.filters || {};
+      const selected = archiveData.selected || {};
+      const rows = Array.isArray(archiveData.rows) ? archiveData.rows : [];
+      const completionPercent = Math.max(0, Math.min(100, Number(archiveData.completion_percent || 0)));
+      const circumference = 276.46;
+      const offset = circumference - (circumference * completionPercent / 100);
+
+      const formatTeacherArchiveDate = (value) => {
+        const raw = String(value || '').trim();
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+          return raw;
+        }
+        const date = new Date(`${raw}T00:00:00`);
+        if (Number.isNaN(date.getTime())) {
+          return raw;
+        }
+        return new Intl.DateTimeFormat('ru-RU', {
+          day: 'numeric',
+          month: 'long',
+        }).format(date);
+      };
+
+      const buildOptions = (items, selectedValue, formatter = (item) => String(item || '')) => (Array.isArray(items) ? items : []).map((item) => {
+        const value = String(item || '');
+        return `<option value="${escapeHtml(value)}"${value === String(selectedValue || '') ? ' selected' : ''}>${escapeHtml(formatter(item))}</option>`;
+      }).join('');
+
+      const rowsMarkup = rows.map((row) => {
+        const gradeToneClass = row.tone === 'good' ? ' teacher-archive-grade--good' : row.tone === 'warn' ? ' teacher-archive-grade--warn' : '';
+        return `
+          <div class="teacher-archive-table__row">
+            <div class="teacher-archive-table__cell teacher-archive-table__cell--name">${escapeHtml(row.name || '')}</div>
+            <div class="teacher-archive-table__cell teacher-archive-table__cell--status">${escapeHtml(row.status_text || 'не сделано')}</div>
+            <div class="teacher-archive-table__cell teacher-archive-table__cell--file">
+              ${row.submitted ? `<button class="teacher-archive-download" type="button" aria-label="${escapeHtml(row.file_name || 'Скачать решение')}"><i data-lucide="download" style="width:14px;height:14px;"></i></button>` : '<span class="teacher-archive-file-missing"></span>'}
+            </div>
+            <div class="teacher-archive-table__cell teacher-archive-table__cell--grade"><span class="teacher-archive-grade' + gradeToneClass + '">${escapeHtml(row.grade || '')}</span></div>
+          </div>
+        `;
+      }).join('');
+
+      archiveContent.innerHTML = `
+        <div class="teacher-archive-panel">
+          <div class="teacher-archive-headline">
+            <h1 class="archive-title archive-title--teacher">Домашнее задание по</h1>
+            <select class="teacher-archive-select teacher-archive-select--subject" disabled>${buildOptions(filters.subjects, selected.subject)}</select>
+            <span class="teacher-archive-headline__label">на</span>
+            <select class="teacher-archive-select teacher-archive-select--date" disabled>${buildOptions(filters.dates, selected.date, formatTeacherArchiveDate)}</select>
+            <span class="teacher-archive-headline__label">класса</span>
+            <select class="teacher-archive-select teacher-archive-select--class" disabled>${buildOptions(filters.classes, selected.class_name)}</select>
+          </div>
+
+          <div class="teacher-archive-table">
+            <div class="teacher-archive-table__row teacher-archive-table__row--head">
+              <div class="teacher-archive-table__cell teacher-archive-table__cell--name">ученик</div>
+              <div class="teacher-archive-table__cell teacher-archive-table__cell--status">готовность</div>
+              <div class="teacher-archive-table__cell teacher-archive-table__cell--file">файл решённого задания</div>
+              <div class="teacher-archive-table__cell teacher-archive-table__cell--grade">отметка за домашнее задание</div>
+            </div>
+            ${rowsMarkup}
+            <div class="teacher-archive-table__footer">
+              <i data-lucide="chevron-down" style="width:22px;height:22px;"></i>
+            </div>
+          </div>
+
+          <div class="teacher-archive-progress">
+            <h2>Процент выполнения домашних заданий на данный момент</h2>
+            <div class="grades-ring teacher-archive-progress__ring">
+              <svg width="108" height="108" viewBox="0 0 108 108" aria-hidden="true">
+                <circle class="grades-ring__bg" cx="54" cy="54" r="44"></circle>
+                <circle class="grades-ring__fill" cx="54" cy="54" r="44" style="stroke-dasharray:${circumference};stroke-dashoffset:${offset};"></circle>
+              </svg>
+              <div class="grades-ring__text">${completionPercent}%</div>
+            </div>
+          </div>
+        </div>
+      `;
+      renderIcons();
+    }
+
+    async function loadArchive() {
+      try {
+        const { response, payload } = await fetchJson('/api/archive');
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Не удалось загрузить архив');
+        }
+        archiveData = payload.archive || { completed: [], missed: [], trash: [] };
+        archiveData.mode = payload.mode || 'student';
+      } catch (error) {
+        archiveData = { completed: [], missed: [], trash: [] };
+      }
+      renderArchive();
+    }
+
+    function renderTeacherGrades() {
+      const rawSections = Array.isArray(gradesData.sections) ? gradesData.sections : [];
+      const quarterLabel = '4 четверть';
+      const fallbackSections = [
+        {
+          title: 'Алгебра, 10 А',
+          columns: ['1.03', '2.03', '3.03', '3.03', '4.03', '5.03'],
+          students: [
+            { name: 'Имя фамилия', grades: ['5', '', '', '', '', ''], average: '5' },
+            { name: 'Имя фамилия', grades: ['', '2', '', '', '', ''], average: '2' },
+            { name: 'Имя фамилия', grades: ['', '', '', '', '', ''], average: '' },
+            { name: 'Имя фамилия', grades: ['', '', '', '3', '', ''], average: '3' },
+          ],
+        },
+      ];
+
+      const sections = (rawSections.length ? rawSections : fallbackSections).map((section, sectionIndex) => {
+        const fallbackTitle = sectionIndex === 0 ? 'Алгебра, 10 А' : 'Алгебра, 10 Б';
+        const title = String(section.title || '').includes('?') ? fallbackTitle : String(section.title || fallbackTitle);
+        const columns = Array.isArray(section.columns) && section.columns.length
+          ? section.columns.slice(0, 6)
+          : ['1.03', '2.03', '3.03', '3.03', '4.03', '5.03'];
+        const completionPercent = Math.max(0, Math.min(100, Number(section.completion_percent || 0)));
+        const students = (Array.isArray(section.students) ? section.students : []).map((student) => {
+          const rawName = String(student.name || '').trim();
+          return {
+            ...student,
+            name: !rawName || rawName.includes('?') ? 'Имя фамилия' : rawName,
+            grades: Array.isArray(student.grades) ? student.grades.slice(0, columns.length) : Array(columns.length).fill(''),
+          };
+        });
+        const riskStudents = (Array.isArray(section.risk_students) ? section.risk_students : []).map((student) => {
+          const rawKey = String(student.key || '').trim();
+          return {
+            ...student,
+            key: !rawKey || rawKey.includes('?') ? 'Имя фамилия' : rawKey,
+            value: Number(student.value || 0),
+          };
+        });
+        return {
+          title,
+          columns,
+          students: students.length ? students : fallbackSections[0].students,
+          completion_percent: completionPercent,
+          risk_students: riskStudents,
+        };
+      });
+
+      gradesContent.innerHTML = `
+        <div class="grades-panel grades-panel--teacher">
+          <h1 class="grades-title">Успеваемость классов, отметки за домашние задания</h1>
+          ${sections.map((section, sectionIndex) => {
+            const columns = Array.isArray(section.columns) ? section.columns : [];
+            const students = Array.isArray(section.students) ? section.students : [];
+            const completionPercent = Math.max(0, Math.min(100, Number(section.completion_percent || 0)));
+            const circumference = 276.46;
+            const offset = circumference - (circumference * completionPercent / 100);
+            const riskStudents = Array.isArray(section.risk_students) ? section.risk_students : [];
+            const maxRisk = Math.max(...riskStudents.map((item) => Number(item.value || 0)), 5);
+            const visibleRows = 4;
+            const hasExpandableRows = students.length > visibleRows;
+            const headerCells = columns.map((label) => `<div class="grades-table__cell grades-table__cell--head">${escapeHtml(label)}</div>`).join('');
+            const rows = students.map((student, index) => {
+              const gradeCells = (student.grades || []).map((grade) => {
+                const toneClass = grade === '5' ? ' grades-grade--good' : grade === '2' ? ' grades-grade--bad' : grade === '3' ? ' grades-grade--warn' : '';
+                return `<div class="grades-table__cell"><span class="grades-grade${toneClass}">${escapeHtml(grade || '')}</span></div>`;
+              }).join('');
+              const avgTone = student.average === '5' ? ' grades-grade--good' : student.average === '2' ? ' grades-grade--bad' : student.average === '3' ? ' grades-grade--warn' : '';
+              return `
+                <div class="grades-table__row${index >= visibleRows ? ' grades-table__row--extra' : ''}" style="--grades-columns:${columns.length};"${index >= visibleRows ? ' hidden' : ''}>
+                  <div class="grades-table__cell grades-table__cell--subject">${escapeHtml(student.name || '')}</div>
+                  ${gradeCells}
+                  <div class="grades-table__cell grades-table__cell--avg"><span class="grades-grade${avgTone}">${escapeHtml(student.average || '')}</span></div>
+                </div>
+              `;
+            }).join('');
+            const yAxisLabels = Array.from({ length: Math.max(maxRisk - 1, 0) }, (_, index) => `<div class="grades-chart__y-label">${maxRisk - index}</div>`).join('');
+            const bars = riskStudents.map((item, riskIndex) => {
+              const value = Number(item.value || 0);
+              const barHeight = value > 0 ? Math.max((value / maxRisk) * 104, 18) : 0;
+              const toneClass = item.tone === 'bad'
+                ? ' grades-bar__fill--bad'
+                : item.tone === 'good'
+                  ? ' grades-bar__fill--good'
+                  : item.tone === 'warn'
+                    ? ' grades-bar__fill--warn'
+                    : '';
+              return `
+                <div class="grades-bar">
+                  <div class="grades-bar__track">
+                    <div class="grades-bar__fill${toneClass}" style="--target-height:${barHeight}px; --bar-delay:${riskIndex * 90}ms;"></div>
+                  </div>
+                </div>
+              `;
+            }).join('');
+            const barLabels = riskStudents.map((item) => `<div class="grades-bars__label grades-bars__label--teacher">${escapeHtml(item.key || '')}</div>`).join('');
+
+            return `
+              <section class="teacher-grades-section" data-teacher-section="${sectionIndex}">
+                <div class="grades-table-headline">
+                  <h2>${escapeHtml(section.title || '')}</h2>
+                  <div class="grades-quarter-switch">
+                    <button class="grades-quarter-btn grades-quarter-btn--nav" type="button" data-quarter-shift="-1" aria-label="Предыдущая четверть">
+                      <i data-lucide="chevron-left" style="width:16px;height:16px;"></i>
+                    </button>
+                    <button class="grades-quarter-btn" type="button" disabled>${escapeHtml(quarterLabel)}</button>
+                    <button class="grades-quarter-btn grades-quarter-btn--nav" type="button" data-quarter-shift="1" aria-label="Следующая четверть">
+                      <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="grades-table grades-table--teacher">
+                  <div class="grades-table__scroller">
+                    <div class="grades-table__row grades-table__row--header" style="--grades-columns:${columns.length};">
+                      <div class="grades-table__cell grades-table__cell--subject">ученик/дата</div>
+                      ${headerCells}
+                      <div class="grades-table__cell grades-table__cell--avg">ср. оценка</div>
+                    </div>
+                    <div class="grades-table__body">${rows}</div>
+                  </div>
+                  <div class="grades-table__footer${hasExpandableRows ? '' : ' grades-table__footer--hidden'}">
+                    <button class="grades-table__toggle" type="button" aria-expanded="false" aria-label="Показать больше учеников">
+                      <i data-lucide="chevron-down" style="width:20px;height:20px;"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="teacher-grades-stats">
+                  <section class="grades-stat grades-stat--completion">
+                    <h3>Процент выполнения домашних заданий</h3>
+                    <div class="grades-ring">
+                      <svg width="108" height="108" viewBox="0 0 108 108" aria-hidden="true">
+                        <circle class="grades-ring__bg" cx="54" cy="54" r="44"></circle>
+                        <circle class="grades-ring__fill" cx="54" cy="54" r="44" style="stroke-dasharray:${circumference};stroke-dashoffset:${offset};"></circle>
+                      </svg>
+                      <div class="grades-ring__text">${completionPercent}%</div>
+                    </div>
+                  </section>
+                  <section class="grades-stat teacher-grades-stat--chart">
+                    <h3>Неуспеваемость</h3>
+                    <div class="grades-chart">
+                      <div class="grades-chart__y">${yAxisLabels}</div>
+                      <div class="grades-chart__bars">
+                        <div class="grades-chart__plot">${bars}</div>
+                        <div class="grades-chart__x-line"></div>
+                        <div class="grades-chart__labels grades-chart__labels--teacher">${barLabels}</div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </section>
+            `;
+          }).join('')}
+        </div>
+      `;
+
+      renderIcons();
+
+      const quarterButtons = gradesContent.querySelectorAll('[data-quarter-shift]');
+      quarterButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const shift = Number(button.dataset.quarterShift || 0);
+          const quartersList = ['q1', 'q2', 'q3', 'q4'];
+          const currentIndex = Math.max(0, quartersList.indexOf(String(gradesData.current_quarter || 'q4')));
+          const nextIndex = (currentIndex + shift + quartersList.length) % quartersList.length;
+          gradesData.current_quarter = quartersList[nextIndex];
+          loadGrades();
+        });
+      });
+
+      const toggleButtons = gradesContent.querySelectorAll('.grades-table__toggle');
+      toggleButtons.forEach((toggleButton) => {
+        const section = toggleButton.closest('.teacher-grades-section');
+        const extraRows = section ? section.querySelectorAll('.grades-table__row--extra') : [];
+        if (!extraRows.length) {
+          return;
+        }
+        toggleButton.addEventListener('click', () => {
+          const expanded = toggleButton.getAttribute('aria-expanded') === 'true';
+          toggleButton.setAttribute('aria-expanded', String(!expanded));
+          extraRows.forEach((row) => {
+            row.hidden = expanded;
+          });
+        });
+      });
+    }
+
+    function renderGrades() {
+      if (!gradesContent) {
+        return;
+      }
+
+      if (currentViewerRole === 'teacher' && Array.isArray(gradesData.sections)) {
+        renderTeacherGrades();
+        return;
+      }
+
+      const quarters = Array.isArray(gradesData.quarters) ? gradesData.quarters : [];
+      const quarterData = quarters[activeGradesQuarterIndex] || gradesData;
+      const columns = Array.isArray(quarterData.columns) ? quarterData.columns : [];
+      const subjects = Array.isArray(quarterData.subjects) ? quarterData.subjects : [];
+      const risks = Array.isArray(quarterData.risk_subjects) ? quarterData.risk_subjects : [];
+      const completionPercent = Number(quarterData.completion_percent || 0);
+      const clampedPercent = Math.max(0, Math.min(100, completionPercent));
+      const circumference = 276.46;
+      const offset = circumference - (circumference * clampedPercent / 100);
+      const maxRisk = Math.max(...risks.map((item) => Number(item.value || 0)), 5);
+      const visibleRows = 5;
+      const hasExpandableRows = subjects.length > visibleRows;
+
+      const headerCells = columns.map((label) => `<div class="grades-table__cell grades-table__cell--head">${label}</div>`).join('');
+      const rows = subjects.map((subject, index) => {
+        const subjectGrades = (subject.grades || []).slice(0, columns.length);
+        // Pad with empty cells if fewer grades than columns
+        while (subjectGrades.length < columns.length) subjectGrades.push('');
+        const gradeCells = subjectGrades.map((grade) => {
+          const toneClass = grade === '5' ? ' grades-grade--good' : grade === '2' ? ' grades-grade--bad' : '';
+          return `<div class="grades-table__cell"><span class="grades-grade${toneClass}">${grade || ''}</span></div>`;
+        }).join('');
+        const avgTone = subject.average === '5' ? ' grades-grade--good' : subject.average === '2' ? ' grades-grade--bad' : '';
+        return `
+          <div class="grades-table__row${index >= visibleRows ? ' grades-table__row--extra' : ''}" style="--grades-columns:${columns.length};"${index >= visibleRows ? ' hidden' : ''}>
+            <div class="grades-table__cell grades-table__cell--subject">${subject.name || ''}</div>
+            ${gradeCells}
+            <div class="grades-table__cell grades-table__cell--avg"><span class="grades-grade${avgTone}">${subject.average || ''}</span></div>
+          </div>
+        `;
+      }).join('');
+
+      const yAxisLabels = Array.from({ length: Math.max(maxRisk - 1, 0) }, (_, index) => maxRisk - index).map((value) =>
+        `<div class="grades-chart__y-label">${value}</div>`
+      ).join('');
+
+      const bars = risks.map((item) => {
+        const value = Number(item.value || 0);
+        const barHeight = value > 0 ? Math.max((value / maxRisk) * 104, 18) : 0;
+        const toneClass = item.tone === 'bad' ? ' grades-bar__fill--bad' : item.tone === 'good' ? ' grades-bar__fill--good' : '';
+        const delay = value > 0 ? risks.indexOf(item) * 90 : 0;
+        return `
+          <div class="grades-bar">
+            <div class="grades-bar__track">
+              <div class="grades-bar__fill${toneClass}" style="--target-height:${barHeight}px; --bar-delay:${delay}ms;"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const barLabels = risks.map((item) => `<div class="grades-bars__label">${item.key || ''}</div>`).join('');
+
+      gradesContent.innerHTML = `
+        <div class="grades-panel">
+          <h1 class="grades-title">${gradesData.title || 'Моя успеваемость'}</h1>
+
+          <div class="grades-table-wrap">
+            <div class="grades-table-headline">
+              <h2>Оценки за домашние задания</h2>
+              <div class="grades-quarter-switch">
+                <button class="grades-quarter-btn grades-quarter-btn--nav" type="button" data-quarter-shift="-1" aria-label="Предыдущая четверть">
+                  <i data-lucide="chevron-left" style="width:16px;height:16px;"></i>
+                </button>
+                <button class="grades-quarter-btn" type="button" disabled>
+                  ${quarterData.label || quarterData.quarter || gradesData.quarter || '4 четверть'}
+                </button>
+                <button class="grades-quarter-btn grades-quarter-btn--nav" type="button" data-quarter-shift="1" aria-label="Следующая четверть">
+                  <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="grades-table">
+              <div class="grades-table__scroller">
+                <div class="grades-table__row grades-table__row--header" style="--grades-columns:${columns.length};">
+                  <div class="grades-table__cell grades-table__cell--subject">предмет/дата</div>
+                  ${headerCells}
+                  <div class="grades-table__cell grades-table__cell--avg">ср. оценка</div>
+                </div>
+                <div class="grades-table__body">
+                  ${rows}
+                </div>
+              </div>
+              <div class="grades-table__footer${hasExpandableRows ? '' : ' grades-table__footer--hidden'}">
+                <button class="grades-table__toggle" type="button" aria-expanded="false" aria-label="Показать больше предметов">
+                  <i data-lucide="chevron-down" style="width:20px;height:20px;"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grades-stats">
+            <section class="grades-stat grades-stat--completion">
+              <h3>Процент выполнения домашних заданий</h3>
+              <div class="grades-ring">
+                <svg width="116" height="116" viewBox="0 0 116 116">
+                  <circle class="grades-ring__bg" cx="58" cy="58" r="44"></circle>
+                  <circle class="grades-ring__fill" cx="58" cy="58" r="44" stroke-dasharray="${circumference.toFixed(2)}" stroke-dashoffset="${offset.toFixed(2)}"></circle>
+                </svg>
+                <span class="grades-ring__text">${clampedPercent}%</span>
+              </div>
+            </section>
+
+            <section class="grades-stat">
+              <h3>Неуспеваемость</h3>
+              <div class="grades-chart">
+                <div class="grades-chart__y">${yAxisLabels}</div>
+                <div class="grades-chart__plot">
+                  <div class="grades-bars">${bars}</div>
+                  <div class="grades-bars__labels">${barLabels}</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="grades-stat grades-stat--assistant">
+              <button class="grades-assistant-btn" type="button">
+                <span>${gradesData.assistant_prompt || ''}</span>
+                <span class="grades-assistant-btn__icon"><i data-lucide="send" style="width:15px;height:15px;"></i></span>
+              </button>
+            </section>
+          </div>
+        </div>
+      `;
+
+      renderIcons();
+
+      const quarterButtons = gradesContent.querySelectorAll('[data-quarter-shift]');
+      quarterButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const shift = Number(button.dataset.quarterShift || 0);
+          const quartersList = Array.isArray(gradesData.quarters) ? gradesData.quarters : [];
+          if (!quartersList.length) {
+            return;
+          }
+          activeGradesQuarterIndex = (activeGradesQuarterIndex + shift + quartersList.length) % quartersList.length;
+          renderGrades();
+        });
+      });
+
+      const toggleButton = gradesContent.querySelector('.grades-table__toggle');
+      const extraRows = gradesContent.querySelectorAll('.grades-table__row--extra');
+      if (toggleButton && extraRows.length) {
+        toggleButton.addEventListener('click', () => {
+          const expanded = toggleButton.getAttribute('aria-expanded') === 'true';
+          toggleButton.setAttribute('aria-expanded', String(!expanded));
+          toggleButton.setAttribute('aria-label', expanded ? 'Показать больше предметов' : 'Скрыть дополнительные предметы');
+          extraRows.forEach((row) => {
+            row.hidden = expanded;
+          });
+        });
+      }
+
+      const assistantButton = gradesContent.querySelector('.grades-assistant-btn');
+      if (assistantButton) {
+        assistantButton.addEventListener('click', () => {
+          const prompt = String(gradesData.assistant_prompt || '').trim();
+          setActiveView('chat');
+          if (prompt) {
+            chatInput.value = prompt;
+          }
+          chatInput.focus();
+        });
+      }
+    }
+
+    async function loadGrades() {
+      try {
+        const quarterParam = currentViewerRole === 'teacher' && gradesData.current_quarter
+          ? `?quarter=${encodeURIComponent(gradesData.current_quarter)}`
+          : '';
+        const { response, payload } = await fetchJson(`/api/grades${quarterParam}`);
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Не удалось загрузить мои оценки');
+        }
+        if (payload.role) {
+          currentViewerRole = payload.role === 'teacher' ? 'teacher' : currentViewerRole;
+          document.body.dataset.role = currentViewerRole;
+        }
+        gradesData = payload.grades || {};
+        renderSidebarRating(gradesData.rating);
+        const quarters = Array.isArray(gradesData.quarters) ? gradesData.quarters : [];
+        if (quarters.length) {
+          const desiredQuarterId = String(gradesData.current_quarter || '').trim();
+          const foundIndex = quarters.findIndex((quarter) => quarter.id === desiredQuarterId);
+          activeGradesQuarterIndex = foundIndex >= 0 ? foundIndex : 0;
+        } else {
+          activeGradesQuarterIndex = 0;
+        }
+      } catch (error) {
+        gradesData = {};
+        activeGradesQuarterIndex = 0;
+      }
+      renderGrades();
+    }
+
+    function buildPerformanceLesson(lesson) {
+      const row = document.createElement('div');
+      row.className = 'performance-row';
+      const statusMarkup = lesson.status === 'done'
+        ? `<span class="performance-status performance-status--done"><i data-lucide="check" style="width:18px;height:18px;"></i></span>`
+        : lesson.status === 'pending'
+          ? '<span class="performance-status performance-status--pending"></span>'
+          : '';
+      const taskMarkup = lesson.task
+        ? `<span class="performance-pill performance-pill--${lesson.tone || 'sky'}">${lesson.task}</span>`
+        : '';
+
+      row.innerHTML = `
+        <div class="performance-row__subject">${lesson.number}. ${lesson.subject}</div>
+        <div class="performance-row__center">
+          ${taskMarkup}
+          ${statusMarkup}
+        </div>
+        <div class="performance-row__time">${lesson.time || ''}</div>
+      `;
+      return row;
+    }
+
+    function buildTeacherPerformanceLesson(lesson) {
+      const row = document.createElement('div');
+      row.className = 'performance-row performance-row--teacher';
+      const classLabel = String(lesson.class_name || '').trim();
+      const subjectLabel = String(lesson.subject || '').trim();
+      const completionPercent = Math.max(0, Math.min(Number(lesson.completion_percent) || 0, 100));
+      const completedCount = Number(lesson.completed_count) || 0;
+      const totalCount = Number(lesson.total_count) || 0;
+
+      let centerMarkup = '';
+      if (lesson.status === 'done') {
+        centerMarkup = `
+          <span class="performance-pill performance-pill--${lesson.tone || 'sky'}">${lesson.task || ''}</span>
+          <span class="performance-status performance-status--done"><i data-lucide="check" style="width:18px;height:18px;"></i></span>
+        `;
+      } else if (lesson.status === 'progress') {
+        centerMarkup = `
+          <span class="performance-pill performance-pill--${lesson.tone || 'indigo'}">${lesson.task || ''}</span>
+          <span class="teacher-performance__progress">${completionPercent}%</span>
+          <span class="teacher-performance__meta">${completedCount} из ${totalCount} сделали</span>
+        `;
+      } else if (lesson.task) {
+        centerMarkup = `<span class="performance-pill performance-pill--${lesson.tone || 'sky'}">${lesson.task}</span>`;
+      }
+
+      row.innerHTML = `
+        <div class="performance-row__subject">
+          <span class="teacher-performance__subject-line">
+            <span>${lesson.number}. ${subjectLabel}</span>${classLabel ? `<strong class="teacher-performance__class">, ${classLabel}</strong>` : ''}
+          </span>
+        </div>
+        <div class="performance-row__center">
+          ${centerMarkup}
+        </div>
+        <div class="performance-row__time">${lesson.time || ''}</div>
+      `;
+      return row;
+    }
+
+    function renderPerformance() {
+      if (!performanceContent) {
+        return;
+      }
+
+      performanceContent.innerHTML = '';
+      const days = Array.isArray(performanceData.days) ? performanceData.days : [];
+      days.forEach((day) => {
+        const block = document.createElement('section');
+        block.className = 'performance-day';
+        const rows = Array.isArray(day.lessons) ? day.lessons : [];
+        block.innerHTML = `<h1 class="performance-day__title">${day.title || ''}</h1>`;
+        const list = document.createElement('div');
+        list.className = 'performance-day__list';
+        rows.forEach((lesson) => {
+          list.appendChild(
+            currentViewerRole === 'teacher'
+              ? buildTeacherPerformanceLesson(lesson)
+              : buildPerformanceLesson(lesson)
+          );
+        });
+        block.appendChild(list);
+        performanceContent.appendChild(block);
+      });
+      renderIcons();
+    }
+
+    async function loadPerformance() {
+      try {
+        const { response, payload } = await fetchJson('/api/performance');
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Не удалось загрузить успеваемость');
+        }
+        if (payload.role) {
+          currentViewerRole = payload.role === 'teacher' ? 'teacher' : currentViewerRole;
+          document.body.dataset.role = currentViewerRole;
+        }
+        if (currentViewerRole === 'teacher') {
+          const teacherDays = Array.isArray(payload.performance?.days) ? payload.performance.days : [];
+          const hasTeacherClasses = teacherDays.some((day) =>
+            Array.isArray(day.lessons) && day.lessons.some((lesson) => String(lesson.class_name || '').trim())
+          );
+          performanceData = hasTeacherClasses ? payload.performance : teacherPerformanceFallback;
+        } else {
+          performanceData = payload.performance || { days: [] };
+        }
+      } catch (error) {
+        performanceData = currentViewerRole === 'teacher' ? teacherPerformanceFallback : { days: [] };
+      }
+      renderPerformance();
+    }
+
+    function clearReminderCards() {
+      remindersList.querySelectorAll('.reminder-item').forEach((item) => item.remove());
+    }
+
+    function buildReminderCard(note) {
+      const result = note.result || {};
+      const task = result.task || note.source_text || 'Новая задача';
+      const isTeacherReminder = currentViewerRole === 'teacher';
+      const row = document.createElement('div');
+      row.className = `card-row ${isTeacherReminder ? 'card-row--teacher-reminder' : 'card-row--note'} reminder-item`;
+      row.dataset.noteId = note.id || '';
+      row.dataset.date = result.date || '';
+      row.dataset.volume = 'medium';
+      row.dataset.priority = 'medium';
+      row.innerHTML = isTeacherReminder
+        ? `
+          <div class="card card--green reminder-card reminder-card--teacher-note">
+            <div class="card__content">
+              <div class="card__date">${formatHomeworkDate(result.date)}</div>
+              <div class="card__subtitle">(еженедельное напоминание)</div>
+              <div class="card__tasks">
+                <div class="card__task">
+                  <span class="card__task-text"></span>
+                </div>
+              </div>
+            </div>
+            <button class="card__delete" type="button" aria-label="Удалить карточку">
+              <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+          <div class="card__status card__status--empty" role="button" tabindex="0" aria-label="Перенести в архив выполненных"></div>
+        `
+        : `
+          <div class="card card--green reminder-card reminder-card--note">
+            <div class="card__content">
+              <div class="card__date">${formatDate(result.date)}</div>
+              <div class="card__subtitle">(добавлено через планировщик)</div>
+              <div class="card__tasks">
+                <div class="card__task">
+                  <span class="card__task-text"></span>
+                </div>
+              </div>
+            </div>
+            <button class="card__delete" type="button" aria-label="Удалить карточку">
+              <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+          <div class="card__status card__status--empty" role="button" tabindex="0" aria-label="Перенести в архив выполненных"></div>
+        `;
+      row.querySelector('.card__task-text').textContent = task;
+      row.querySelector('.card__delete').addEventListener('click', async () => {
+        if (!note.id) {
+          row.remove();
+          updateCustomScrollbar();
+          return;
+        }
+
+        try {
+          const response = await fetch('/api/notes/delete', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: note.id }),
+          });
+          const payload = await response.json();
+          if (!response.ok || !payload.ok) {
+            throw new Error(payload.error || 'Не удалось удалить напоминание');
+          }
+          allNotes = allNotes.filter((item) => item.id !== note.id);
+          renderReminders();
+        } catch (error) {
+          plannerStatus.textContent = error.message || 'Не удалось удалить напоминание';
+          plannerStatus.className = 'planner-status planner-status--error';
+        }
+      });
+      row.querySelector('.card__status').addEventListener('click', async () => {
+        if (!note.id) {
+          row.remove();
+          updateCustomScrollbar();
+          return;
+        }
+
+        try {
+          const response = await fetch('/api/notes/complete', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: note.id }),
+          });
+          const payload = await response.json();
+          if (!response.ok || !payload.ok) {
+            throw new Error(payload.error || 'Не удалось отправить напоминание в архив');
+          }
+          allNotes = allNotes.filter((item) => item.id !== note.id);
+          await loadArchive();
+          renderReminders();
+          setStatus('Напоминание перенесено в архив выполненных.', 'success');
+        } catch (error) {
+          setStatus(error.message || 'Не удалось отправить напоминание в архив', 'error');
+        }
+      });
+      return row;
+    }
+
+    function renderReminders() {
+      clearReminderCards();
+      allNotes.forEach((note) => {
+        remindersList.appendChild(buildReminderCard(note));
+      });
+      sortItems('reminders', filterState.reminders);
+      renderIcons();
+      applyDateFilter();
+    }
+
+    async function loadNotes() {
+      try {
+        const { response, payload } = await fetchJson('/api/notes');
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Не удалось загрузить напоминания');
+        }
+        allNotes = Array.isArray(payload.notes) ? payload.notes : [];
+      } catch (error) {
+        allNotes = [];
+      }
+      renderReminders();
+    }
+
+    function hideSearchResult() {
+      searchResults.hidden = true;
+      searchTopic.textContent = '';
+    }
+
+    function appendChatMessage(text, role, options = {}) {
+      chatEmptyState.hidden = true;
+      chatThread.hidden = false;
+      const message = document.createElement('div');
+      message.className = `chat-message chat-message--${role}`;
+      if (options.pending) {
+        message.classList.add('chat-message--pending');
+      }
+
+      const avatarLabel = role === 'assistant' ? '✦' : 'Я';
+      const bubbleContent = options.pending
+        ? `<div class="typing-dots"><span></span><span></span><span></span></div>`
+        : text;
+
+      message.innerHTML = `
+        <div class="chat-message__avatar">${avatarLabel}</div>
+        <div class="chat-message__bubble">${options.pending ? bubbleContent : ''}</div>
+      `;
+
+      if (!options.pending) {
+        message.querySelector('.chat-message__bubble').textContent = text;
+      }
+
+      chatThread.appendChild(message);
+      chatThread.scrollTop = chatThread.scrollHeight;
+      renderIcons();
+      return message;
+    }
+
+    function removePendingChatMessage() {
+      const pendingMessage = chatThread.querySelector('.chat-message--pending');
+      if (pendingMessage) {
+        pendingMessage.remove();
+      }
+    }
+
+    function normalizeChatMessages(messages, fallbackUserText = '') {
+      const normalized = Array.isArray(messages) ? [...messages] : [];
+      if (!fallbackUserText) {
+        return normalized;
+      }
+
+      const hasUserMessage = normalized.some((message) =>
+        message
+        && message.role === 'user'
+        && String(message.content || '').trim() === fallbackUserText
+      );
+
+      if (!hasUserMessage) {
+        normalized.push({ role: 'user', content: fallbackUserText });
+      }
+
+      return normalized;
+    }
+
+    function resetChatView() {
+      chatThread.innerHTML = '';
+      chatThread.hidden = true;
+      chatEmptyState.hidden = false;
+      chatInput.value = '';
+      activeChatId = null;
+    }
+
+    function renderChatMessages(messages) {
+      chatThread.innerHTML = '';
+      if (!messages.length) {
+        resetChatView();
+        return;
+      }
+
+      chatEmptyState.hidden = true;
+      chatThread.hidden = false;
+      messages.forEach((message) => {
+        appendChatMessage(message.content, message.role);
+      });
+    }
+
+    async function loadChatHistory() {
+      try {
+        const { response, payload } = await fetchJson('/api/chat/history');
+        if (!response.ok || !payload.ok) throw new Error(payload.error || 'Ошибка');
+
+        chatHistoryList.innerHTML = '';
+        payload.items.forEach((item) => {
+          const button = document.createElement('button');
+          button.className = 'chat-history__item';
+          button.type = 'button';
+          button.dataset.chatId = item.chat_id;
+          button.textContent = item.title || 'Новый чат';
+          if (item.chat_id === activeChatId) {
+            button.classList.add('chat-history__item--active');
+          }
+          button.addEventListener('click', () => openChatSession(item.chat_id));
+          chatHistoryList.appendChild(button);
+        });
+      } catch (error) {
+        chatHistoryList.innerHTML = '';
+      }
+    }
+
+    async function openChatSession(chatId) {
+      try {
+        const response = await fetch(`/api/chat/thread?chat_id=${encodeURIComponent(chatId)}`);
+        const payload = await response.json();
+        if (!response.ok || !payload.ok) throw new Error(payload.error || 'Ошибка');
+
+        activeChatId = payload.session.chat_id;
+        renderChatMessages(payload.session.messages || []);
+        await loadChatHistory();
+        setActiveView('chat');
+      } catch (error) {
+        resetChatView();
+      }
+    }
+
+    async function submitChatMessage() {
+      const text = chatInput.value.trim();
+      if (!text) {
+        return;
+      }
+
+      appendChatMessage(text, 'user');
+      appendChatMessage('ИИ анализирует...', 'assistant', { pending: true });
+      chatInput.value = '';
+      chatInput.disabled = true;
+      chatSendButton.disabled = true;
+
+      try {
+        const response = await fetch('/api/chat/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: text,
+            chat_id: activeChatId,
+          }),
+        });
+        const payload = await response.json();
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Не удалось отправить сообщение');
+        }
+
+        activeChatId = (payload.chat_id && payload.chat_id !== 'None') ? payload.chat_id : activeChatId;
+        removePendingChatMessage();
+        const msgs = normalizeChatMessages(payload.messages, text);
+        renderChatMessages(msgs);
+        tryAutoSpeak(msgs);
+        await loadChatHistory();
+
+        // Если бэкенд определил что это заметка/напоминание — добавляем карточку в список напоминаний
+        if (payload.reminder_saved) {
+          await loadArchive();
+          await loadNotes();
+        }
+        if (payload.homework_saved) {
+          await loadHomework();
+        }
+      } catch (error) {
+        removePendingChatMessage();
+        appendChatMessage('Не удалось получить ответ от модели.', 'assistant');
+      } finally {
+        chatInput.disabled = false;
+        chatSendButton.disabled = false;
+        chatInput.focus();
+      }
+    }
+
+    function showSearchResult(result) {
+      searchTopic.textContent = result.topic || 'Тема не распознана';
+      searchResults.hidden = false;
+    }
+
+    async function submitPlannerInput() {
+      const text = plannerInput.value.trim();
+      if (!text) {
+        setStatus('Введите текст для обработки.', 'error');
+        return;
+      }
+
+      plannerInput.disabled = true;
+      plannerSubmit.disabled = true;
+      setStatus('Обрабатываю запрос...', 'loading');
+
+      try {
+        const response = await fetch('/api/process', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text }),
+        });
+
+        const payload = await response.json();
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Ошибка обработки');
+        }
+
+        if (payload.result.category === 1) {
+          hideSearchResult();
+          await loadArchive();
+          await loadNotes();
+          setStatus('Напоминание успешно добавлено.', 'success');
+        } else {
+          showSearchResult(payload.result);
+          setStatus('Тема для поиска определена.', 'success');
+        }
+
+        plannerInput.value = '';
+      } catch (error) {
+        hideSearchResult();
+        setStatus(error.message || 'Не удалось обработать запрос.', 'error');
+      } finally {
+        plannerInput.disabled = false;
+        plannerSubmit.disabled = false;
+        plannerInput.focus();
+      }
+    }
+
+    renderIcons();
+
+    sidebarItems.forEach((item) => {
+      item.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (item.dataset.view) {
+          if (item.dataset.view === 'planner') {
+            showAllPlannerItems = true;
+            renderCalendar();
+          }
+          if (item.dataset.view === 'grades') {
+            loadGrades();
+          }
+          if (item.dataset.view === 'performance') {
+            loadPerformance();
+          }
+          if (item.dataset.view === 'archive') {
+            loadArchive();
+          }
+          setActiveView(item.dataset.view);
+        } else {
+          sidebarItems.forEach((link) => link.classList.remove('sidebar__item--active'));
+          item.classList.add('sidebar__item--active');
+        }
+      });
+    });
+
+    plannerSubmit.addEventListener('click', submitPlannerInput);
+    plannerInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        submitPlannerInput();
+      }
+    });
+
+    chatSendButton.addEventListener('click', submitChatMessage);
+    chatInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        submitChatMessage();
+      }
+    });
+
+    chatNewButton.addEventListener('click', resetChatView);
+
+    archiveClearTrashButton.addEventListener('click', async () => {
+      try {
+        const response = await fetch('/api/archive/trash/clear', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({}),
+        });
+        const payload = await response.json();
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Не удалось очистить корзину');
+        }
+        archiveData = payload.archive || archiveData;
+        renderArchive();
+      } catch (error) {
+        setStatus(error.message || 'Не удалось очистить корзину', 'error');
+      }
+    });
+
+    filterMenus.forEach((menu) => {
+      const groupName = menu.dataset.filterGroup;
+      const trigger = menu.querySelector('.filter-menu__trigger');
+      const dropdown = menu.querySelector('.filter-menu__dropdown');
+      const options = menu.querySelectorAll('.filter-menu__option');
+
+      trigger.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+        closeFilterMenus();
+        trigger.setAttribute('aria-expanded', String(!isOpen));
+        dropdown.hidden = isOpen;
+      });
+
+      options.forEach((option) => {
+        if (option.dataset.filterValue === filterState[groupName]) {
+          option.classList.add('is-active');
+        }
+
+        option.addEventListener('click', () => {
+          const filterValue = option.dataset.filterValue;
+          filterState[groupName] = filterValue;
+          options.forEach((item) => item.classList.toggle('is-active', item === option));
+          sortItems(groupName, filterValue);
+          closeFilterMenus();
+        });
+      });
+    });
+
+    document.addEventListener('click', closeFilterMenus);
+
+    prevWeekButton.addEventListener('click', () => {
+      selectedDate = addDays(selectedDate, -7);
+      visibleMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+      renderCalendar();
+    });
+
+    nextWeekButton.addEventListener('click', () => {
+      selectedDate = addDays(selectedDate, 7);
+      visibleMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+      renderCalendar();
+    });
+
+    prevMonthButton.addEventListener('click', () => {
+      visibleMonth = addMonths(visibleMonth, -1);
+      renderMonthGrid();
+    });
+
+    nextMonthButton.addEventListener('click', () => {
+      visibleMonth = addMonths(visibleMonth, 1);
+      renderMonthGrid();
+    });
+
+    monthWrap.addEventListener('mouseenter', openCalendarDropdown);
+    monthWrap.addEventListener('mouseleave', scheduleCalendarClose);
+    calendarDropdown.addEventListener('mouseenter', openCalendarDropdown);
+    calendarDropdown.addEventListener('mouseleave', scheduleCalendarClose);
+    monthTrigger.addEventListener('focus', openCalendarDropdown);
+    monthWrap.addEventListener('focusout', (event) => {
+      if (!monthWrap.contains(event.relatedTarget)) {
+        scheduleCalendarClose();
+      }
+    });
+
+    function updateCustomScrollbar() {
+      const { scrollTop, scrollHeight, clientHeight } = contentArea;
+      const hasOverflow = scrollHeight > clientHeight + 2;
+      contentScrollbar.hidden = !hasOverflow;
+
+      if (!hasOverflow) {
+        contentArea.classList.remove('is-scrolling');
+        return;
+      }
+
+      const trackHeight = contentScrollbar.clientHeight;
+      const thumbHeight = Math.max((clientHeight / scrollHeight) * trackHeight, 36);
+      const maxThumbOffset = Math.max(trackHeight - thumbHeight, 0);
+      const maxScroll = Math.max(scrollHeight - clientHeight, 1);
+      const thumbOffset = (scrollTop / maxScroll) * maxThumbOffset;
+
+      contentScrollbarThumb.style.height = `${thumbHeight}px`;
+      contentScrollbarThumb.style.transform = `translateY(${thumbOffset}px)`;
+    }
+
+    contentArea.addEventListener('scroll', () => {
+      updateCustomScrollbar();
+      contentArea.classList.add('is-scrolling');
+      window.clearTimeout(scrollHideTimer);
+      scrollHideTimer = window.setTimeout(() => {
+        contentArea.classList.remove('is-scrolling');
+      }, 700);
+    });
+
+    async function initializeDashboard() {
+      await loadCurrentUser();
+      await loadHomework();
+      await loadNotes();
+      renderCalendar();
+      await loadArchive();
+      await loadGrades();
+      await loadPerformance();
+      sortItems('reminders', filterState.reminders);
+      resetChatView();
+      loadChatHistory();
+      const initialView = window.location.hash === '#chat'
+        ? 'chat'
+        : window.location.hash === '#settings'
+          ? 'settings'
+          : window.location.hash === '#grades'
+            ? 'grades'
+          : window.location.hash === '#performance'
+            ? 'performance'
+          : window.location.hash === '#archive'
+            ? 'archive'
+            : 'planner';
+      setActiveView(initialView, false);
+      updateCustomScrollbar();
+    }
+
+    window.addEventListener('resize', updateCustomScrollbar);
+    initializeDashboard();
+    // ── Settings: TTS ──────────────────────────────────────────────
+    const ttsToggle = document.getElementById('tts-toggle');
+    const ttsTestBtn = document.getElementById('tts-test-btn');
+    const ttsTestStatus = document.getElementById('tts-test-status');
+    const voiceBtns = document.querySelectorAll('.settings-voice-btn');
+    const notifToggles = document.querySelectorAll('.settings-toggle');
+
+    let ttsEnabled = localStorage.getItem('tts_enabled') === 'true';
+    let ttsVoice = localStorage.getItem('tts_voice') || 'male';
+    let ttsAudio = null;
+
+    function applyTtsToggleUI() {
+      ttsToggle.setAttribute('aria-checked', String(ttsEnabled));
+      ttsToggle.classList.toggle('settings-toggle--on', ttsEnabled);
+    }
+
+    function applyVoiceUI() {
+      voiceBtns.forEach(btn => {
+        btn.classList.toggle('settings-voice-btn--active', btn.dataset.voice === ttsVoice);
+      });
+    }
+
+    applyTtsToggleUI();
+    applyVoiceUI();
+
+    ttsToggle.addEventListener('click', () => {
+      ttsEnabled = !ttsEnabled;
+      localStorage.setItem('tts_enabled', String(ttsEnabled));
+      applyTtsToggleUI();
+    });
+
+    voiceBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        ttsVoice = btn.dataset.voice;
+        localStorage.setItem('tts_voice', ttsVoice);
+        applyVoiceUI();
+      });
+    });
+
+    async function playTts(text) {
+      if (!ttsEnabled) return;
+      try {
+        const res = await fetch('/api/tts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, voice: ttsVoice }),
+        });
+        if (!res.ok) return;
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        if (ttsAudio) { ttsAudio.pause(); URL.revokeObjectURL(ttsAudio.src); }
+        ttsAudio = new Audio(url);
+        ttsAudio.play();
+      } catch (_) { /* игнорируем ошибки TTS */ }
+    }
+
+    ttsTestBtn.addEventListener('click', async () => {
+      ttsTestBtn.disabled = true;
+      ttsTestStatus.hidden = false;
+      ttsTestStatus.textContent = 'Синтезирую речь...';
+      ttsTestStatus.className = 'settings-status settings-status--loading';
+      try {
+        await playTts('Привет! Это тестовое сообщение. Голосовое озвучивание работает корректно.');
+        ttsTestStatus.textContent = 'Воспроизведение началось.';
+        ttsTestStatus.className = 'settings-status settings-status--success';
+      } catch (_) {
+        ttsTestStatus.textContent = 'Не удалось синтезировать речь.';
+        ttsTestStatus.className = 'settings-status settings-status--error';
+      } finally {
+        ttsTestBtn.disabled = false;
+        setTimeout(() => { ttsTestStatus.hidden = true; }, 3000);
+      }
+    });
+
+    // Автоозвучка ответов чата
+    let _lastMessageCount = 0;
+    function tryAutoSpeak(messages) {
+      if (ttsEnabled && messages.length > _lastMessageCount) {
+        const last = messages[messages.length - 1];
+        if (last && last.role === 'assistant') playTts(last.content);
+      }
+      _lastMessageCount = messages.length;
+    }
+
+    // ── Settings: AI Model picker ───────────────────────────────────
+    const modelCards = document.querySelectorAll('.settings-model-card');
+    const modelStatus = document.getElementById('model-status');
+    let selectedModel = localStorage.getItem('ai_model') || 'qwen2.5:3b';
+
+    function applyModelUI() {
+      modelCards.forEach(card => {
+        card.classList.toggle('settings-model-card--active', card.dataset.model === selectedModel);
+      });
+    }
+
+    applyModelUI();
+
+    modelCards.forEach(card => {
+      card.addEventListener('click', async () => {
+        const model = card.dataset.model;
+        if (model === selectedModel) return;
+        selectedModel = model;
+        localStorage.setItem('ai_model', model);
+        applyModelUI();
+
+        modelStatus.hidden = false;
+        modelStatus.textContent = 'Применяю модель...';
+        modelStatus.className = 'settings-status settings-status--loading';
+
+        try {
+          const res = await fetch('/api/settings/model', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ model }),
+          });
+          const data = await res.json();
+          if (!res.ok || !data.ok) throw new Error(data.error || 'Ошибка');
+          modelStatus.textContent = `Модель переключена: ${model}`;
+          modelStatus.className = 'settings-status settings-status--success';
+        } catch (err) {
+          modelStatus.textContent = err.message || 'Не удалось применить';
+          modelStatus.className = 'settings-status settings-status--error';
+        } finally {
+          setTimeout(() => { modelStatus.hidden = true; }, 3000);
+        }
+      });
+    });
+
+    notifToggles.forEach(toggle => {
+      if (toggle === ttsToggle) return;
+      toggle.addEventListener('click', () => {
+        const current = toggle.getAttribute('aria-checked') === 'true';
+        toggle.setAttribute('aria-checked', String(!current));
+        toggle.classList.toggle('settings-toggle--on', !current);
+      });
+    });
+  </script>
+</body>
+</html>

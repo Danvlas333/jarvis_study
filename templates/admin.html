@@ -1,0 +1,728 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Администратор | Jarvis Study</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --page-bg: #ececeb;
+      --card-bg: rgba(255,255,255,0.95);
+      --card-shadow: 0 16px 34px rgba(76, 92, 119, 0.08);
+      --text-main: #1c1d21;
+      --text-muted: #8f949d;
+      --line: #e8ebef;
+      --accent: #d7e6f4;
+      --accent-strong: #7ea4c9;
+      --danger: #d97f7f;
+      --soft: #f6f7f8;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--page-bg);
+      color: var(--text-main);
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+    .page {
+      padding: 12px 14px 20px;
+    }
+    .topbar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 240px;
+    }
+    .brand img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 800;
+    }
+    .search {
+      max-width: 500px;
+      width: 100%;
+      justify-self: center;
+      position: relative;
+    }
+    .search input {
+      width: 100%;
+      height: 42px;
+      padding: 0 16px 0 46px;
+      border: 1px solid rgba(0,0,0,0.04);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.94);
+      font-size: 14px;
+      color: var(--text-main);
+      outline: none;
+    }
+    .search svg {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      stroke: #3f434a;
+    }
+    .logout-btn {
+      border: none;
+      background: transparent;
+      color: #444;
+      font-size: 15px;
+      cursor: pointer;
+      padding: 10px 14px;
+      border-radius: 12px;
+    }
+    .logout-btn:hover { background: rgba(0,0,0,0.04); }
+    .panel {
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      padding: 18px 20px 20px;
+      min-height: 360px;
+    }
+    .panel h2 {
+      margin: 0 0 16px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .controls input {
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 0 12px;
+      font-size: 13px;
+      background: #fff;
+      outline: none;
+    }
+    .controls button {
+      height: 40px;
+      border: none;
+      border-radius: 12px;
+      padding: 0 16px;
+      background: var(--accent-strong);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .excel-dropzone {
+      width: min(100%, 760px);
+      margin: 28px auto 0;
+      background: #ececec;
+      border-radius: 18px;
+      padding: 12px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      border: 4px solid #fff;
+      box-shadow: 0 10px 22px rgba(105, 120, 142, 0.08);
+    }
+    .excel-dropzone__inner {
+      min-height: 70px;
+      border-radius: 16px;
+      background: #fff;
+      border: 2px dashed transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 12px 20px;
+      color: #5c6067;
+      font-size: 14px;
+      line-height: 1.35;
+      transition: border-color 0.18s ease, background-color 0.18s ease, transform 0.18s ease;
+      cursor: pointer;
+    }
+    .excel-dropzone--active .excel-dropzone__inner {
+      border-color: #93afcb;
+      background: #f8fbff;
+      transform: translateY(-1px);
+    }
+    .excel-dropzone__icon-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: auto;
+      padding-top: 12px;
+    }
+    .excel-dropzone__icon-btn {
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(87, 105, 128, 0.08);
+      cursor: pointer;
+      font-size: 20px;
+      color: #707782;
+    }
+    .status {
+      min-height: 16px;
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .status--error { color: #b95f5f; }
+    .status--success { color: #4d9b6a; }
+    .board {
+      border-radius: 18px;
+      overflow: hidden;
+      background: #cfe1f0;
+    }
+    .board__table-wrap {
+      background: #cfe1f0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    th, td {
+      text-align: left;
+      padding: 5px 12px;
+      font-size: 11px;
+      vertical-align: middle;
+      line-height: 1.25;
+    }
+    th {
+      font-size: 10px;
+      font-weight: 700;
+      color: #21242a;
+      background: #f3f3f3;
+    }
+    .admin-table__school-row td {
+      background: #d7e6f4;
+      font-size: 13px;
+      font-weight: 700;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    .admin-table__school-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .admin-table__pencil {
+      color: #6f7985;
+      font-size: 14px;
+    }
+    .admin-table__teacher-cell,
+    .admin-table__student-cell,
+    .admin-table__class-cell,
+    .admin-table__login-cell,
+    .admin-table__password-cell {
+      background: #ececec;
+    }
+    .admin-table__teacher-header,
+    .admin-table__student-header,
+    .admin-table__class-header,
+    .admin-table__login-header,
+    .admin-table__password-header {
+      font-style: italic;
+      font-weight: 700;
+      background: #f3f3f3;
+    }
+    .admin-table__divider-left {
+      border-left: 1px solid rgba(136, 145, 157, 0.34);
+    }
+    .admin-table__class-chip {
+      display: block;
+      margin: -5px -12px;
+      padding: 5px 10px;
+      text-align: center;
+      font-weight: 500;
+    }
+    .admin-table__class-chip--rose {
+      background: #edc0c0;
+    }
+    .admin-table__class-chip--blue {
+      background: #d7ecea;
+    }
+    .admin-table__add-row td {
+      background: #ececec;
+      color: #7a7e85;
+    }
+    .admin-table__add-cell {
+      cursor: pointer;
+      user-select: none;
+    }
+    .admin-table__add-cell:hover {
+      color: #4d5968;
+    }
+    .admin-table__icon-cell {
+      text-align: center;
+    }
+    .admin-table__school-col-1 { width: 16%; }
+    .admin-table__school-col-2 { width: 18%; }
+    .admin-table__school-col-3 { width: 10.5%; }
+    .admin-table__school-col-4 { width: 10%; }
+    .admin-table__school-col-5 { width: 9%; }
+    .admin-table__school-col-6 { width: 15.5%; }
+    .admin-table__school-col-7 { width: 12%; }
+    .admin-table__school-col-8 { width: 9%; }
+    .delete-btn {
+      border: none;
+      background: transparent;
+      color: #8b5151;
+      padding: 0;
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .empty {
+      padding: 14px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+    .board-toggle {
+      width: 100%;
+      height: 34px;
+      border: none;
+      border-top: 1px solid rgba(136, 145, 157, 0.16);
+      background: #e7e7e7;
+      color: #30343a;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+    }
+    .board-toggle::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-right: 2px solid #30343a;
+      border-bottom: 2px solid #30343a;
+      transform: rotate(45deg) translateY(-2px);
+      display: block;
+      transition: transform 0.18s ease;
+    }
+    .board-toggle[aria-expanded="true"] {
+      transform: none;
+    }
+    .board-toggle[aria-expanded="true"]::before {
+      transform: rotate(-135deg) translateY(-1px);
+    }
+    @media (max-width: 1100px) {
+      .topbar { grid-template-columns: 1fr; }
+      .search { justify-self: stretch; max-width: none; }
+      .controls { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 720px) {
+      .page { padding: 12px; }
+      .panel { padding: 18px; }
+      .controls { grid-template-columns: 1fr; }
+      .brand h1 { font-size: 22px; }
+      .board { overflow-x: auto; }
+      table { min-width: 720px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <img src="brand-logo.png" alt="Jarvis Study">
+        <h1>Администратор</h1>
+      </div>
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+        <input id="search-input" type="search" placeholder="Поиск по имени и классу">
+      </label>
+      <button class="logout-btn" id="logout-btn" type="button">Выйти</button>
+    </header>
+
+    <main class="panel">
+      <h2>Учителя и классы</h2>
+
+      <div class="controls">
+        <input id="student-name" type="text" placeholder="Имя ученика">
+        <input id="student-class" type="text" placeholder="Класс">
+        <input id="student-login" type="text" placeholder="Логин">
+        <input id="student-password" type="text" placeholder="Пароль">
+        <button id="add-student-btn" type="button">Добавить ученика</button>
+        <input id="excel-input" type="file" accept=".xlsx,.csv" hidden>
+      </div>
+
+      <div id="status" class="status"></div>
+
+      <section class="board">
+        <div class="board__table-wrap">
+          <table>
+            <colgroup>
+              <col class="admin-table__school-col-1">
+              <col class="admin-table__school-col-2">
+              <col class="admin-table__school-col-3">
+              <col class="admin-table__school-col-4">
+              <col class="admin-table__school-col-5">
+              <col class="admin-table__school-col-6">
+              <col class="admin-table__school-col-7">
+              <col class="admin-table__school-col-8">
+            </colgroup>
+            <tbody id="admin-table-body"></tbody>
+          </table>
+        </div>
+        <button id="board-toggle" class="board-toggle" type="button" aria-expanded="true" aria-label="Свернуть или развернуть таблицу"></button>
+      </section>
+    </main>
+
+    <div id="excel-dropzone" class="excel-dropzone">
+      <div class="excel-dropzone__inner" id="excel-dropzone-inner">
+        Перетащите сюда таблицу Excel или загрузите<br>её по кнопке
+      </div>
+      <div class="excel-dropzone__icon-wrap">
+        <button id="excel-dropzone-btn" class="excel-dropzone__icon-btn" type="button" title="Загрузить Excel">⇩</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    const searchInput = document.getElementById('search-input');
+    const adminTableBody = document.getElementById('admin-table-body');
+    const addStudentButton = document.getElementById('add-student-btn');
+    const excelInput = document.getElementById('excel-input');
+    const excelDropzone = document.getElementById('excel-dropzone');
+    const excelDropzoneInner = document.getElementById('excel-dropzone-inner');
+    const excelDropzoneButton = document.getElementById('excel-dropzone-btn');
+    const boardToggle = document.getElementById('board-toggle');
+    const statusNode = document.getElementById('status');
+    const logoutButton = document.getElementById('logout-btn');
+    const studentNameInput = document.getElementById('student-name');
+    const studentClassInput = document.getElementById('student-class');
+    const studentLoginInput = document.getElementById('student-login');
+    const studentPasswordInput = document.getElementById('student-password');
+
+    let schoolData = { teachers: [], students: [] };
+    let boardExpanded = false;
+
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+      window.lucide.createIcons();
+    }
+
+    function setStatus(message, tone = '') {
+      statusNode.textContent = message;
+      statusNode.className = `status${tone ? ` status--${tone}` : ''}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function renderAdminData() {
+      const query = searchInput.value.trim().toLowerCase();
+      const teachers = (schoolData.teachers || []).filter((item) => {
+        const haystack = `${item.display_name || ''} ${item.username || ''} ${item.managed_classes || ''}`.toLowerCase();
+        return !query || haystack.includes(query);
+      });
+      const students = (schoolData.students || []).filter((item) => {
+        const haystack = `${item.display_name || ''} ${item.username || ''} ${item.class_name || ''}`.toLowerCase();
+        return !query || haystack.includes(query);
+      });
+
+      const teacher = teachers[0];
+      const visibleStudents = boardExpanded ? students : students.slice(0, 1);
+      const rows = Math.max(visibleStudents.length, 1);
+      let markup = `
+        <tr class="admin-table__school-row">
+          <td colspan="4">
+            <div class="admin-table__school-title">
+              <span>МБОУ “Классическая школа” г. Гурьевска</span>
+              <span class="admin-table__pencil">✎</span>
+            </div>
+          </td>
+          <td colspan="4">
+            <div class="admin-table__school-title">
+              <span></span>
+              <span class="admin-table__pencil">✎</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th class="admin-table__teacher-header">Имя учителя</th>
+          <th class="admin-table__teacher-header">Классы учителя</th>
+          <th class="admin-table__login-header">Логин</th>
+          <th class="admin-table__password-header">Пароль</th>
+          <th class="admin-table__class-header admin-table__divider-left">Класс</th>
+          <th class="admin-table__student-header">Имя ученика</th>
+          <th class="admin-table__login-header">Логин</th>
+          <th class="admin-table__password-header">Пароль</th>
+        </tr>
+      `;
+
+      for (let index = 0; index < rows; index += 1) {
+        const student = visibleStudents[index];
+        const showTeacher = index === 0;
+        const classTone = index % 2 === 0 ? 'rose' : 'blue';
+        markup += `
+          <tr>
+            <td class="admin-table__teacher-cell">${showTeacher && teacher ? escapeHtml(teacher.display_name) : ''}</td>
+            <td class="admin-table__teacher-cell">${showTeacher && teacher ? escapeHtml(teacher.managed_classes) : ''}</td>
+            <td class="admin-table__login-cell">${showTeacher && teacher ? escapeHtml(teacher.username) : ''}</td>
+            <td class="admin-table__password-cell">${showTeacher && teacher ? `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;"><span>••••••••</span><button class="delete-btn" type="button" data-teacher-id="${teacher.id}" title="Удалить учителя"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button></div>` : ''}</td>
+            <td class="admin-table__class-cell admin-table__divider-left">${student ? `<span class="admin-table__class-chip admin-table__class-chip--${classTone}">${escapeHtml(student.class_name)}</span>` : ''}</td>
+            <td class="admin-table__student-cell">${student ? escapeHtml(student.display_name) : ''}</td>
+            <td class="admin-table__login-cell">${student ? escapeHtml(student.username) : ''}</td>
+            <td class="admin-table__password-cell">${student ? `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;"><span>••••••••</span><button class="delete-btn" type="button" data-student-id="${student.id}" title="Удалить ученика"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button></div>` : ''}</td>
+          </tr>
+        `;
+      }
+
+      markup += `
+        <tr class="admin-table__add-row">
+          <td colspan="4" class="admin-table__add-cell" id="inline-add-teacher">⊕&nbsp; Добавить учителя</td>
+          <td colspan="4"></td>
+        </tr>
+      `;
+
+      adminTableBody.innerHTML = markup;
+      boardToggle.hidden = students.length <= 1;
+      boardToggle.setAttribute('aria-expanded', String(boardExpanded));
+      boardToggle.setAttribute('aria-label', boardExpanded ? 'Свернуть список учеников' : 'Показать всех учеников');
+
+      adminTableBody.querySelectorAll('[data-student-id]').forEach((button) => {
+        button.addEventListener('click', () => deleteStudent(button.dataset.studentId));
+      });
+      adminTableBody.querySelectorAll('[data-teacher-id]').forEach((button) => {
+        button.addEventListener('click', () => deleteTeacher(button.dataset.teacherId));
+      });
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+      const inlineAdd = document.getElementById('inline-add-teacher');
+      if (inlineAdd) {
+        inlineAdd.addEventListener('click', addTeacherInline);
+      }
+    }
+
+    async function loadAdminData() {
+      try {
+        const response = await fetch('/api/admin/users');
+        const payload = await response.json();
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Не удалось загрузить данные');
+        }
+        schoolData = payload.data || { teachers: [], students: [] };
+        renderAdminData();
+      } catch (error) {
+        setStatus(error.message || 'Ошибка загрузки', 'error');
+      }
+    }
+
+    async function deleteStudent(id) {
+      if (!window.confirm('Удалить ученика?')) {
+        return;
+      }
+      try {
+        const response = await fetch('/api/admin/students/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id }),
+        });
+        const payload = await response.json();
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Не удалось удалить ученика');
+        }
+        schoolData = payload.data || schoolData;
+        renderAdminData();
+        setStatus('Ученик удалён', 'success');
+      } catch (error) {
+        setStatus(error.message || 'Ошибка удаления', 'error');
+      }
+    }
+
+    async function deleteTeacher(id) {
+      if (!window.confirm('Удалить учителя?')) {
+        return;
+      }
+      try {
+        const response = await fetch('/api/admin/teachers/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id }),
+        });
+        const payload = await response.json();
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Не удалось удалить учителя');
+        }
+        schoolData = payload.data || schoolData;
+        renderAdminData();
+        setStatus('Учитель удалён', 'success');
+      } catch (error) {
+        setStatus(error.message || 'Ошибка удаления', 'error');
+      }
+    }
+
+    async function addStudent() {
+      const display_name = studentNameInput.value.trim();
+      const class_name = studentClassInput.value.trim();
+      const username = studentLoginInput.value.trim();
+      const password = studentPasswordInput.value.trim();
+
+      if (!display_name || !class_name || !username || !password) {
+        setStatus('Заполни все поля для нового ученика', 'error');
+        return;
+      }
+
+      addStudentButton.disabled = true;
+      setStatus('Добавляю ученика...');
+
+      try {
+        const response = await fetch('/api/admin/students', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ display_name, class_name, username, password }),
+        });
+        const payload = await response.json();
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Не удалось создать ученика');
+        }
+        schoolData = payload.data || schoolData;
+        renderAdminData();
+        studentNameInput.value = '';
+        studentClassInput.value = '';
+        studentLoginInput.value = '';
+        studentPasswordInput.value = '';
+        setStatus('Ученик добавлен', 'success');
+      } catch (error) {
+        setStatus(error.message || 'Ошибка создания', 'error');
+      } finally {
+        addStudentButton.disabled = false;
+      }
+    }
+
+    async function addTeacherInline() {
+      const display_name = window.prompt('Имя учителя');
+      if (display_name === null) {
+        return;
+      }
+      const managed_classes = window.prompt('Классы учителя, например: 10 А, 10 Б, 11 А');
+      if (managed_classes === null) {
+        return;
+      }
+      const username = window.prompt('Логин учителя');
+      if (username === null) {
+        return;
+      }
+      const password = window.prompt('Пароль учителя');
+      if (password === null) {
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/admin/teachers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ display_name, managed_classes, username, password }),
+        });
+        const payload = await response.json();
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Не удалось создать учителя');
+        }
+        schoolData = payload.data || schoolData;
+        renderAdminData();
+        setStatus('Учитель добавлен', 'success');
+      } catch (error) {
+        setStatus(error.message || 'Ошибка создания учителя', 'error');
+      }
+    }
+
+    async function importExcelFile(file) {
+      if (!file) {
+        return;
+      }
+      setStatus('Импортирую таблицу...');
+      try {
+        const buffer = await file.arrayBuffer();
+        const bytes = new Uint8Array(buffer);
+        let binary = '';
+        for (let index = 0; index < bytes.length; index += 1) {
+          binary += String.fromCharCode(bytes[index]);
+        }
+        const content = btoa(binary);
+        const response = await fetch('/api/admin/students/import', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ file_name: file.name, content }),
+        });
+        const payload = await response.json();
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || 'Не удалось импортировать таблицу');
+        }
+        schoolData = payload.data || schoolData;
+        renderAdminData();
+        setStatus(`Импорт завершён: ${payload.imported || 0} из ${payload.total || 0}`, 'success');
+      } catch (error) {
+        setStatus(error.message || 'Ошибка импорта', 'error');
+      } finally {
+        excelInput.value = '';
+      }
+    }
+
+    addStudentButton.addEventListener('click', addStudent);
+    excelDropzoneButton.addEventListener('click', () => excelInput.click());
+    excelDropzoneInner.addEventListener('click', () => excelInput.click());
+    excelInput.addEventListener('change', () => {
+      const [file] = excelInput.files || [];
+      importExcelFile(file);
+    });
+    ['dragenter', 'dragover'].forEach((eventName) => {
+      excelDropzone.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        excelDropzone.classList.add('excel-dropzone--active');
+      });
+    });
+    ['dragleave', 'dragend', 'drop'].forEach((eventName) => {
+      excelDropzone.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        if (eventName !== 'drop') {
+          excelDropzone.classList.remove('excel-dropzone--active');
+        }
+      });
+    });
+    excelDropzone.addEventListener('drop', (event) => {
+      excelDropzone.classList.remove('excel-dropzone--active');
+      const [file] = event.dataTransfer?.files || [];
+      importExcelFile(file);
+    });
+    boardToggle.addEventListener('click', () => {
+      boardExpanded = !boardExpanded;
+      renderAdminData();
+    });
+    searchInput.addEventListener('input', renderAdminData);
+    logoutButton.addEventListener('click', () => {
+      window.location.href = '/logout';
+    });
+
+    loadAdminData();
+  </script>
+</body>
+</html>

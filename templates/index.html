@@ -1,0 +1,621 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="style.css?v=12">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar__logo">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+          <rect x="4" y="6" width="24" height="4" rx="2" fill="#8FA3B8"/>
+          <rect x="4" y="14" width="18" height="4" rx="2" fill="#B8C4D0"/>
+          <rect x="4" y="22" width="20" height="4" rx="2" fill="#D0A8A8"/>
+          <rect x="4" y="30" width="14" height="4" rx="2" fill="#8FA3B8"/>
+          <circle cx="32" cy="8" r="2" fill="#D0A8A8"/>
+          <circle cx="32" cy="16" r="2" fill="#B8C4D0"/>
+          <circle cx="32" cy="24" r="2" fill="#8FA3B8"/>
+        </svg>
+      </div>
+
+      <nav class="sidebar__nav">
+        <a href="#" class="sidebar__item sidebar__item--active">
+          <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10.707 2.293a1 1 0 0 1 1.414 0l8 8A1 1 0 0 1 19 12h-1v8a1 1 0 0 1-1 1h-4v-5h-2v5H7a1 1 0 0 1-1-1v-8H5a1 1 0 0 1-.707-1.707l8-8z"/>
+          </svg>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="4" width="7" height="7" rx="1"/>
+            <rect x="3" y="13" width="7" height="7" rx="1"/>
+            <rect x="13" y="5" width="8" height="2" rx="1"/>
+            <rect x="13" y="9" width="5" height="2" rx="1"/>
+            <rect x="13" y="14" width="8" height="2" rx="1"/>
+            <rect x="13" y="18" width="5" height="2" rx="1"/>
+          </svg>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M1 21v-1a7 7 0 0 1 14 0v1H1z"/>
+            <path d="M17 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/>
+            <path d="M23 21v-1a5 5 0 0 0-6-4.9"/>
+          </svg>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 6a2 2 0 0 1 2-2h4.586a1 1 0 0 1 .707.293L11 6h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6z"/>
+          </svg>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7l-4 4V4z"/>
+          </svg>
+        </a>
+      </nav>
+
+      <div class="sidebar__bottom">
+        <a href="#" class="sidebar__item">
+          <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </a>
+        <a href="#" class="sidebar__item">
+          <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="5"/>
+            <g stroke-linecap="round" stroke-width="2">
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </g>
+          </svg>
+        </a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar__search">
+          <i data-lucide="search" style="width:20px;height:20px;color:#999;"></i>
+          <input type="text" placeholder="Поиск заданий">
+        </div>
+        <div class="topbar__actions">
+          <div class="topbar__avatar"></div>
+          <button class="topbar__bell">
+            <i data-lucide="bell" style="width:22px;height:22px;"></i>
+          </button>
+        </div>
+      </header>
+
+      <div class="calendar-strip">
+        <div class="calendar-strip__month-wrap">
+          <button id="calendar-month-trigger" class="calendar-strip__month" type="button" aria-haspopup="dialog" aria-expanded="false">
+            <i class="calendar-strip__month-icon" data-lucide="chevron-down" style="width:16px;height:16px;"></i>
+            <span id="calendar-month-label">Апрель, 2026</span>
+          </button>
+          <div id="calendar-dropdown" class="calendar-dropdown" hidden>
+            <div class="calendar-dropdown__header">
+              <button id="calendar-prev-month" class="calendar-dropdown__nav" type="button" aria-label="Предыдущий месяц">
+                <i data-lucide="chevron-left" style="width:16px;height:16px;"></i>
+              </button>
+              <div id="calendar-dropdown-label" class="calendar-dropdown__title">Апрель, 2026</div>
+              <button id="calendar-next-month" class="calendar-dropdown__nav" type="button" aria-label="Следующий месяц">
+                <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>
+              </button>
+            </div>
+            <div class="calendar-dropdown__weekdays">
+              <span>пн</span>
+              <span>вт</span>
+              <span>ср</span>
+              <span>чт</span>
+              <span>пт</span>
+              <span>сб</span>
+              <span>вс</span>
+            </div>
+            <div id="calendar-dropdown-days" class="calendar-dropdown__days"></div>
+          </div>
+        </div>
+        <div class="calendar-strip__nav">
+          <button id="calendar-prev-week" class="calendar-strip__arrow" type="button" aria-label="Предыдущая неделя">
+            <i data-lucide="chevron-left" style="width:16px;height:16px;"></i>
+          </button>
+          <div id="calendar-week-days" class="calendar-strip__days"></div>
+          <button id="calendar-next-week" class="calendar-strip__arrow" type="button" aria-label="Следующая неделя">
+            <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>
+          </button>
+        </div>
+      </div>
+
+      <section class="board">
+        <div class="content">
+          <div class="content__header">
+            <h1 id="selected-date-title">Сегодня 19 апреля, воскресенье</h1>
+            <button class="content__menu">
+              <span class="content__menu-icon">
+                <i data-lucide="list" style="width:20px;height:20px;"></i>
+                <i data-lucide="chevron-down" style="width:16px;height:16px;"></i>
+              </span>
+            </button>
+          </div>
+
+          <div class="content__columns">
+            <div class="column">
+              <div class="column__header">
+                <h2>Домашние задания</h2>
+                <button class="column__sort">
+                  <i data-lucide="arrow-up-down" style="width:18px;height:18px;"></i>
+                </button>
+              </div>
+
+              <div id="homework-list">
+                <div class="column__empty" id="hw-empty" style="display:none">Нет заданий на этот день</div>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="column__header">
+                <h2>Мои напоминания и задания</h2>
+                <button class="column__sort">
+                  <i data-lucide="arrow-up-down" style="width:18px;height:18px;"></i>
+                </button>
+              </div>
+
+              <div id="reminders-list">
+                <div class="column__empty" id="rem-empty" style="display:none">Нет напоминаний на этот день</div>
+              </div>
+
+              <div id="search-results" class="results-panel" hidden>
+                <div class="results-panel__label">Тема для поиска/изучения</div>
+                <div id="search-topic" class="results-panel__topic"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content-scrollbar" aria-hidden="true">
+          <div class="content-scrollbar__thumb"></div>
+        </div>
+
+        <div class="bottom-input">
+          <div class="bottom-input__icon">
+            <i data-lucide="alarm-clock" style="width:22px;height:22px;"></i>
+          </div>
+          <input id="planner-input" type="text" placeholder="Чтобы добавить напоминание или что-то узнать, воспользуйтесь кнопкой микрофона или напечатайте...">
+          <button id="planner-submit" class="bottom-input__mic" type="button" aria-label="Отправить запрос">
+            <i data-lucide="mic" style="width:20px;height:20px;"></i>
+          </button>
+        </div>
+        <div id="planner-status" class="planner-status" aria-live="polite"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    // ── DOM refs ──────────────────────────────────────────────
+    const sidebarItems       = document.querySelectorAll('.sidebar__item');
+    const plannerInput       = document.getElementById('planner-input');
+    const plannerSubmit      = document.getElementById('planner-submit');
+    const plannerStatus      = document.getElementById('planner-status');
+    const remindersList      = document.getElementById('reminders-list');
+    const homeworkList       = document.getElementById('homework-list');
+    const hwEmpty            = document.getElementById('hw-empty');
+    const remEmpty           = document.getElementById('rem-empty');
+    const searchResults      = document.getElementById('search-results');
+    const searchTopic        = document.getElementById('search-topic');
+    const contentArea        = document.querySelector('.content');
+    const contentScrollbar   = document.querySelector('.content-scrollbar');
+    const contentScrollbarThumb = document.querySelector('.content-scrollbar__thumb');
+    const selectedDateTitle  = document.getElementById('selected-date-title');
+    const monthTrigger       = document.getElementById('calendar-month-trigger');
+    const monthLabel         = document.getElementById('calendar-month-label');
+    const weekDays           = document.getElementById('calendar-week-days');
+    const prevWeekButton     = document.getElementById('calendar-prev-week');
+    const nextWeekButton     = document.getElementById('calendar-next-week');
+    const calendarDropdown   = document.getElementById('calendar-dropdown');
+    const calendarDropdownLabel = document.getElementById('calendar-dropdown-label');
+    const calendarDropdownDays  = document.getElementById('calendar-dropdown-days');
+    const prevMonthButton    = document.getElementById('calendar-prev-month');
+    const nextMonthButton    = document.getElementById('calendar-next-month');
+    const monthWrap          = document.querySelector('.calendar-strip__month-wrap');
+
+    // ── State ─────────────────────────────────────────────────
+    let scrollHideTimer  = null;
+    let calendarHideTimer = null;
+    const now   = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    let selectedDate  = new Date(today);
+    let visibleMonth  = new Date(today.getFullYear(), today.getMonth(), 1);
+    let allNotes      = [];   // кэш напоминаний из /api/notes
+    let allHomework   = [];   // кэш дз из /api/homework
+
+    const weekdayShort = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+
+    // ── Helpers ───────────────────────────────────────────────
+    function startOfDay(date) {
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+    function sameDay(a, b) {
+      return a.getFullYear() === b.getFullYear()
+          && a.getMonth()    === b.getMonth()
+          && a.getDate()     === b.getDate();
+    }
+    function addDays(date, n) {
+      const d = new Date(date); d.setDate(d.getDate() + n); return startOfDay(d);
+    }
+    function addMonths(date, n) {
+      return new Date(date.getFullYear(), date.getMonth() + n, 1);
+    }
+    function startOfWeek(date) {
+      const d = startOfDay(date), day = d.getDay();
+      return addDays(d, day === 0 ? -6 : 1 - day);
+    }
+    function toISODate(date) {
+      return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+    }
+    function formatMonthYear(date) {
+      return new Intl.DateTimeFormat('ru-RU', { month:'long', year:'numeric' })
+        .format(date).replace(/^./, c => c.toUpperCase());
+    }
+    function formatHeadingDate(date) {
+      const prefix = sameDay(date, today) ? 'Сегодня ' : '';
+      return prefix + new Intl.DateTimeFormat('ru-RU', {
+        day:'numeric', month:'long', weekday:'long'
+      }).format(date);
+    }
+    function formatDateLong(iso) {
+      if (!iso) return 'Без даты';
+      const d = new Date(iso + 'T00:00:00');
+      if (isNaN(d)) return iso;
+      return new Intl.DateTimeFormat('ru-RU', {
+        day:'numeric', month:'long', weekday:'long'
+      }).format(d);
+    }
+    function renderIcons() { lucide.createIcons(); }
+    function setStatus(msg, tone = '') {
+      plannerStatus.textContent = msg;
+      plannerStatus.className = `planner-status${tone ? ` planner-status--${tone}` : ''}`;
+    }
+
+    // ── Calendar dropdown ─────────────────────────────────────
+    function openCalendarDropdown() {
+      clearTimeout(calendarHideTimer);
+      calendarDropdown.hidden = false;
+      monthTrigger.setAttribute('aria-expanded', 'true');
+    }
+    function scheduleCalendarClose() {
+      clearTimeout(calendarHideTimer);
+      calendarHideTimer = setTimeout(closeCalendarDropdown, 220);
+    }
+    function closeCalendarDropdown() {
+      clearTimeout(calendarHideTimer);
+      calendarDropdown.hidden = true;
+      monthTrigger.setAttribute('aria-expanded', 'false');
+    }
+
+    // ── Calendar render ───────────────────────────────────────
+    function renderWeek() {
+      const weekStart = startOfWeek(selectedDate);
+      weekDays.innerHTML = '';
+      for (let i = 0; i < 7; i++) {
+        const date = addDays(weekStart, i);
+        const btn  = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'calendar-strip__day';
+        if (sameDay(date, selectedDate)) btn.classList.add('calendar-strip__day--selected');
+        else if (sameDay(date, today))   btn.classList.add('calendar-strip__day--today');
+        btn.innerHTML = `<span class="calendar-strip__label">${weekdayShort[i]}</span>
+          <span class="calendar-strip__num">${date.getDate()}</span>`;
+        btn.addEventListener('click', () => {
+          selectedDate = date;
+          visibleMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+          renderCalendar();
+        });
+        weekDays.appendChild(btn);
+      }
+    }
+
+    function renderMonthGrid() {
+      calendarDropdownLabel.textContent = formatMonthYear(visibleMonth);
+      calendarDropdownDays.innerHTML = '';
+      const gridStart = startOfWeek(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth(), 1));
+      for (let i = 0; i < 42; i++) {
+        const date = addDays(gridStart, i);
+        const btn  = document.createElement('button');
+        btn.type = 'button'; btn.className = 'calendar-dropdown__day';
+        btn.textContent = date.getDate();
+        if (date.getMonth() !== visibleMonth.getMonth()) btn.classList.add('calendar-dropdown__day--muted');
+        if (sameDay(date, today))        btn.classList.add('calendar-dropdown__day--today');
+        if (sameDay(date, selectedDate)) btn.classList.add('calendar-dropdown__day--selected');
+        btn.addEventListener('click', () => {
+          selectedDate = date;
+          visibleMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+          renderCalendar();
+          closeCalendarDropdown();
+        });
+        calendarDropdownDays.appendChild(btn);
+      }
+    }
+
+    function renderCalendar() {
+      monthLabel.textContent = formatMonthYear(selectedDate);
+      selectedDateTitle.textContent = formatHeadingDate(selectedDate);
+      renderWeek();
+      renderMonthGrid();
+      renderNotesByDate(selectedDate);
+      renderHomeworkByDate(selectedDate);
+    }
+
+    // ── Notes: load from API ──────────────────────────────────
+    async function loadNotes() {
+      try {
+        const res  = await fetch('/api/notes');
+        const data = await res.json();
+        if (data.ok) allNotes = data.notes || [];
+      } catch (e) {
+        allNotes = [];
+      }
+      renderNotesByDate(selectedDate);
+    }
+
+    async function loadHomework() {
+      try {
+        const res  = await fetch('/api/homework');
+        const data = await res.json();
+        if (data.ok) allHomework = data.homework || [];
+      } catch (e) {
+        allHomework = [];
+      }
+      renderHomeworkByDate(selectedDate);
+    }
+
+    async function loadAll() {
+      await Promise.all([loadNotes(), loadHomework()]);
+    }
+
+    // ── Notes: render for a given date ───────────────────────
+    function renderNotesByDate(date) {
+      const iso = toISODate(date);
+      remindersList.querySelectorAll('.note-card-row').forEach(el => el.remove());
+      const byDate = allNotes.filter(n => n.result && n.result.date === iso);
+      const noDate = allNotes.filter(n => n.result && !n.result.date && iso === toISODate(today));
+      const visible = [...byDate, ...noDate];
+      visible.forEach(note => remindersList.insertBefore(buildNoteCard(note), remEmpty));
+      remEmpty.style.display = visible.length === 0 ? '' : 'none';
+      renderIcons();
+      updateCustomScrollbar();
+    }
+
+    // ── Homework: render for a given date ─────────────────────
+    function renderHomeworkByDate(date) {
+      const iso = toISODate(date);
+      homeworkList.querySelectorAll('.hw-card-row').forEach(el => el.remove());
+      const visible = allHomework.filter(h => h.date === iso);
+
+      // Группируем по дате (здесь всё одна дата) — просто рендерим все задания одной группой
+      if (visible.length > 0) {
+        // Группируем по дате для заголовка карточки
+        const byDate = {};
+        visible.forEach(h => {
+          if (!byDate[h.date]) byDate[h.date] = [];
+          byDate[h.date].push(h);
+        });
+        Object.entries(byDate).forEach(([dateIso, items]) => {
+          const card = buildHomeworkCard(dateIso, items);
+          homeworkList.insertBefore(card, hwEmpty);
+        });
+      }
+
+      hwEmpty.style.display = visible.length === 0 ? '' : 'none';
+      renderIcons();
+      updateCustomScrollbar();
+    }
+
+    function buildHomeworkCard(dateIso, items) {
+      const wrap = document.createElement('div');
+      wrap.className = 'hw-card-row';
+
+      const doneCount = items.filter(h => h.done).length;
+      const total     = items.length;
+      const pct       = total > 0 ? Math.round(doneCount / total * 100) : 0;
+      const circumf   = 138.23;
+      const offset    = circumf - (circumf * pct / 100);
+
+      const tasksHtml = items.map(h => `
+        <div class="card__task" data-hw-id="${h.id}">
+          <span class="card__task-text">${h.subject ? '<b>' + h.subject + ':</b> ' : ''}${h.task}</span>
+          ${h.done
+            ? `<span class="card__check card__check--done hw-toggle" data-hw-id="${h.id}" style="cursor:pointer">
+                <i data-lucide="check" style="width:14px;height:14px;"></i>
+               </span>`
+            : `<button class="card__btn hw-toggle" data-hw-id="${h.id}" type="button">Я готов!</button>`
+          }
+        </div>
+      `).join('');
+
+      wrap.innerHTML = `
+        <div class="card card--blue">
+          <div class="card__content">
+            <div class="card__date">${formatDateLong(dateIso)}</div>
+            <div class="card__tasks">${tasksHtml}</div>
+          </div>
+          <div class="card__progress">
+            <svg class="progress-ring" width="56" height="56" viewBox="0 0 56 56">
+              <circle class="progress-ring__bg" cx="28" cy="28" r="22"/>
+              <circle class="progress-ring__fill" cx="28" cy="28" r="22"
+                stroke-dasharray="${circumf}" stroke-dashoffset="${offset.toFixed(2)}"/>
+            </svg>
+            <span class="progress-ring__text">${pct}%</span>
+          </div>
+        </div>
+      `;
+
+      // Обработчики toggle
+      wrap.querySelectorAll('.hw-toggle').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.dataset.hwId;
+          await fetch('/api/homework/toggle', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id }),
+          });
+          const hw = allHomework.find(h => h.id === id);
+          if (hw) hw.done = !hw.done;
+          renderHomeworkByDate(selectedDate);
+        });
+      });
+
+      return wrap;
+    }
+
+    function buildNoteCard(note) {
+      const result   = note.result || {};
+      const task     = result.task || note.source_text || 'Задача';
+      const dateStr  = result.date ? formatDateLong(result.date) : 'Без даты';
+
+      const row = document.createElement('div');
+      row.className = 'card-row card-row--note note-card-row';
+      row.innerHTML = `
+        <div class="card card--green reminder-card reminder-card--note">
+          <div class="card__content">
+            <div class="card__date">${dateStr}</div>
+            <div class="card__tasks">
+              <div class="card__task">
+                <span class="card__task-text"></span>
+              </div>
+            </div>
+          </div>
+          <button class="card__delete" type="button" aria-label="Удалить">
+            <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
+          </button>
+        </div>
+        <div class="card__status card__status--empty"></div>
+      `;
+      row.querySelector('.card__task-text').textContent = task;
+      row.querySelector('.card__delete').addEventListener('click', async () => {
+        try {
+          await fetch('/api/notes/delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: note.id }),
+          });
+          allNotes = allNotes.filter(n => n.id !== note.id);
+          renderNotesByDate(selectedDate);
+        } catch (e) {
+          row.remove();
+        }
+      });
+      return row;
+    }
+
+    // ── Planner submit ────────────────────────────────────────
+    function hideSearchResult() { searchResults.hidden = true; searchTopic.textContent = ''; }
+    function showSearchResult(result) {
+      searchTopic.textContent = result.topic || 'Тема не распознана';
+      searchResults.hidden = false;
+    }
+
+    async function submitPlannerInput() {
+      const text = plannerInput.value.trim();
+      if (!text) { setStatus('Введите текст для обработки.', 'error'); return; }
+      plannerInput.disabled = true; plannerSubmit.disabled = true;
+      setStatus('Обрабатываю запрос...', 'loading');
+      try {
+        const res  = await fetch('/api/process', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.error || 'Ошибка обработки');
+
+        if (data.result.category === 1) {
+          hideSearchResult();
+          // перезагружаем все заметки с сервера и перерисовываем
+          await loadNotes();
+          setStatus('Напоминание успешно добавлено.', 'success');
+        } else {
+          showSearchResult(data.result);
+          setStatus('Тема для поиска определена.', 'success');
+        }
+        plannerInput.value = '';
+      } catch (err) {
+        hideSearchResult();
+        setStatus(err.message || 'Не удалось обработать запрос.', 'error');
+      } finally {
+        plannerInput.disabled = false; plannerSubmit.disabled = false;
+        plannerInput.focus();
+      }
+    }
+
+    // ── Custom scrollbar ──────────────────────────────────────
+    function updateCustomScrollbar() {
+      const { scrollTop, scrollHeight, clientHeight } = contentArea;
+      const hasOverflow = scrollHeight > clientHeight + 2;
+      contentScrollbar.hidden = !hasOverflow;
+      if (!hasOverflow) { contentArea.classList.remove('is-scrolling'); return; }
+      const trackHeight  = contentScrollbar.clientHeight;
+      const thumbHeight  = Math.max((clientHeight / scrollHeight) * trackHeight, 36);
+      const maxThumbOff  = Math.max(trackHeight - thumbHeight, 0);
+      const maxScroll    = Math.max(scrollHeight - clientHeight, 1);
+      contentScrollbarThumb.style.height    = `${thumbHeight}px`;
+      contentScrollbarThumb.style.transform = `translateY(${(scrollTop / maxScroll) * maxThumbOff}px)`;
+    }
+
+    // ── Event listeners ───────────────────────────────────────
+    sidebarItems.forEach(item => item.addEventListener('click', e => {
+      e.preventDefault();
+      sidebarItems.forEach(l => l.classList.remove('sidebar__item--active'));
+      item.classList.add('sidebar__item--active');
+    }));
+
+    plannerSubmit.addEventListener('click', submitPlannerInput);
+    plannerInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); submitPlannerInput(); } });
+
+    prevWeekButton.addEventListener('click', () => {
+      selectedDate = addDays(selectedDate, -7);
+      visibleMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+      renderCalendar();
+    });
+    nextWeekButton.addEventListener('click', () => {
+      selectedDate = addDays(selectedDate, 7);
+      visibleMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+      renderCalendar();
+    });
+    prevMonthButton.addEventListener('click', () => { visibleMonth = addMonths(visibleMonth, -1); renderMonthGrid(); });
+    nextMonthButton.addEventListener('click', () => { visibleMonth = addMonths(visibleMonth, 1);  renderMonthGrid(); });
+
+    monthWrap.addEventListener('mouseenter', openCalendarDropdown);
+    monthWrap.addEventListener('mouseleave', scheduleCalendarClose);
+    calendarDropdown.addEventListener('mouseenter', openCalendarDropdown);
+    calendarDropdown.addEventListener('mouseleave', scheduleCalendarClose);
+    monthTrigger.addEventListener('focus', openCalendarDropdown);
+    monthWrap.addEventListener('focusout', e => { if (!monthWrap.contains(e.relatedTarget)) scheduleCalendarClose(); });
+
+    contentArea.addEventListener('scroll', () => {
+      updateCustomScrollbar();
+      contentArea.classList.add('is-scrolling');
+      clearTimeout(scrollHideTimer);
+      scrollHideTimer = setTimeout(() => contentArea.classList.remove('is-scrolling'), 700);
+    });
+    window.addEventListener('resize', updateCustomScrollbar);
+
+    // ── Init ──────────────────────────────────────────────────
+    renderIcons();
+    renderWeek();
+    renderMonthGrid();
+    monthLabel.textContent = formatMonthYear(selectedDate);
+    selectedDateTitle.textContent = formatHeadingDate(selectedDate);
+    updateCustomScrollbar();
+    loadAll();
+  </script>
+</body>
+</html>
