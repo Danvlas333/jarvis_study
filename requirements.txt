@@ -1,0 +1,5 @@
+# Python packages
+ollama>=0.4.0
+openpyxl>=3.1.0
+onnxruntime>=1.18.0
+piper-tts>=1.2.0
