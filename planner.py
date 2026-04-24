@@ -240,6 +240,27 @@ def _looks_like_teacher_homework(user_input: str) -> bool:
     return has_marker or (has_class and has_due_date)
 
 
+def _looks_like_note(user_input: str) -> bool:
+    raw = str(user_input or "").strip().lower()
+    if not raw:
+        return False
+
+    note_markers = (
+        "напомни",
+        "напомин",
+        "заметк",
+        "запомни",
+        "добавь задачу",
+        "добавь замет",
+        "создай напомин",
+        "создай замет",
+        "позвонить",
+        "купить",
+        "сделать",
+    )
+    return any(marker in raw for marker in note_markers)
+
+
 def _normalize_class_name(value: Any) -> str | None:
     raw = str(value or "").strip()
     if not raw:
@@ -350,6 +371,8 @@ def classify(user_input: str) -> int:
         parsed = _ollama_json(CLASSIFY_PROMPT, user_input)
         category = int(parsed.get("category", 2))
         if category in (1, 2, 3):
+            if category == 2 and _looks_like_note(user_input) and not _looks_like_teacher_homework(user_input):
+                return 1
             return category
     except Exception:
         pass
@@ -357,6 +380,8 @@ def classify(user_input: str) -> int:
     # Fallback, если модель не ответила или ответила плохо.
     if _looks_like_teacher_homework(user_input):
         return 3
+    if _looks_like_note(user_input):
+        return 1
 
     return 2
 
