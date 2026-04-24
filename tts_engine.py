@@ -1,14 +1,3 @@
-"""
-tts_engine.py — потоковый TTS на базе Piper.
-
-Поддерживает два голоса:
-  • female  → ru_RU-irina-medium.onnx
-  • male    → ru_RU-ruslan-medium.onnx
-
-Большой текст разбивается на предложения и синтезируется по одному —
-так первое предложение готово к воспроизведению почти мгновенно.
-"""
-
 from __future__ import annotations
 
 import io
