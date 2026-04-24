@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -2298,6 +2298,10 @@
           await loadArchive();
           await loadNotes();
           setStatus('Напоминание успешно добавлено.', 'success');
+        } else if (payload.result.category === 3) {
+          hideSearchResult();
+          await loadHomework();
+          setStatus('Домашнее задание успешно создано.', 'success');
         } else {
           showSearchResult(payload.result);
           setStatus('Тема для поиска определена.', 'success');
